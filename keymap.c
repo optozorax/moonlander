@@ -17,6 +17,9 @@
 #include "keymap_norwegian.h"
 #include "keymap_portuguese.h"
 
+#include "shift.c"
+#include "lang.c"
+
 #define KC_MAC_UNDO LGUI(KC_Z)
 #define KC_MAC_CUT LGUI(KC_X)
 #define KC_MAC_COPY LGUI(KC_C)
@@ -112,8 +115,8 @@
 #define CT_C LCTL(KC_C)
 #define CT_V LCTL(KC_V)
 
-// Real Ctrl+C for terminating programs
-#define CTRL_C LCTL(KC_C)
+// Real Ctrl+J for terminating programs
+#define CTRL_J LCTL(KC_J)
 
 // Inverted shift keys
 #define IS_0 IS(KC_0)
@@ -198,6 +201,9 @@ enum custom_keycodes {
   MY_SCRN,
 
   I3_CR,
+
+  MY_SHIFT_KEYS
+  MY_LANG_KEYS
 };
 
 #define MY_layout( \
@@ -244,7 +250,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     CT_S,       KC_F,     KC_G,     KC_C,     KC_R,     KC_L,     KC_BSLS,
     CT_BSPC,    KC_D,     KC_H,     KC_T,     KC_N,     KC_S,     KC_MINS,
                 KC_B,     KC_M,     KC_W,     KC_V,     KC_Z,     KC_HASH,
-                          EN_CMSP,  KG_NEXT,  MY_SHAL,  TG(6),    CTRL_C,
+                          EN_CMSP,  KG_NEXT,  MY_SHAL,  TG(6),    CTRL_J,
                           MY_ALT, // RIGHT RED THUMB KEY
                           MY_LANG, KC_DOT, KC_SPC // RIGHT THUMB KEYS
   ),
@@ -741,9 +747,9 @@ enum LANG_CHANGE {
   WIN_SPACE
 };
 
-int current_lang_change = ALT_SHIFT;
+int lang_current_change = ALT_SHIFT;
 void change_lang(void) {
-  switch (current_lang_change) {
+  switch (lang_current_change) {
     case CAPS: {
       register_code(KC_CAPS);
         unregister_code(KC_CAPS);
@@ -771,7 +777,7 @@ void change_lang(void) {
 
 void screenshot(void) {
   // Костыль, когда я определяю кнопку для скриншота по переключению языка
-  switch (current_lang_change) {
+  switch (lang_current_change) {
     case CAPS: {
       register_code(KC_LCTRL);
       register_code(KC_LSHIFT);
@@ -839,25 +845,25 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
     case LANG__1:
       if (record->event.pressed) {
-        current_lang_change = CAPS;
+        lang_current_change = CAPS;
       }
       return false;
       break;
     case LANG__2:
       if (record->event.pressed) {
-        current_lang_change = ALT_SHIFT;
+        lang_current_change = ALT_SHIFT;
       }
       return false;
       break;
     case LANG__3:
       if (record->event.pressed) {
-        current_lang_change = CTRL_SHIFT;
+        lang_current_change = CTRL_SHIFT;
       }
       return false;
       break;
     case LANG__4:
       if (record->event.pressed) {
-        current_lang_change = WIN_SPACE;
+        lang_current_change = WIN_SPACE;
       }
       return false;
       break;
