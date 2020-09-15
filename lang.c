@@ -3,6 +3,7 @@ typedef uint8_t Lang;
 
 Lang lang_should_be = 0;
 Lang lang_current = 0;
+uint32_t lang_timer = 0;
 
 Key lang_get_key(Key key);
 Lang lang_get_lang(Key key);
@@ -20,6 +21,7 @@ enum LangChange lang_current_change = LANG_CHANGE_CAPS;
 
 // Public
 void lang_synchronize(void) {
+  lang_timer = timer_read();
   switch (lang_current_change) {
     case LANG_CHANGE_CAPS: {
       uprintf("CAPS sended\n");
@@ -87,6 +89,13 @@ Key lang_process(Key key, bool down) {
 	}
 
 	return lang_get_key(key);
+}
+
+void lang_user_timer(void) {
+	// Нужно выключать язык после прохождения определённого времени, потому что пользователь ожидает как будто шифт на самом деле включён
+	if (lang_current != lang_should_be && timer_read() - lang_timer >= 100) {
+		lang_activate(lang_should_be);
+	}
 }
 
 #include "custom_lang.c"

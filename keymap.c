@@ -3,25 +3,22 @@
 
 #include "keycodes_lang.h"
 #include "keycodes_shift.h"
+#include "keycodes_lang_shift_processing.h"
 
 enum custom_keycodes {
   RGB_SLD = ML_SAFE_RANGE,
 
   MY_LANG_KEYS
   MY_SHIFT_KEYS
-
-  SHF_1,
-  SHF_3,
-  MY_LANG,
+  MY_SHIFT_LANG_KEYS
 
   HSV_86_255_128,
 };
 
-typedef uint16_t Key;
-#define NONE_KEY (uint16_t)(65535)
-
+#include "lang_shift_common.h"
 #include "shift.c"
 #include "lang.c"
+#include "lang_shift_processing.c"
 
 #define MY_layout( \
     k00, k01, k02, k03, k04, k05, k06, \
@@ -58,7 +55,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_A,       EN_A,     EN_O,     EN_E,     EN_U,     EN_I,   RU_NUME,
     KC_CAPS,    EN_QUOT,  EN_Q,     EN_J,     EN_K,     EN_X,
     XXXXXXX,    XXXXXXX,  XXXXXXX,  EN_SLSH,  XXXXXXX,
-    XXXXXXX, // LEFT RED THUMB KEY
+    SHF_1_O, // LEFT RED THUMB KEY
     SHF_1, KC_BSPC, KC_ENT, // LEFT THUMB KEYS
 
     // RIGHT HALF
@@ -136,79 +133,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 
-bool process_record_user(Key key, keyrecord_t *record) {
-  bool down = record->event.pressed;
-  if (down) {
-    uprintf("\n\n\n----------------------------------------------\n");
-    uprintf("      lang current: %d\n", lang_current);
-    uprintf("    lang should be: %d\n", shift_should_be);
-    uprintf("      lang has key: %d\n", lang_get_key(key) != NONE_KEY);
-    uprintf("     lang has lang: %d\n", lang_get_lang(key) != NONE_LANG);
-    uprintf("     shift current: %d\n", shift_current);
-    uprintf("   shift should be: %d\n", shift_should_be);
-    if (lang_get_key(key) != NONE_KEY) {
-      uprintf("     shift has key: %d\n", shift_get_key(lang_get_key(key)) != NONE_KEY);
-      uprintf("   shift has shift: %d\n", shift_get_shift(lang_get_key(key)) != NONE_SHIFT);
-    } else {
-      uprintf("     shift has key: %d\n", shift_get_key(key) != NONE_KEY);
-      uprintf("   shift has shift: %d\n", shift_get_shift(key) != NONE_SHIFT);
-    }
-  }
-
-  Key key1 = lang_process(key, down);
-  Key key_to_shift = key;
-  if (key1 != NONE_KEY) {
-    key_to_shift = key1;
-  }
-
-  Key key2 = shift_process(key_to_shift, down);
-  if (key2 != NONE_KEY) {
-    if (down) {
-      uprintf("  register!!! %d\n", key2);
-      register_code(key2);
-    } else {
-      uprintf("unregister!!! %d\n", key2);
-      unregister_code(key2);
-    }
+bool process_record_user(uint16_t key, keyrecord_t *record) {
+  if (!process_record_lang_shift(key, record))
     return false;
-  }
-
-  uprintf("this is normal key\n");
 
   switch (key) {
-    case SHF_1:
-      if (record->event.pressed) {
-        uprintf("shf1 down\n");
-        shift_activate_from_user(true);
-        layer_on(1);
-      } else {
-        uprintf("shf2 down\n");
-        shift_activate_from_user(false);
-        layer_off(1);
-      }
-      return false;
-    case SHF_3:
-      if (record->event.pressed) {
-        shift_activate_from_user(true);
-        layer_on(3);
-      } else {
-        shift_activate_from_user(false);
-        layer_off(3);
-      }
-      return false;
-    case MY_LANG:
-      if (record->event.pressed) {
-        if (lang_should_be == 0) {
-          uprintf("my_lang to 2\n");
-          lang_activate_from_user(1);
-          layer_on(2);  
-        } else {
-          uprintf("my_lang to 0\n");
-          lang_activate_from_user(0);
-          layer_off(2);
-        }
-      }
-      return false;
     case RGB_SLD:
       if (record->event.pressed) {
         rgblight_mode(1);

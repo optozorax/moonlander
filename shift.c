@@ -47,9 +47,9 @@ Key shift_process(Key key, bool down) {
 	return shift_get_key(key);
 }
 
-void _shift_user_timer(void) {
+void shift_user_timer(void) {
 	// Нужно выключать шифт после прохождения определённого времени, потому что пользователь ожидает как будто шифт на самом деле включён
-	if (shift_current != shift_should_be && timer_read() - shift_timer >= 50) {
+	if (shift_current != shift_should_be && timer_read() - shift_timer >= 100) {
 		shift_activate(shift_should_be);
 	}
 }
