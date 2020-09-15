@@ -54,9 +54,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TAB,     EN_SCLN,  EN_LCBR,  EN_RCBR,  EN_P,     EN_Y,   EN_DLR,
     KC_A,       EN_A,     EN_O,     EN_E,     EN_U,     EN_I,   RU_NUME,
     KC_CAPS,    EN_QUOT,  EN_Q,     EN_J,     EN_K,     EN_X,
-    XXXXXXX,    XXXXXXX,  XXXXXXX,  EN_SLSH,  XXXXXXX,
-    SHF_1_O, // LEFT RED THUMB KEY
-    SHF_1, KC_BSPC, KC_ENT, // LEFT THUMB KEYS
+    XXXXXXX,    XXXXXXX,  XXXXXXX,  EN_SLSH,  KC_UP,
+    SHF_1, // LEFT RED THUMB KEY
+    SHF_1_O,    KC_BSPC,  KC_ENT, // LEFT THUMB KEYS
 
     // RIGHT HALF
     XXXXXXX,    EN_ASTR,  EN_EXCL,  EN_RPRN,  EN_LPRN,  EN_QUES,  RESET,

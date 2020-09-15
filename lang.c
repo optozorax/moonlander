@@ -24,7 +24,6 @@ void lang_synchronize(void) {
   lang_timer = timer_read();
   switch (lang_current_change) {
     case LANG_CHANGE_CAPS: {
-      uprintf("CAPS sended\n");
       // Костыль, потому что при нажатии Shift+Caps включается режим Caps, а не переключение языка :facepalm:
       if (shift_current == 1) {
       	unregister_code(KC_LSHIFT);
@@ -62,15 +61,12 @@ void lang_activate(Lang lang) {
 	// Нужно дополнять этот код, если нужно три языка и более
 	if (lang_current != lang) {
 		lang_synchronize();
-	} else {
-		uprintf("LANG already setted\n");
 	}
 	lang_current = lang;
 }
 
 // Public
 void lang_activate_from_user(Lang lang) {
-	uprintf("USER lang: %d\n", lang);
 	lang_should_be = lang;
 	lang_activate(lang);
 }
@@ -80,10 +76,8 @@ Key lang_process(Key key, bool down) {
 	Lang new_lang = lang_get_lang(key);
 	if (down) {
 		if (new_lang != NONE_LANG) {
-			uprintf("LANG %d\n", new_lang);
 			lang_activate(new_lang);
 		} else {
-			uprintf("LANG none\n");
 			lang_activate(lang_should_be);
 		}
 	}
