@@ -18,6 +18,7 @@ enum custom_keycodes {
 };
 
 typedef uint16_t Key;
+#define NONE_KEY (uint16_t)(65535)
 
 #include "shift.c"
 #include "lang.c"
@@ -54,8 +55,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // LEFT HALF
     KC_ESC,     EN_AMPR,  EN_LBRC,  EN_RBRC,  EN_PLUS,  EN_EQL, EN_GRV,
     KC_TAB,     EN_SCLN,  EN_LCBR,  EN_RCBR,  EN_P,     EN_Y,   EN_DLR,
-    XXXXXXX,    EN_A,     EN_O,     EN_E,     EN_U,     EN_I,   RU_NUME,
-    XXXXXXX,    EN_QUOT,  EN_Q,     EN_J,     EN_K,     EN_X,
+    KC_A,       EN_A,     EN_O,     EN_E,     EN_U,     EN_I,   RU_NUME,
+    KC_CAPS,    EN_QUOT,  EN_Q,     EN_J,     EN_K,     EN_X,
     XXXXXXX,    XXXXXXX,  XXXXXXX,  EN_SLSH,  XXXXXXX,
     XXXXXXX, // LEFT RED THUMB KEY
     SHF_1, KC_BSPC, KC_ENT, // LEFT THUMB KEYS
@@ -103,9 +104,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     SHF_3,      _______,  _______, // LEFT THUMB KEYS
 
     // RIGHT HALF
-    _______,    RU_ASTR,  RU_EXCL,  RU_RPRN,  RU_LPRN,  RU_QUES,  XXXXXXX,
+    _______,    RU_ASTR,  RU_EXCL,  RU_RPRN,  RU_LPRN,  RU_QUES,  RESET,
     _______,    RU_SC,    RU_G,     RU_T,     RU_N,     RU_Z,     RU_HD,
-    _______,    RU_P,     RU_O,     RU_L,     RU_D,     RU_ZH,    RU_E,
+    _______,    RU_R,     RU_O,     RU_L,     RU_D,     RU_ZH,    RU_E,
                 RU_SH,    RU_SF,    RU_B,     RU_JU,    RU_H,     RU_JO,
                           RU_COMM,  XXXXXXX,  _______,  _______,  _______,
                           _______, // RIGHT RED THUMB KEY
@@ -137,27 +138,51 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 bool process_record_user(Key key, keyrecord_t *record) {
   bool down = record->event.pressed;
-  Key key1 = lang_process(key, down);
-  if (key1 != -1) {
-    Key key2 = shift_process(key1, down);
-    if (key2 != -1) {
-      if (down) {
-        register_code(key2);
-      } else {
-        unregister_code(key2);
-      }
-      return false;
+  if (down) {
+    uprintf("\n\n\n----------------------------------------------\n");
+    uprintf("      lang current: %d\n", lang_current);
+    uprintf("    lang should be: %d\n", shift_should_be);
+    uprintf("      lang has key: %d\n", lang_get_key(key) != NONE_KEY);
+    uprintf("     lang has lang: %d\n", lang_get_lang(key) != NONE_LANG);
+    uprintf("     shift current: %d\n", shift_current);
+    uprintf("   shift should be: %d\n", shift_should_be);
+    if (lang_get_key(key) != NONE_KEY) {
+      uprintf("     shift has key: %d\n", shift_get_key(lang_get_key(key)) != NONE_KEY);
+      uprintf("   shift has shift: %d\n", shift_get_shift(lang_get_key(key)) != NONE_SHIFT);
     } else {
-      // uprintf("error wtf ilya");
+      uprintf("     shift has key: %d\n", shift_get_key(key) != NONE_KEY);
+      uprintf("   shift has shift: %d\n", shift_get_shift(key) != NONE_SHIFT);
     }
   }
+
+  Key key1 = lang_process(key, down);
+  Key key_to_shift = key;
+  if (key1 != NONE_KEY) {
+    key_to_shift = key1;
+  }
+
+  Key key2 = shift_process(key_to_shift, down);
+  if (key2 != NONE_KEY) {
+    if (down) {
+      uprintf("  register!!! %d\n", key2);
+      register_code(key2);
+    } else {
+      uprintf("unregister!!! %d\n", key2);
+      unregister_code(key2);
+    }
+    return false;
+  }
+
+  uprintf("this is normal key\n");
 
   switch (key) {
     case SHF_1:
       if (record->event.pressed) {
+        uprintf("shf1 down\n");
         shift_activate_from_user(true);
         layer_on(1);
       } else {
+        uprintf("shf2 down\n");
         shift_activate_from_user(false);
         layer_off(1);
       }
@@ -174,9 +199,11 @@ bool process_record_user(Key key, keyrecord_t *record) {
     case MY_LANG:
       if (record->event.pressed) {
         if (lang_should_be == 0) {
+          uprintf("my_lang to 2\n");
           lang_activate_from_user(1);
           layer_on(2);  
         } else {
+          uprintf("my_lang to 0\n");
           lang_activate_from_user(0);
           layer_off(2);
         }

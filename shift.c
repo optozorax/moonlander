@@ -1,4 +1,5 @@
 typedef uint8_t Shift;
+#define NONE_SHIFT (uint8_t)(255)
 
 Shift shift_should_be = 0;
 Shift shift_current = 0;
@@ -11,16 +12,21 @@ void shift_activate(Shift shift) {
 	if (shift_current != shift) {
 		shift_timer = timer_read();
 		if (shift) {
-			unregister_code(KC_LSHIFT);
-		} else {
+			uprintf("SHIFT +++++   register\n");
 			register_code(KC_LSHIFT);
+		} else {
+			uprintf("SHIFT ----- unregister\n");
+			unregister_code(KC_LSHIFT);
 		}
+	} else {
+		uprintf("SHIFT already setted\n");
 	}
 	shift_current = shift;
 }
 
 // Public
 void shift_activate_from_user(Shift shift) {
+  uprintf("USER shift: %d\n", shift);
   shift_should_be = shift;
   shift_activate(shift);
 }
@@ -29,9 +35,11 @@ void shift_activate_from_user(Shift shift) {
 Key shift_process(Key key, bool down) {
 	Shift new_shift = shift_get_shift(key);
 	if (down) {
-		if (new_shift != -1) {
+		if (new_shift != NONE_SHIFT) {
+			uprintf("SHIFT %d\n", new_shift);
 			shift_activate(new_shift);
 		} else {
+			uprintf("SHIFT none\n");
 			shift_activate(shift_should_be);
 		}
 	}

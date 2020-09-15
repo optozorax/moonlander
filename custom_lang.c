@@ -190,7 +190,7 @@ Key lang_get_key(Key key) {
     case RU_DOT:  return KS_SLSH;
     case RU_COMM: return KS_QUES;
     
-    default: return -1;
+    default: return NONE_KEY;
   }
 }
 
@@ -386,6 +386,6 @@ Lang lang_get_lang(Key key) {
     case RU_DOT:  return 1;
     case RU_COMM: return 1;
 
-    default: return -1;
+    default: return NONE_LANG;
   }
 }

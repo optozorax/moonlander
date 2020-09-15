@@ -1,4 +1,5 @@
 typedef uint8_t Lang;
+#define NONE_LANG (uint8_t)(255)
 
 Lang lang_should_be = 0;
 Lang lang_current = 0;
@@ -21,8 +22,18 @@ enum LangChange lang_current_change = LANG_CHANGE_CAPS;
 void lang_synchronize(void) {
   switch (lang_current_change) {
     case LANG_CHANGE_CAPS: {
-      register_code(KC_CAPS);
-      unregister_code(KC_CAPS);
+      uprintf("CAPS sended\n");
+      // Костыль, потому что при нажатии Shift+Caps включается режим Caps, а не переключение языка :facepalm:
+      if (shift_current == 1) {
+      	unregister_code(KC_LSHIFT);
+      	register_code(KC_CAPS);
+      	unregister_code(KC_CAPS);
+      	register_code(KC_LSHIFT);
+      } else {
+      	register_code(KC_CAPS);
+      	unregister_code(KC_CAPS);
+      }
+      
     } break;
     case LANG_CHANGE_ALT_SHIFT: {
       register_code(KC_LALT);
@@ -49,12 +60,15 @@ void lang_activate(Lang lang) {
 	// Нужно дополнять этот код, если нужно три языка и более
 	if (lang_current != lang) {
 		lang_synchronize();
+	} else {
+		uprintf("LANG already setted\n");
 	}
 	lang_current = lang;
 }
 
 // Public
 void lang_activate_from_user(Lang lang) {
+	uprintf("USER lang: %d\n", lang);
 	lang_should_be = lang;
 	lang_activate(lang);
 }
@@ -63,9 +77,11 @@ void lang_activate_from_user(Lang lang) {
 Key lang_process(Key key, bool down) {
 	Lang new_lang = lang_get_lang(key);
 	if (down) {
-		if (new_lang != -1) {
+		if (new_lang != NONE_LANG) {
+			uprintf("LANG %d\n", new_lang);
 			lang_activate(new_lang);
 		} else {
+			uprintf("LANG none\n");
 			lang_activate(lang_should_be);
 		}
 	}
