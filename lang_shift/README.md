@@ -68,8 +68,8 @@ bool process_record_user(uint16_t key, keyrecord_t *record) {
 ```c
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //---------------------------------------------------------------------------
-  [0] = LAYOUT(EN_AMPR, EN_A,    SHF_1,   LA_CHNG), // & a <Шифт> <Переключение языка>
-  [1] = LAYOUT(EN_7,    EN_S_A,  _______, RU_NUME), // 7 A <Шифт> №
+  [0] = LAYOUT(EN_AMPR, EN_W,    SHF_1,   LA_CHNG), // & w <Шифт> <Переключение языка>
+  [1] = LAYOUT(EN_7,    EN_S_W,  _______, RU_NUME), // 7 W <Шифт> №
   [0] = LAYOUT(RU_7 ,   RU_JU,   SHF_3,   LA_CHNG), // 7 ю <Шифт> <Переключение языка>
   [0] = LAYOUT(RU_QUES, RU_S_JU, SHF_1,   EN_GRV ), // ? Ю <Шифт> `
 };
