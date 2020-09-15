@@ -1,24 +1,14 @@
 #include QMK_KEYBOARD_H
 #include "version.h"
 
-#include "keycodes_lang.h"
-#include "keycodes_shift.h"
-#include "keycodes_lang_shift_processing.h"
-
 enum custom_keycodes {
   RGB_SLD = ML_SAFE_RANGE,
-
-  MY_LANG_KEYS
-  MY_SHIFT_KEYS
-  MY_SHIFT_LANG_KEYS
-
   HSV_86_255_128,
+
+  #include "lang_shift/keycodes.h"
 };
 
-#include "lang_shift_common.h"
-#include "shift.c"
-#include "lang.c"
-#include "lang_shift_processing.c"
+#include "lang_shift/code.c"
 
 #define MY_layout( \
     k00, k01, k02, k03, k04, k05, k06, \
@@ -134,8 +124,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 
 bool process_record_user(uint16_t key, keyrecord_t *record) {
-  if (!process_record_lang_shift(key, record))
-    return false;
+  #include "lang_shift/process_record_user.c"
 
   switch (key) {
     case RGB_SLD:
