@@ -17,7 +17,12 @@ enum LangChange {
 };
 
 // Public
-enum LangChange lang_current_change = LANG_CHANGE_CAPS;
+enum LangChange lang_current_change = 
+#ifdef LANG_CHANGE_DEFAULT
+  LANG_CHANGE_DEFAULT;
+#else
+  #error "You must specify default language change method by defining variable LANG_CHANGE_DEFAULT."
+#endif
 
 // Public
 void lang_synchronize(void) {

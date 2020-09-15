@@ -1,6 +1,7 @@
 #include QMK_KEYBOARD_H
 #include "version.h"
 
+
 enum custom_keycodes {
   RGB_SLD = ML_SAFE_RANGE,
   HSV_86_255_128,
@@ -8,6 +9,7 @@ enum custom_keycodes {
   #include "lang_shift/keycodes.h"
 };
 
+#define LANG_CHANGE_DEFAULT LANG_CHANGE_CAPS
 #include "lang_shift/code.c"
 
 #define MY_layout( \
@@ -55,7 +57,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                 EN_B,     EN_M,     EN_W,     EN_V,     EN_Z,     EN_HASH,
                           XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
                           XXXXXXX, // RIGHT RED THUMB KEY
-                          MY_LANG, KC_DOT, KC_SPC // RIGHT THUMB KEYS
+                          LA_CHNG, KC_DOT, KC_SPC // RIGHT THUMB KEYS
   ),
 
   //---------------------------------------------------------------------------

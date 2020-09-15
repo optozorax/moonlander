@@ -70,7 +70,7 @@ bool process_record_lang_shift(Key key, keyrecord_t* record) {
         layer_off(3);
       }
       return false;
-    case MY_LANG:
+    case LA_CHNG:
       if (down) {
         if (lang_should_be == 0) {
           lang_activate_from_user(1);
@@ -81,9 +81,29 @@ bool process_record_lang_shift(Key key, keyrecord_t* record) {
         }
       }
       return false;
-    case SYNC_LA:
+    case LA_SYNC:
       if (down) {
         lang_synchronize();
+      }
+      return false;
+    case LA_CAPS:
+      if (down) {
+        lang_current_change = LANG_CHANGE_CAPS;
+      }
+      return false;
+    case LA_ALSH:
+      if (down) {
+        lang_current_change = LANG_CHANGE_ALT_SHIFT;
+      }
+      return false;
+    case LA_CTSH:
+      if (down) {
+        lang_current_change = LANG_CHANGE_CTRL_SHIFT;
+      }
+      return false;
+    case LA_WISP:
+      if (down) {
+        lang_current_change = LANG_CHANGE_WIN_SPACE;
       }
       return false;
   }
