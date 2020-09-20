@@ -1,3 +1,19 @@
+#include "map.h"
+
+enum combo_keycodes {
+  COMBO_START = ML_SAFE_RANGE,
+
+  #include "keycodes.h"
+
+  COMBO_NEW_SAFE_RANGE,
+};
+
+#undef ML_SAFE_RANGE
+#define ML_SAFE_RANGE COMBO_NEW_SAFE_RANGE
+
+#define COMBO_WITH_SEP(x) COMBO_KEY(x), 
+#define CHORD(...) { MAP(COMBO_WITH_SEP, __VA_ARGS__) NONE_COMBO_KEY }
+
 // Newtype pattern allows us wrap some type in that type and use static type-checking
 #define NEWTYPE(name, func_name, type, max, none_name) \
   typedef struct name { \
@@ -36,7 +52,7 @@ typedef struct Combo {
   uint32_t last_modify_time;
 } Combo;
 
-
+// Write 1, if you want to print debug messages when transition activates
 #if 0
   #define TRANSITION_DEBUG(a) uprintf("transition '" #a "' for #%d: {", combo - &combo_stack[0]); \
     for (int i = 0; i < combo->size; ++i) { \
@@ -208,7 +224,7 @@ bool combo_process_1(Combo *combo, uint16_t key, keyrecord_t *record) {
       combo->array[combo->size] = key_combo;
       combo->size++;
       combo->last_modify_time = timer_read();
-      return true;
+      return false;
     } else {
       if (neq_combo_pos(pos, NONE_COMBO_POS)) {
         TRANSITION_DEBUG(k);
@@ -227,24 +243,24 @@ bool combo_process_1(Combo *combo, uint16_t key, keyrecord_t *record) {
         combo_press(pos, false);
 
         combo_onenter_3(combo, key_combo);
-        return true;  
+        return false;  
       }
     } else {
       if (down) {
         TRANSITION_DEBUG(b);
         combo_onenter_2(combo, pos, record);
-        return true;
+        return false;
       }
     }
   } else {
     if (up && neq_combo_key(key_combo, NONE_COMBO_KEY)) {
       TRANSITION_DEBUG(f);
       combo_onenter_3(combo, key_combo);
-      return true;
+      return false;
     }
   }
 
-  return false;
+  return true;
 }
 
 bool combo_process_2(Combo *combo, uint16_t key, keyrecord_t *record) {
@@ -259,10 +275,10 @@ bool combo_process_2(Combo *combo, uint16_t key, keyrecord_t *record) {
     combo_press(pos, false);
 
     combo_onenter_3(combo, key_combo);
-    return true;
+    return false;
   }
 
-  return false;
+  return true;
 }
 
 bool combo_process_3(Combo *combo, uint16_t key, keyrecord_t *record) {
@@ -275,10 +291,10 @@ bool combo_process_3(Combo *combo, uint16_t key, keyrecord_t *record) {
 
     combo_onenter_3(combo, key_combo);
 
-    return true;
+    return false;
   }
 
-  return false;
+  return true;
 }
 
 bool combo_process_local_states(Combo *combo, uint16_t key, keyrecord_t *record) {
@@ -287,14 +303,14 @@ bool combo_process_local_states(Combo *combo, uint16_t key, keyrecord_t *record)
     case 2: return combo_process_2(combo, key, record);
     case 3: return combo_process_3(combo, key, record);
   }
-  return false;
+  return true;
 }
 
 bool combo_process(uint16_t key, keyrecord_t *record) {
   for (uint8_t i = 0; i < combo_stack_size; ++i) {
     Combo *combo = &combo_stack[i];
     if (combo_process_local_states(combo, key, record))
-      return true;
+      return false;
   }
 
   bool down = record->event.pressed;
@@ -308,10 +324,10 @@ bool combo_process(uint16_t key, keyrecord_t *record) {
     combo->size = 1;
     combo->state = 1;
     combo->last_modify_time = timer_read();
-    return true;
+    return false;
   }
 
-  return false;
+  return true;
 }
 
 void combo_user_timer(void) {

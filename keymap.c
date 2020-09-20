@@ -1,37 +1,24 @@
 #include QMK_KEYBOARD_H
 #include "version.h"
-
-#define LANG_CHANGE_DEFAULT LANG_CHANGE_CAPS
-
-#define COMBO_KEYS_COUNT 5
-#define COMBO_MAX_SIZE 3
-#define COMBO_STACK_MAX_SIZE 3
-#define COMBO_WAIT_TIME 100
-#define COMBO_LAYER 4
-#define COMBO_COUNT 10
+#include "lang_shift/code.c"
+#include "combo/code.c"
 
 enum custom_keycodes {
   RGB_SLD = ML_SAFE_RANGE,
   HSV_86_255_128,
-
-  #include "lang_shift/keycodes.h"
-  #include "combo/keycodes.h"
 };
 
-#include "lang_shift/code.c"
-#include "combo/code.c"
-
 const ComboKey combos[COMBO_COUNT][COMBO_MAX_SIZE + 1] = {
-  { COMBO_KEY(0), NONE_COMBO_KEY },
-  { COMBO_KEY(1), NONE_COMBO_KEY },
-  { COMBO_KEY(2), NONE_COMBO_KEY },
-  { COMBO_KEY(3), NONE_COMBO_KEY },
-  { COMBO_KEY(4), NONE_COMBO_KEY },
-  { COMBO_KEY(0), COMBO_KEY(1), NONE_COMBO_KEY },
-  { COMBO_KEY(0), COMBO_KEY(2), NONE_COMBO_KEY },
-  { COMBO_KEY(1), COMBO_KEY(2), NONE_COMBO_KEY },
-  { COMBO_KEY(3), COMBO_KEY(4), NONE_COMBO_KEY },
-  { COMBO_KEY(0), COMBO_KEY(1), COMBO_KEY(2), NONE_COMBO_KEY },
+  CHORD(0),
+  CHORD(1),
+  CHORD(2),
+  CHORD(3),
+  CHORD(4),
+  CHORD(0, 1),
+  CHORD(0, 2),
+  CHORD(1, 2),
+  CHORD(3, 4),
+  CHORD(0, 1, 2),
 };
 
 #define MY_layout( \
@@ -162,8 +149,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  #include "combo/process_record_user.c"
-  #include "lang_shift/process_record_user.c"
+  if (combo_enabled && !combo_process(keycode, record))
+    return false;
+
+  if (!process_record_lang_shift(keycode, record))
+    return false;
 
   switch (keycode) {
     case RGB_SLD:

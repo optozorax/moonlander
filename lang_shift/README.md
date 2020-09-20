@@ -10,7 +10,9 @@
 
 # Как использовать?
 
-В своём файле `keymap.c` в `enum`'е `custom_keycodes` подключаете файл `lang_shift/keycodes.h`. Сразу после него надо подключить файл `lang_shift/code.c`. А ещё надо задать способ переключения языка по умолчанию в переменной препроцессора `LANG_CHANGE_DEFAULT`, используя один из вариантов:
+## Задать характеристики
+
+Нужно задать способ переключения языка по умолчанию в переменной препроцессора `LANG_CHANGE_DEFAULT` в файле `config.h`, используя один из вариантов:
 
 ```
 LANG_CHANGE_CAPS
@@ -28,29 +30,27 @@ LA_CTSH, /* Задаёт переключение языка на Ctrl + Shift. 
 LA_WISP, /* Задаёт переключение языка на Win + Space. */
 ```
 
-Выглядеть это будет примерно так:
+## Подключить код
 
+В своём файле `keymap.c` в самом верху подключаем файл `lang_shift/code.c`:
 ```c
-enum custom_keycodes {
-  RGB_SLD = ML_SAFE_RANGE,
-  HSV_86_255_128,
-
-  #include "lang_shift/keycodes.h"
-};
-
-#define LANG_CHANGE_DEFAULT LANG_CHANGE_CAPS
 #include "lang_shift/code.c"
 ```
 
-В своей функции `process_record_user` включаете код `lang_shift/process_record_user.c` следующим образом:
+## Вызов модуля для каждой клавиши
+
+В своей функции `process_record_user` включаете добавляете следующую обработку:
 
 ```c
 bool process_record_user(uint16_t key, keyrecord_t *record) {
-  #include "lang_shift/process_record_user.c"
+  if (!process_record_lang_shift(keycode, record))
+    return false;
 
   ...
 }
 ```
+
+## Настройка раскладки
 
 Пишите свои раскладки следующим образом: 
 * Первая раскладка без зажатого шифта находится в слое 0
@@ -60,9 +60,9 @@ bool process_record_user(uint16_t key, keyrecord_t *record) {
 
 Причём в шифтовом слое для всех буквенных символов надо прописывать что будет нажат шифт. 
 
-А для шифта и переключения языка используете кейкоды `SHF_1`, `LA_CHNG`, etc. Остальные смотите в файле `keycodes_lang_shift_processing.h`.
+А для шифта и переключения языка используете кейкоды `SHF_1`, `LA_CHNG`, etc. Остальные смотите в файле `keycodes/lang_shift_processing.h`.
 
-Для английского и русского языка используйте кейкоды с префиксами `EN_*`, `RU_*`, все их посмотреть можно в файле `keycodes_lang.h`.
+Для английского и русского языка используйте кейкоды с префиксами `EN_*`, `RU_*`, все их посмотреть можно в файле `keycodes/lang.h`.
 
 Пример очень маленькой раскладки для клавиатуры с 4 кнопками
 
