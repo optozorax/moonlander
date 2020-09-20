@@ -145,7 +145,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   #define COMBO_LAYER 4
   [4] = {
     { SHF_1_O, KC_BSPC, KC_LCTL, KC_SLSH, KC_UP,   SHF_1,   XXXXXXX },
-    { KC_DEL,  MO(3),   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX },
+    { KC_DEL,  MO(2),   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX },
     { XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX },
     { XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX },
     { XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX },
@@ -160,30 +160,30 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 // Newtype pattern allows us wrap some type in that type and use static type-checking
-#define NEWTYPE(name, new_name, get_name, eq_name, neq_name, type, max, none_name) \
+#define NEWTYPE(name, func_name, type, max, none_name) \
   typedef struct name { \
     type repr; \
   } name; \
   \
   const name none_name = ((name){ .repr = max }); \
   \
-  type get_name(name a) { \
+  type get_ ## func_name(name a) { \
     return a.repr; \
   } \
   \
-  bool eq_name(name a, name b) { \
-    return get_name(a) == get_name(b); \
+  bool eq_ ## func_name(name a, name b) { \
+    return get_ ## func_name(a) == get_ ## func_name(b); \
   } \
   \
-  bool neq_name(name a, name b) { \
-    return get_name(a) != get_name(b); \
+  bool neq_ ## func_name(name a, name b) { \
+    return get_ ## func_name(a) != get_ ## func_name(b); \
   }
 
-NEWTYPE(ComboKey, new_combo_key, get_combo_key, eq_combo_key, neq_combo_key, uint8_t, 255, NONE_COMBO_KEY)
+NEWTYPE(ComboKey, combo_key, uint8_t, 255, NONE_COMBO_KEY)
 #define COMBO_KEY(x) ((ComboKey){ .repr = (x) })
 // ^ C is weak piece of shit: it can't do #define inside #define, or it can't do const function which we can use inside initialization. So we must write this by hand.
 
-NEWTYPE(ComboPos, new_combo_pos, get_combo_pos, eq_combo_pos, neq_combo_pos, uint8_t, 255, NONE_COMBO_POS)
+NEWTYPE(ComboPos, combo_pos, uint8_t, 255, NONE_COMBO_POS)
 #define COMBO_POS(x) ((ComboPos){ .repr = (x) })
 
 const ComboKey combos_two_keys[][2] = {
@@ -193,7 +193,7 @@ const ComboKey combos_two_keys[][2] = {
   { COMBO_KEY(3), COMBO_KEY(4) },
 };
 
-const uint8_t combo_two_keys_size = sizeof(combos_two_keys)/(sizeof(uint16_t) * 2) + 1;
+const uint8_t combo_two_keys_size = sizeof(combos_two_keys)/(sizeof(ComboKey) * 2);
 
 typedef struct Combo {
   ComboKey array[COMBO_MAX_SIZE];
@@ -274,13 +274,33 @@ void combo_press(ComboPos pos, bool down) {
         .row = get_combo_pos(pos) / MATRIX_COLS
       },
       .pressed = down,
-      .time = timer_read()
+      .time = timer_read(),
     },
   };
-  combo_enabled = false;
+  
+  uprintf("KC_DEL: %d, KC_BSPC: %d\n", KC_DEL, KC_BSPC);
+  #define BYTE_TO_BINARY_PATTERN "%c%c%c%c%c%c%c%c"
+  #define BYTE_TO_BINARY(byte)  \
+    (byte & 0x80 ? '1' : '0'), \
+    (byte & 0x40 ? '1' : '0'), \
+    (byte & 0x20 ? '1' : '0'), \
+    (byte & 0x10 ? '1' : '0'), \
+    (byte & 0x08 ? '1' : '0'), \
+    (byte & 0x04 ? '1' : '0'), \
+    (byte & 0x02 ? '1' : '0'), \
+    (byte & 0x01 ? '1' : '0') 
+  uprintf("layer state BEFORE: " BYTE_TO_BINARY_PATTERN "\n", BYTE_TO_BINARY(layer_state));
   layer_on(COMBO_LAYER);
+  combo_enabled = false;
   process_record(&record);
+  combo_enabled = true;
   layer_off(COMBO_LAYER);
+  uprintf("layer state AFTER: " BYTE_TO_BINARY_PATTERN "\n", BYTE_TO_BINARY(layer_state));
+}
+
+void process_as_usual(keyrecord_t* record) {
+  combo_enabled = false;
+  process_record(record);
   combo_enabled = true;
 }
 
@@ -288,8 +308,9 @@ void combo_onenter_1(Combo *combo) {
   combo->state = 1;
 }
 
-void combo_onenter_2(Combo *combo, ComboPos pos) {
+void combo_onenter_2(Combo *combo, ComboPos pos, keyrecord_t* record) {
   combo_press(pos, true);
+  process_as_usual(record);
   combo->state = 2;
 }
 
@@ -335,6 +356,7 @@ bool combo_process_1(Combo *combo, Key key, keyrecord_t *record) {
   bool up = !down;
   ComboKey key_combo = combo_key_to_combo_key(key);
 
+  uprintf("1. down: %d, neq_combo_key: %d, has_prefix: %d\n", down, neq_combo_key(key_combo, NONE_COMBO_KEY), combo_has_prefix(combo, key_combo));
   if (down && neq_combo_key(key_combo, NONE_COMBO_KEY) && combo_has_prefix(combo, key_combo)) {
     uprintf("combo size: %d\n", combo->size);
     TRANSITION_DEBUG(e);
@@ -358,8 +380,8 @@ bool combo_process_1(Combo *combo, Key key, keyrecord_t *record) {
     } else {
       if (down) {
         TRANSITION_DEBUG(b);
-        combo_onenter_2(combo, pos);
-        return false; // for processing as usual
+        combo_onenter_2(combo, pos, record);
+        return true;
       }
     }
   } else {
@@ -451,7 +473,7 @@ bool process_record_user(uint16_t key, keyrecord_t *record) {
       return false;
     uprintf("processed as usual\n");
   } else {
-    uprintf("inside combo: %s\n", record->event.pressed ? "down" : "  up");
+    uprintf("inside combo: %s, %d\n", record->event.pressed ? "down" : "  up", key);
   }
 
   #include "lang_shift/process_record_user.c"
