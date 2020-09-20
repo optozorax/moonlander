@@ -92,6 +92,7 @@ Key lang_process(Key key, bool down) {
 
 void lang_user_timer(void) {
 	// Нужно выключать язык после прохождения определённого времени, потому что пользователь ожидает как будто шифт на самом деле включён
+  // Но это не работает для случая когда зажата клавиша, так что пока что лучше не трогать это место.
 	if (lang_current != lang_should_be && timer_read() - lang_timer >= 100) {
 		lang_activate(lang_should_be);
 	}
