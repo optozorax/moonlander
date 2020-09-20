@@ -1,3 +1,3 @@
-#include "keycodes_lang.h"
-#include "keycodes_shift.h"
-#include "keycodes_lang_shift_processing.h"
+#include "keycodes/lang.h"
+#include "keycodes/shift.h"
+#include "keycodes/lang_shift_processing.h"

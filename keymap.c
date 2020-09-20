@@ -1,11 +1,14 @@
 #include QMK_KEYBOARD_H
 #include "version.h"
 
+#define LANG_CHANGE_DEFAULT LANG_CHANGE_CAPS
+
 #define COMBO_KEYS_COUNT 5
 #define COMBO_MAX_SIZE 3
 #define COMBO_STACK_MAX_SIZE 3
 #define COMBO_WAIT_TIME 100
 #define COMBO_LAYER 4
+#define COMBO_COUNT 10
 
 enum custom_keycodes {
   RGB_SLD = ML_SAFE_RANGE,
@@ -15,12 +18,10 @@ enum custom_keycodes {
   #include "combo/keycodes.h"
 };
 
-#define LANG_CHANGE_DEFAULT LANG_CHANGE_CAPS
 #include "lang_shift/code.c"
+#include "combo/code.c"
 
-#include "combo/definitions.h"
-
-const ComboKey combos[][COMBO_MAX_SIZE + 1] = {
+const ComboKey combos[COMBO_COUNT][COMBO_MAX_SIZE + 1] = {
   { COMBO_KEY(0), NONE_COMBO_KEY },
   { COMBO_KEY(1), NONE_COMBO_KEY },
   { COMBO_KEY(2), NONE_COMBO_KEY },
@@ -32,8 +33,6 @@ const ComboKey combos[][COMBO_MAX_SIZE + 1] = {
   { COMBO_KEY(3), COMBO_KEY(4), NONE_COMBO_KEY },
   { COMBO_KEY(0), COMBO_KEY(1), COMBO_KEY(2), NONE_COMBO_KEY },
 };
-
-#include "combo/processing.c"
 
 #define MY_layout( \
     k00, k01, k02, k03, k04, k05, k06, \
@@ -162,11 +161,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   },
 };
 
-bool process_record_user(uint16_t key, keyrecord_t *record) {
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   #include "combo/process_record_user.c"
   #include "lang_shift/process_record_user.c"
 
-  switch (key) {
+  switch (keycode) {
     case RGB_SLD:
       if (record->event.pressed) {
         rgblight_mode(1);

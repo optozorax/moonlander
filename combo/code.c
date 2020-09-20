@@ -1,4 +1,33 @@
-const uint8_t combos_size = sizeof(combos)/(sizeof(ComboKey) * (COMBO_MAX_SIZE + 1));
+// Newtype pattern allows us wrap some type in that type and use static type-checking
+#define NEWTYPE(name, func_name, type, max, none_name) \
+  typedef struct name { \
+    type repr; \
+  } name; \
+  \
+  const name none_name = ((name){ .repr = max }); \
+  \
+  type get_ ## func_name(name a) { \
+    return a.repr; \
+  } \
+  \
+  bool eq_ ## func_name(name a, name b) { \
+    return get_ ## func_name(a) == get_ ## func_name(b); \
+  } \
+  \
+  bool neq_ ## func_name(name a, name b) { \
+    return get_ ## func_name(a) != get_ ## func_name(b); \
+  }
+
+NEWTYPE(ComboKey, combo_key, uint8_t, 255, NONE_COMBO_KEY)
+#define COMBO_KEY(x) ((ComboKey){ .repr = (x) })
+// ^ C is weak piece of shit: it can't do #define inside #define, or it can't do const function which we can use inside initialization. So we must write this by hand.
+
+NEWTYPE(ComboPos, combo_pos, uint8_t, 255, NONE_COMBO_POS)
+#define COMBO_POS(x) ((ComboPos){ .repr = (x) })
+
+const ComboKey combos[COMBO_COUNT][COMBO_MAX_SIZE + 1];
+
+const uint8_t combos_size = COMBO_COUNT;
 
 typedef struct Combo {
   ComboKey array[COMBO_MAX_SIZE];
@@ -23,11 +52,11 @@ uint8_t combo_stack_size = 0;
 
 bool combo_enabled = true;
 
-bool combo_is_combo_key(Key key) {
+bool combo_is_combo_key(uint16_t key) {
   return CMB_000 <= key && key < CMB_000 + COMBO_KEYS_COUNT;
 }
 
-ComboKey combo_key_to_combo_key(Key key) {
+ComboKey combo_key_to_combo_key(uint16_t key) {
   if (combo_is_combo_key(key)) {
     return COMBO_KEY(key - CMB_000);
   } else {
@@ -167,7 +196,7 @@ void combo_onenter_3(Combo *combo, ComboKey key) {
   }
 }
 
-bool combo_process_1(Combo *combo, Key key, keyrecord_t *record) {
+bool combo_process_1(Combo *combo, uint16_t key, keyrecord_t *record) {
   bool down = record->event.pressed;
   bool up = !down;
   ComboKey key_combo = combo_key_to_combo_key(key);
@@ -218,7 +247,7 @@ bool combo_process_1(Combo *combo, Key key, keyrecord_t *record) {
   return false;
 }
 
-bool combo_process_2(Combo *combo, Key key, keyrecord_t *record) {
+bool combo_process_2(Combo *combo, uint16_t key, keyrecord_t *record) {
   bool down = record->event.pressed;
   bool up = !down;
   ComboKey key_combo = combo_key_to_combo_key(key);
@@ -236,7 +265,7 @@ bool combo_process_2(Combo *combo, Key key, keyrecord_t *record) {
   return false;
 }
 
-bool combo_process_3(Combo *combo, Key key, keyrecord_t *record) {
+bool combo_process_3(Combo *combo, uint16_t key, keyrecord_t *record) {
   bool down = record->event.pressed;
   bool up = !down;
   ComboKey key_combo = combo_key_to_combo_key(key);
@@ -252,7 +281,7 @@ bool combo_process_3(Combo *combo, Key key, keyrecord_t *record) {
   return false;
 }
 
-bool combo_process_local_states(Combo *combo, Key key, keyrecord_t *record) {
+bool combo_process_local_states(Combo *combo, uint16_t key, keyrecord_t *record) {
   switch (combo->state) {
     case 1: return combo_process_1(combo, key, record);
     case 2: return combo_process_2(combo, key, record);
@@ -261,7 +290,7 @@ bool combo_process_local_states(Combo *combo, Key key, keyrecord_t *record) {
   return false;
 }
 
-bool combo_process(Key key, keyrecord_t *record) {
+bool combo_process(uint16_t key, keyrecord_t *record) {
   for (uint8_t i = 0; i < combo_stack_size; ++i) {
     Combo *combo = &combo_stack[i];
     if (combo_process_local_states(combo, key, record))
