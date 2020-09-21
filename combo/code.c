@@ -53,7 +53,7 @@ typedef struct Combo {
 } Combo;
 
 // Write 1, if you want to print debug messages when transition activates
-#if 0
+#if 1
   #define TRANSITION_DEBUG(a) uprintf("transition '" #a "' for #%d: {", combo - &combo_stack[0]); \
     for (int i = 0; i < combo->size; ++i) { \
       uprintf("%d, ", combo->array[i]); \
@@ -150,11 +150,16 @@ void combo_press(ComboPos pos, bool down) {
       .pressed = down,
       .time = timer_read(),
     },
+    .use_custom_keycode = true,
   };
+  record.custom_keycode = keymap_key_to_keycode(COMBO_LAYER, record.event.key);
   
   layer_on(COMBO_LAYER);
   combo_enabled = false;
+  uprintf("{\n");
+  uprintf("  pos: %d,%d; pressed: %d\n", record.event.key.col, record.event.key.row, record.event.pressed);
   process_record(&record);
+  uprintf("}\n");
   combo_enabled = true;
   layer_off(COMBO_LAYER);
 }
@@ -272,6 +277,7 @@ bool combo_process_2(Combo *combo, uint16_t key, keyrecord_t *record) {
     TRANSITION_DEBUG(c);
 
     ComboPos pos = combo_get_pos(combo);
+    uprintf("c: %d\n", pos);
     combo_press(pos, false);
 
     combo_onenter_3(combo, key_combo);
@@ -309,7 +315,7 @@ bool combo_process_local_states(Combo *combo, uint16_t key, keyrecord_t *record)
 bool combo_process(uint16_t key, keyrecord_t *record) {
   for (uint8_t i = 0; i < combo_stack_size; ++i) {
     Combo *combo = &combo_stack[i];
-    if (combo_process_local_states(combo, key, record))
+    if (!combo_process_local_states(combo, key, record))
       return false;
   }
 

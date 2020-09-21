@@ -3,6 +3,7 @@ uint8_t shift_once_layer_off = 0;
 uint8_t shift_once_layer_current = 0;
 
 void shift_use_to_next_key(uint8_t layer) {
+  uprintf("next key should be pressed with shift\n");
   shift_activate_from_user(true);
   layer_on(layer);
   shift_once_disable_stage = 2;
@@ -12,12 +13,16 @@ void shift_use_to_next_key(uint8_t layer) {
 bool process_record_lang_shift(Key key, keyrecord_t* record) {
   bool down = record->event.pressed;
 
+  uprintf("process lang key\n");
+
   // Обрабатываем Once Shift
   if (shift_once_disable_stage == 1) {
+    uprintf("layer disable state 1 -> 0\n");
     shift_once_disable_stage = 0;
     shift_activate_from_user(false);
   }
-  if (key != SHF_1_O && key != SHF_3_O && shift_once_disable_stage == 2) {
+  if (down && key != SHF_1_O && key != SHF_3_O && shift_once_disable_stage == 2) {
+    uprintf("layer disable state 2 -> 1\n");
     shift_once_disable_stage = 1;
     layer_off(shift_once_layer_off);
   }
@@ -108,6 +113,8 @@ bool process_record_lang_shift(Key key, keyrecord_t* record) {
       }
       return false;
   }
+
+  uprintf("not processing lang key =((\n");
 
   return true;
 }
