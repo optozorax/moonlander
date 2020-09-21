@@ -2,6 +2,13 @@ uint8_t shift_once_disable_stage = 2;
 uint8_t shift_once_layer_off = 0;
 uint8_t shift_once_layer_current = 0;
 
+void shift_use_to_next_key(uint8_t layer) {
+  shift_activate_from_user(true);
+  layer_on(layer);
+  shift_once_disable_stage = 2;
+  shift_once_layer_off = layer;
+}
+
 bool process_record_lang_shift(Key key, keyrecord_t* record) {
   bool down = record->event.pressed;
 
@@ -38,18 +45,12 @@ bool process_record_lang_shift(Key key, keyrecord_t* record) {
   switch (key) {
     case SHF_1_O:
       if (down) {
-        shift_activate_from_user(true);
-        layer_on(1);
-        shift_once_disable_stage = 2;
-        shift_once_layer_off = 1;
+        shift_use_to_next_key(1);
       }
       return false;
     case SHF_3_O:
       if (down) {
-        shift_activate_from_user(true);
-        layer_on(3);
-        shift_once_disable_stage = 2;
-        shift_once_layer_off = 3;
+        shift_use_to_next_key(3);
       }
       return false;
     case SHF_1:
