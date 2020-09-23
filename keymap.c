@@ -465,20 +465,20 @@ bool process_my_lang_keys(uint16_t keycode, keyrecord_t *record) {
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  uprintf("\n\n\n");
+  // uprintf("\n\n\n");
 
   if (combo_enabled && !combo_process(keycode, record)) {
-    uprintf("this is combo key\n");
+    // uprintf("this is combo key\n");
     return false;
   }
 
   if (!process_my_lang_keys(keycode, record)) {
-    uprintf("this is my lang key\n");
+    // uprintf("this is my lang key\n");
     return false;
   }
 
   if (!process_record_lang_shift(keycode, record)) {
-    uprintf("this is lang shift key\n");
+    // uprintf("this is lang shift key\n");
     return false;
   }
 
@@ -541,7 +541,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
     case KC_ENT:
       if (!record->event.pressed) {
-        uprintf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+        // uprintf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
       }
       return true;
     case CT_SHF:
@@ -582,13 +582,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
   }
 
-  uprint("IDK what is this\n");
+  // uprint("IDK what is this\n");
 
   return true;
 }
 
 void user_timer(void) {
   combo_user_timer();
+  shift_user_timer();
 }
 
 void matrix_scan_user(void) {

@@ -45,6 +45,7 @@ void shift_user_timer(void) {
 	// Но это не работает для случая когда зажата клавиша, так что пока что лучше не трогать это место.
 	if (shift_current != shift_should_be && timer_read() - shift_timer >= 100) {
 		shift_activate(shift_should_be);
+		shift_timer = timer_read();
 	}
 }
 
