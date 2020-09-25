@@ -192,6 +192,10 @@ LAYOUT_moonlander( \
 // Right Index
 // No
 
+// Shifted index keys
+#define CMB_CAC CMB_021
+#define CMB_CAV CMB_022
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //---------------------------------------------------------------------------
   [0] = MY_layout(
@@ -218,8 +222,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [1] = MY_layout(
     // LEFT HALF
     _______, EN_7,    EN_5,    EN_3,    EN_1,    EN_9,    EN_DLR,
-    _______, EN_COLN, EN_LT,   EN_GT,   EN_S_P,  EN_S_Y,  _______,
-    _______, EN_S_A,  EN_S_O,  EN_S_E,  EN_S_U,  EN_S_I,  _______,
+    _______, EN_COLN, EN_LT,   EN_GT,   EN_S_P,  EN_S_Y,  CMB_CAC,
+    _______, EN_S_A,  EN_S_O,  EN_S_E,  EN_S_U,  EN_S_I,  CMB_CAV,
     _______, EN_DQUO, EN_S_Q,  EN_S_J,  EN_S_K,  EN_S_X, 
     _______, _______, _______, _______, _______,
     _______, // LEFT RED THUMB KEY
@@ -232,15 +236,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
              EN_S_B,  EN_S_M,  EN_S_W,  EN_S_V,  EN_S_Z,  EN_CIRC,
                       EN_COMM, _______, _______, _______, _______,
                       _______, // RIGHT RED THUMB KEY
-                      _______, EN_UNDS, _______ // RIGHT THUMB KEYS
+                      _______, _______, _______ // RIGHT THUMB KEYS
   ),
 
   //---------------------------------------------------------------------------
   [2] = MY_layout(
     // LEFT HALF
     _______, RU_PLUS, RU_MINS, RU_SCLN, RU_DQUO, RU_COLN, _______,
-    _______, RU_J,    RU_TS,   RU_U,    RU_JE,   RU_F,    _______,
-    _______, RU_K,    RU_M,    RU_V,    RU_A,    RU_P,    _______,
+    _______, RU_J,    RU_TS,   RU_U,    RU_JE,   RU_F,    CMB_CTC,
+    _______, RU_K,    RU_M,    RU_V,    RU_A,    RU_P,    CMB_CTV,
     _______, RU_JA,   RU_CH,   RU_S,    RU_I,    RU_Y,
     _______, _______, _______, _______, _______,
     _______, // LEFT RED THUMB KEY
@@ -260,8 +264,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [3] = MY_layout(
     // LEFT HALF
     _______, RU_7,    RU_5,    RU_3,    RU_1,    RU_9,    _______,
-    _______, RU_S_J,  RU_S_TS, RU_S_U,  RU_S_JE, RU_S_F,  RU_NUME,
-    _______, RU_S_K,  RU_S_M,  RU_S_V,  RU_S_A,  RU_S_P,  RU_EQL,
+    _______, RU_S_J,  RU_S_TS, RU_S_U,  RU_S_JE, RU_S_F,  CMB_CAC,
+    _______, RU_S_K,  RU_S_M,  RU_S_V,  RU_S_A,  RU_S_P,  CMB_CAV,
     _______, RU_S_JA, RU_S_CH, RU_S_S,  RU_S_I,  RU_S_Y,
     _______, _______, _______, _______, _______,
     _______, // LEFT RED THUMB KEY
@@ -305,7 +309,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_F5,   KC_F6,   CS_T,    CT_T,    CT_W,     CT_J,     CT_C,
     KC_BTN2, KC_BTN1, KC_BTN3, CS_TAB,  CT_TAB,   CT_D,     CT_V,
     _______, CT_S,    KC_ENT,  KC_UP,   KC_DOWN,  CT_F,
-    MY_SCRN, _______, CLR_1,   CLR_2,   CLR_3,  
+    XXXXXXX, _______, CLR_1,   CLR_2,   CLR_3,  
     RGB_MOD, // LEFT RED THUMB KEY
     RGB_VAD, RGB_VAI, RGB_LYR, // LEFT THUMB KEYS
 
@@ -409,8 +413,19 @@ const ComboWithKeycode combos[COMBO_COUNT] = {
 
   // Right Index
   CHORD(CT_S,    /* <- */ CMB_CTS),
-  CHORD(KC_TAB,  /* <- */ CMB_TAB),
+  CHORD(XXXXXXX, /* <- */ CMB_TAB),
   CHORD(KC_SPHY, /* <- */ CMB_CTS, CMB_TAB),
+
+  // Right Thumb + Left Thumb
+  CHORD(EN_COMM, /* <- */ CMB_SHF, CMB_COM), // Костыль, потому что шифт является одновременно слоём, и одновременно они с запятой аккорды, поэтому нужно такая вещь для дополнительной подстраховки, ибо что-то там не работает...
+
+  // -------------------------------------------------------------------------
+  // Shifted index keys
+
+  // Left Index
+  CHORD(CT_A_C,  /* <- */ CMB_CAC),
+  CHORD(CT_A_V,  /* <- */ CMB_CAV),
+  CHORD(CT_A_X,  /* <- */ CMB_CAC, CMB_CAV),
 
   // -------------------------------------------------------------------------
   // Duplicate of chords for russian layer
@@ -440,6 +455,9 @@ const ComboWithKeycode combos[COMBO_COUNT] = {
   CHORD(RU_CMSP, /* <- */ CMS_COM),
   CHORD(RU_SLSH, /* <- */ CMS_SLH),
   CHORD(XXXXXXX, /* <- */ CMS_COM, CMS_SLH),
+
+  // Right Thumb + Left Thumb
+  CHORD(RU_COMM, /* <- */ CMS_SHF, CMS_COM),
 };
 
 // Модификаторы, которые одновременно переключают слой на 0
@@ -723,8 +741,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         register_code(KC_LCTRL);
         register_code(KC_A);
         unregister_code(KC_A);
-        register_code(KC_C);
-        unregister_code(KC_C);
+        register_code(KC_X);
+        unregister_code(KC_X);
         unregister_code(KC_LCTRL);
       }
       return true;
