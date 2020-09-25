@@ -76,6 +76,8 @@ void lang_activate_from_user(Lang lang) {
 	lang_activate(lang);
 }
 
+uint8_t lang_pressed_count = 0;
+
 // Public
 Key lang_process(Key key, bool down) {
 	Lang new_lang = lang_get_lang(key);
@@ -87,19 +89,40 @@ Key lang_process(Key key, bool down) {
 		}
 	}
 
+  if (new_lang != NONE_LANG) {
+    if (down) {
+      lang_pressed_count++;
+    } else {
+      lang_pressed_count--;
+    }
+  }
+
 	return lang_get_key(key);
 }
 
 void lang_user_timer(void) {
 	// Нужно выключать язык после прохождения определённого времени, потому что пользователь ожидает как будто шифт на самом деле включён
-  // Но это не работает для случая когда зажата клавиша, так что пока что лучше не трогать это место.
-	if (lang_current != lang_should_be && timer_read() - lang_timer >= 100) {
+	if (lang_pressed_count == 0 && lang_current != lang_should_be && timer_read() - lang_timer >= 100) {
 		lang_activate(lang_should_be);
 	}
 }
 
-#include "custom_lang.c"
-// Следующие вещи находятся в файле `custom_lang.c`:
-// #define MY_LANG_KEYS - это надо потом вставить в custom_keycodes
-// Key lang_get_key(Key key) - возвращает клавишу без языка по данной клавише с языком, если это обычная клавиша, то возвращает -1
-// Lang lang_get_lang(Key key) - возвращает какой язык у данной клавиши, если никакой, то -1
+Key lang_get_key(Key key) {
+  if (EN_GRV <= key && key <= EN_QUES) {
+    return (key - EN_GRV) + KS_GRV;
+  } else if (RU_JO <= key && key <= RU_COMM) {
+    return (key - RU_JO) + KS_GRV;
+  } else {
+    return NONE_KEY;
+  }
+}
+
+Lang lang_get_lang(Key key) {
+  if (EN_GRV <= key && key <= EN_QUES) {
+    return 0;
+  } else if (RU_JO <= key && key <= RU_COMM) {
+    return 1;
+  } else {
+    return NONE_LANG;
+  }
+}

@@ -133,6 +133,61 @@ void matrix_scan_user(void) {
 
 **Объяснение:** функция `matrix_scan_user` вызывается примерно каждые 2 миллисекунды, она сканирует матрицу. Значит её вполне можно использовать для отслеживания собственных таймеров. Поэтому мы вызываем из неё функцию `user_timer`, которая лучше говорит о наших намерениях, чем `matrx_scan_user`. А уже в функции `user_timer` мы вызываем обработку случая когда мы слишком долго держим аккорд.
 
+# Модифицировать код qmk
+
+```diff
+diff --git a/quantum/keymap_common.c b/quantum/keymap_common.c
+index 570d4798d..a3536ce16 100644
+--- a/quantum/keymap_common.c
++++ b/quantum/keymap_common.c
+@@ -179,7 +179,11 @@ __attribute__((weak)) void action_function(keyrecord_t *record, uint8_t id, uint
+ // translates key to keycode
+ __attribute__((weak)) uint16_t keymap_key_to_keycode(uint8_t layer, keypos_t key) {
+     // Read entire word (16bits)
+-    return pgm_read_word(&keymaps[(layer)][(key.row)][(key.col)]);
++    if (key.use_custom_keycode) {
++        return key.custom_keycode;
++    } else {
++        return pgm_read_word(&keymaps[(layer)][(key.row)][(key.col)]);
++    }
+ }
+ 
+ // translates function id to action
+diff --git a/tmk_core/common/action.c b/tmk_core/common/action.c
+index aa1a2999e..503ddf510 100644
+--- a/tmk_core/common/action.c
++++ b/tmk_core/common/action.c
+@@ -741,6 +741,7 @@ void process_action(keyrecord_t *record, action_t action) {
+  * FIXME: Needs documentation.
+  */
+ void register_code(uint8_t code) {
++    // uprintf("-----------   register: %d\n", code);
+     if (code == KC_NO) {
+         return;
+     }
+@@ -837,6 +838,7 @@ void register_code(uint8_t code) {
+  * FIXME: Needs documentation.
+  */
+ void unregister_code(uint8_t code) {
++    // uprintf("-----------UN register: %d\n", code);
+     if (code == KC_NO) {
+         return;
+     }
+diff --git a/tmk_core/common/keyboard.h b/tmk_core/common/keyboard.h
+index ff7736718..59ff1c893 100644
+--- a/tmk_core/common/keyboard.h
++++ b/tmk_core/common/keyboard.h
+@@ -29,6 +29,8 @@ extern "C" {
+ typedef struct {
+     uint8_t col;
+     uint8_t row;
++    bool use_custom_keycode;
++    uint16_t custom_keycode;
+ } keypos_t;
+ 
+ /* key event */
+```
+
 # Принцип работы
 
 ![](dka.png)

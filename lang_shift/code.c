@@ -17,4 +17,5 @@ typedef uint16_t Key;
 #include "shift.c"
 #include "lang.c"
 
+#include "shift_once.c"
 #include "lang_shift_processing.c"

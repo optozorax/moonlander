@@ -1,31 +1,8 @@
-uint8_t shift_once_disable_stage = 2;
-uint8_t shift_once_layer_off = 0;
-uint8_t shift_once_layer_current = 0;
-
-void shift_use_to_next_key(uint8_t layer) {
-  // uprintf("next key should be pressed with shift\n");
-  shift_activate_from_user(true);
-  layer_on(layer);
-  shift_once_disable_stage = 2;
-  shift_once_layer_off = layer;
-}
-
 bool process_record_lang_shift(Key key, keyrecord_t* record) {
   bool down = record->event.pressed;
 
-  // uprintf("process lang key\n");
-
   // Обрабатываем Once Shift
-  if (shift_once_disable_stage == 1) {
-    // uprintf("layer disable state 1 -> 0\n");
-    shift_once_disable_stage = 0;
-    shift_activate_from_user(false);
-  }
-  if (down && key != SHF_1_O && key != SHF_3_O && shift_once_disable_stage == 2) {
-    // uprintf("layer disable state 2 -> 1\n");
-    shift_once_disable_stage = 1;
-    layer_off(shift_once_layer_off);
-  }
+  shift_once_process(key, record);
 
   // Разбираемся, имеет ли эта клавиша какой-то язык, заданный в ней
   Key key1 = lang_process(key, down);
@@ -50,12 +27,12 @@ bool process_record_lang_shift(Key key, keyrecord_t* record) {
   switch (key) {
     case SHF_1_O:
       if (down) {
-        shift_use_to_next_key(1);
+        shift_once_use_to_next_key(1);
       }
       return false;
     case SHF_3_O:
       if (down) {
-        shift_use_to_next_key(3);
+        shift_once_use_to_next_key(3);
       }
       return false;
     case SHF_1:
@@ -114,7 +91,25 @@ bool process_record_lang_shift(Key key, keyrecord_t* record) {
       return false;
   }
 
-  // uprintf("not processing lang key =((\n");
-
   return true;
+}
+
+void lang_press_key(Key key, bool down) {
+  keyrecord_t record = {
+    .event = {
+      .key = {
+        .col = 0,
+        .row = 0,
+      },
+      .pressed = down,
+      .time = timer_read(),
+    },
+  };
+  
+  process_record_lang_shift(key, &record);
+}
+
+void lang_tap_key(Key key) {
+  lang_press_key(key, true);
+  lang_press_key(key, false);
 }
