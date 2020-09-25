@@ -25,6 +25,7 @@ enum custom_keycodes {
   RU_SDOT, // Space + Dot + AutoShift
 
   // English specific keys
+  EN_3DOT, // Three dots
   EN_CMSP, // Comma Space
   EN_SDOT, // Space + Dot + AutoShift
 
@@ -39,6 +40,8 @@ enum custom_keycodes {
   CT_A_C,
   CT_A_V,
   CT_A_X,
+
+  KC_SPHY, // Space + Hyphen + Space
 };
 
 #define MY_layout( \
@@ -402,12 +405,12 @@ const ComboWithKeycode combos[COMBO_COUNT] = {
   // Right Right Thumb
   CHORD(EN_CMSP, /* <- */ CMB_COM),
   CHORD(EN_SLSH, /* <- */ CMB_SLH),
-  CHORD(CT_SLSH, /* <- */ CMB_COM, CMB_SLH),
+  CHORD(XXXXXXX, /* <- */ CMB_COM, CMB_SLH),
 
   // Right Index
   CHORD(CT_S,    /* <- */ CMB_CTS),
   CHORD(KC_TAB,  /* <- */ CMB_TAB),
-  CHORD(SH_TAB,  /* <- */ CMB_CTS, CMB_TAB),
+  CHORD(KC_SPHY, /* <- */ CMB_CTS, CMB_TAB),
 
   // -------------------------------------------------------------------------
   // Duplicate of chords for russian layer
@@ -436,7 +439,7 @@ const ComboWithKeycode combos[COMBO_COUNT] = {
   // Right Right Thumb
   CHORD(RU_CMSP, /* <- */ CMS_COM),
   CHORD(RU_SLSH, /* <- */ CMS_SLH),
-  CHORD(CT_SLSH, /* <- */ CMS_COM, CMS_SLH),
+  CHORD(XXXXXXX, /* <- */ CMS_COM, CMS_SLH),
 };
 
 // Модификаторы, которые одновременно переключают слой на 0
@@ -508,6 +511,14 @@ bool process_my_lang_keys(uint16_t keycode, keyrecord_t *record) {
 
   // English-specific codes
   switch (keycode) {
+    case EN_3DOT:
+      if (record->event.pressed) {
+        lang_tap_key(EN_DOT);
+        lang_tap_key(EN_DOT);
+        lang_tap_key(EN_DOT);
+      }    
+      return false;
+      break;
     case EN_CMSP:
       if (record->event.pressed) {
         lang_tap_key(EN_COMM);
@@ -717,6 +728,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         unregister_code(KC_LCTRL);
       }
       return true;
+    case KC_SPHY:
+      if (record->event.pressed) {
+        register_code(KC_SPC);
+        unregister_code(KC_SPC);
+        register_code(KC_MINS);
+        unregister_code(KC_MINS);
+        register_code(KC_SPC);
+        unregister_code(KC_SPC);
+      }
+      return false;
+      break;
   }
 
   return true;
