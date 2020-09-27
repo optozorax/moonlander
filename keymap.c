@@ -2,12 +2,10 @@
 #include "version.h"
 #include "lang_shift/code.c"
 #include "combo/code.c"
+#include "color/code.c"
 
 enum custom_keycodes {
   RGB_SLD = ML_SAFE_RANGE,
-  CLR_1,
-  CLR_2,
-  CLR_3,
 
   // TODO
   // // All of these modificators on 0 layer
@@ -42,6 +40,13 @@ enum custom_keycodes {
   CT_A_X,
 
   KC_SPHY, // Space + Hyphen + Space
+
+  LED_1,
+  LED_2,
+  LED_3,
+  LED_4,
+  LED_5,
+  LED_6,
 };
 
 #define MY_layout( \
@@ -197,14 +202,14 @@ LAYOUT_moonlander( \
 #define CMB_CAV CMB_022
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    //---------------------------------------------------------------------------
+  //---------------------------------------------------------------------------
   [0] = MY_layout(
     // LEFT HALF
     KC_ESC,  EN_AMPR, EN_LBRC, EN_RBRC, EN_PLUS, EN_EQL,  EN_GRV,
     KC_TAB,  EN_SCLN, EN_LCBR, EN_RCBR, EN_P,    EN_Y,    CMB_CTC,
     MO(4),   EN_A,    EN_O,    EN_E,    EN_U,    EN_I,    CMB_CTV,
     MO(5),   EN_QUOT, EN_Q,    EN_J,    EN_K,    EN_X,
-    CT_J,    XXXXXXX, CT_SLSH, CMB_LY5, CMB_LY4,
+    CT_J,    MO(8), CT_SLSH, CMB_LY5, CMB_LY4,
     CMB_CTL, // LEFT RED THUMB KEY
     CMB_SHF, CMB_BSP, CMB_ENT, // LEFT THUMB KEYS
 
@@ -213,7 +218,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     CMB_CTS, EN_F,    EN_G,    EN_C,    EN_R,    EN_L,    EN_BSLS,
     CMB_TAB, EN_D,    EN_H,    EN_T,    EN_N,    EN_S,    EN_MINS,
              EN_B,    EN_M,    EN_W,    EN_V,    EN_Z,    EN_HASH,
-                      CMB_COM, CMB_SLH, KG_NEXT, TG(6),   CT_J,
+                      CMB_COM, CMB_SLH, KG_NEXT, TG(6),   XXXXXXX,
                       CMB_ALT, // RIGHT RED THUMB KEY
                       CMB_LAN, CMB_DOT, CMB_SPC // RIGHT THUMB KEYS
   ),
@@ -309,7 +314,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_F5,   KC_F6,   CS_T,    CT_T,    CT_W,     CT_J,     CT_C,
     KC_BTN2, KC_BTN1, KC_BTN3, CS_TAB,  CT_TAB,   CT_D,     CT_V,
     _______, CT_S,    KC_ENT,  KC_UP,   KC_DOWN,  CT_F,
-    XXXXXXX, _______, CLR_1,   CLR_2,   CLR_3,  
+    XXXXXXX, _______, _______, _______, _______,  
     RGB_MOD, // LEFT RED THUMB KEY
     RGB_VAD, RGB_VAI, RGB_LYR, // LEFT THUMB KEYS
 
@@ -363,6 +368,27 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                           _______,  _______,  _______,  _______,  _______,
                           _______, // RIGHT RED THUMB KEY
                           _______,  _______,  _______ // RIGHT THUMB KEYS
+  ),
+  
+  //---------------------------------------------------------------------------
+  [8] = MY_layout(
+    // LEFT HALF
+    RGB_TOG, RGB_HUI, RGB_SAI, RGB_VAI, RGB_SPI, RGB_MOD, XXXXXXX,
+    RGB_LYR, RGB_HUD, RGB_SAD, RGB_VAD, RGB_SPD, RGB_RMOD,XXXXXXX,
+    RGB__0,  RGB__1,  RGB__2,  RGB__25, RGB__28, RGB__36, RGB__27,
+    RGB__7,  RGB__13, RGB__15, RGB__16, RGB__17, XXXXXXX,
+    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+    RGB_PRT, // LEFT RED THUMB KEY
+    PIC_0,   PIC_1,   PIC_2, // LEFT THUMB KEYS
+
+    // RIGHT HALF
+    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+    XXXXXXX, LED_1,   LED_2,   LED_3,   LED_4,   LED_5,   LED_6,
+             XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+                      XXXXXXX, // RIGHT RED THUMB KEY
+                      XXXXXXX, XXXXXXX, XXXXXXX // RIGHT THUMB KEYS
   ),
 };
 
@@ -458,6 +484,87 @@ const ComboWithKeycode combos[COMBO_COUNT] = {
 
   // Right Thumb + Left Thumb
   CHORD(RU_COMM, /* <- */ CMS_SHF, CMS_COM),
+};
+
+enum ledmap_colors {
+  COLOR_BLACK = COLOR_SAFE_RANGE, // Чёрный цвет
+  COLOR_ANYFN, // Цвет для кнопки, нажимаемой любым пальцем
+  COLOR_PINKY, // Для кнопки нажимаемой мизинцем
+  COLOR_ANNUL, // Безымянным
+  COLOR_MIDDL, // Средним
+  COLOR_INDEX, // Указательным
+  COLOR_THUMB, // Большим пальцем
+};
+
+const uint8_t PROGMEM ledmap[COLOR_PICTURES_COUNT][DRIVER_LED_TOTAL] = {
+    [0] = {
+      COLOR_ANYFN, COLOR_PINKY, COLOR_PINKY, COLOR_PINKY, COLOR_ANYFN,
+      COLOR_PINKY, COLOR_PINKY, COLOR_PINKY, COLOR_PINKY, COLOR_ANYFN,
+      COLOR_ANNUL, COLOR_ANNUL, COLOR_ANNUL, COLOR_ANNUL, COLOR_ANYFN,
+      COLOR_MIDDL, COLOR_MIDDL, COLOR_MIDDL, COLOR_MIDDL, COLOR_THUMB,
+      COLOR_INDEX, COLOR_INDEX, COLOR_INDEX, COLOR_INDEX, COLOR_THUMB,
+      COLOR_INDEX, COLOR_INDEX, COLOR_INDEX, COLOR_INDEX, 
+      COLOR_INDEX, COLOR_INDEX, COLOR_INDEX, 
+      COLOR_THUMB,
+      COLOR_THUMB, COLOR_THUMB, COLOR_THUMB, 
+
+      COLOR_ANYFN, COLOR_PINKY, COLOR_PINKY, COLOR_PINKY, COLOR_ANYFN,
+      COLOR_PINKY, COLOR_PINKY, COLOR_PINKY, COLOR_PINKY, COLOR_ANYFN,
+      COLOR_ANNUL, COLOR_ANNUL, COLOR_ANNUL, COLOR_ANNUL, COLOR_ANYFN,
+      COLOR_MIDDL, COLOR_MIDDL, COLOR_MIDDL, COLOR_MIDDL, COLOR_THUMB,
+      COLOR_INDEX, COLOR_INDEX, COLOR_INDEX, COLOR_INDEX, COLOR_THUMB,
+      COLOR_INDEX, COLOR_INDEX, COLOR_INDEX, COLOR_INDEX, 
+      COLOR_INDEX, COLOR_INDEX, COLOR_INDEX, 
+      COLOR_THUMB,
+      COLOR_THUMB, COLOR_THUMB, COLOR_THUMB
+    },
+
+    [1] = {
+      ___________, ___________, ___________, ___________, ___________,
+      ___________, ___________, ___________, ___________, ___________,
+      ___________, ___________, ___________, ___________, ___________,
+      ___________, ___________, ___________, ___________, ___________,
+      ___________, ___________, ___________, ___________, ___________,
+      ___________, ___________, ___________, ___________, 
+      ___________, ___________, ___________, 
+      COLOR_LAYER,
+      COLOR_LAYER, COLOR_LAYER, COLOR_LAYER, 
+
+      ___________, ___________, ___________, ___________, ___________,
+      ___________, ___________, ___________, ___________, ___________,
+      ___________, ___________, ___________, ___________, ___________,
+      ___________, ___________, ___________, ___________, ___________,
+      ___________, ___________, ___________, ___________, ___________,
+      ___________, ___________, ___________, ___________, 
+      ___________, ___________, ___________, 
+      COLOR_LAYER,
+      COLOR_LAYER, COLOR_LAYER, COLOR_LAYER
+    },
+};
+
+const uint8_t PROGMEM colormap[COLOR_COLORS_COUNT][3] = {
+  [COLOR_BLACK] = { 0, 0, 0 },
+  [COLOR_ANYFN] = { 0, 0, 255 },
+  [COLOR_PINKY] = { 31, 255, 255 },
+  [COLOR_ANNUL] = { 164, 255, 255 },
+  [COLOR_MIDDL] = { 76, 255, 255 },
+  [COLOR_INDEX] = { 224, 255, 255 },
+  [COLOR_THUMB] = { 8, 255, 255 },
+};
+
+const uint8_t PROGMEM layermap[COLOR_LAYERS_COUNT][3] = {
+  [0] = { 0, 0, 255 },
+  [1] = { 0, 0, 192 },
+
+  [2] = { 164, 255, 255 },
+  [3] = { 164, 255, 192 },
+
+  [4] = { 0, 255, 210 },
+  [5] = { 76, 255, 255 },
+  [6] = { 188, 255, 255 },
+
+  [7] = { 228, 255, 255 },
+  [8] = { 35, 255, 255 },
 };
 
 // Модификаторы, которые одновременно переключают слой на 0
@@ -558,53 +665,21 @@ bool process_my_lang_keys(uint16_t keycode, keyrecord_t *record) {
   return true;
 }
 
-extern bool g_suspend_state;
-extern rgb_config_t rgb_matrix_config;
+layer_state_t layer_state_set_user(layer_state_t state) {
+  ML_LED_1(false);
+  ML_LED_2(false);
+  ML_LED_3(false);
+  ML_LED_4(false);
+  ML_LED_5(false);
+  ML_LED_6(false);
 
-void keyboard_post_init_user(void) {
-  rgb_matrix_enable();
-}
-
-#define COLOR_ANY_FINGER { 120, 255, 255 }
-#define COLOR_PINKY { 33, 255, 255 }
-#define COLOR_ANNULAR { 146, 255, 255 }
-#define COLOR_MIDDLE { 85, 255, 255 }
-#define COLOR_INDEX { 224, 255, 255 }
-#define COLOR_THUMB { 23, 255, 255 }
-
-const uint8_t PROGMEM ledmap[][DRIVER_LED_TOTAL][3] = {
-    [0] = { COLOR_ANY_FINGER, COLOR_PINKY, COLOR_PINKY, COLOR_PINKY, COLOR_ANY_FINGER, COLOR_PINKY, COLOR_PINKY, COLOR_PINKY, COLOR_PINKY, COLOR_ANY_FINGER, COLOR_ANNULAR, COLOR_ANNULAR, COLOR_ANNULAR, COLOR_ANNULAR, COLOR_ANY_FINGER, COLOR_MIDDLE, COLOR_MIDDLE, COLOR_MIDDLE, COLOR_MIDDLE, COLOR_THUMB, COLOR_INDEX, COLOR_INDEX, COLOR_INDEX, COLOR_INDEX, COLOR_THUMB, COLOR_INDEX, COLOR_INDEX, COLOR_INDEX, COLOR_INDEX, COLOR_INDEX, COLOR_INDEX, COLOR_INDEX, COLOR_THUMB, COLOR_THUMB, COLOR_THUMB, COLOR_THUMB, COLOR_ANY_FINGER, COLOR_PINKY, COLOR_PINKY, COLOR_PINKY, COLOR_ANY_FINGER, COLOR_PINKY, COLOR_PINKY, COLOR_PINKY, COLOR_PINKY, COLOR_ANY_FINGER, COLOR_ANNULAR, COLOR_ANNULAR, COLOR_ANNULAR, COLOR_ANNULAR, COLOR_ANY_FINGER, COLOR_MIDDLE, COLOR_MIDDLE, COLOR_MIDDLE, COLOR_MIDDLE, COLOR_THUMB, COLOR_INDEX, COLOR_INDEX, COLOR_INDEX, COLOR_INDEX, COLOR_THUMB, COLOR_INDEX, COLOR_INDEX, COLOR_INDEX, COLOR_INDEX, COLOR_INDEX, COLOR_INDEX, COLOR_INDEX, COLOR_THUMB, COLOR_THUMB, COLOR_THUMB, COLOR_THUMB },
-};
-
-void set_layer_color(int layer) {
-  for (int i = 0; i < DRIVER_LED_TOTAL; i++) {
-    HSV hsv = {
-      .h = pgm_read_byte(&ledmap[layer][i][0]),
-      .s = pgm_read_byte(&ledmap[layer][i][1]),
-      .v = pgm_read_byte(&ledmap[layer][i][2]),
-    };
-    if (!hsv.h && !hsv.s && !hsv.v) {
-        //rgb_matrix_set_color( i, 0, 0, 0 );
-    } else {
-        RGB rgb = hsv_to_rgb( hsv );
-        float f = (float)rgb_matrix_config.hsv.v / UINT8_MAX;
-        rgb_matrix_set_color( i, f * rgb.r, f * rgb.g, f * rgb.b );
-    }
+  uint8_t layer = get_highest_layer(state);
+  switch (layer) {
+      default:
+          break;
   }
-}
 
-uint8_t draw_layer = 0;
-void rgb_matrix_indicators_user(void) {
-  if (g_suspend_state || keyboard_config.disable_layer_led) { return; }
-  switch (draw_layer) {
-    case 1:
-      set_layer_color(0);
-      break;
-   default:
-    if (rgb_matrix_get_flags() == LED_FLAG_NONE)
-      rgb_matrix_set_color_all(0, 0, 0);
-    break;
-  }
+  return state;
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -620,37 +695,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     return false;
   }
 
+  if (!process_color(keycode, record)) {
+    return false;
+  }
+
   // TODO
   // if (!process_my_modifiers(keycode, record))
   //   return false;
 
   switch (keycode) {
-    case RGB_SLD:
-      if (record->event.pressed) {
-        rgblight_mode(1);
-      }
-      return false;
-    case CLR_1:
-      if (record->event.pressed) {
-        if (draw_layer == 1) {
-          draw_layer = 0;
-        } else {
-          draw_layer = 1;
-        }
-      }
-      return false;
-    case CLR_2:
-      if (record->event.pressed) {
-        rgblight_mode(1);
-        rgblight_sethsv(86,255,128);
-      }
-      return false;
-    case CLR_3:
-      if (record->event.pressed) {
-        rgblight_mode(1);
-        rgblight_sethsv(172,255,255);
-      }
-      return false;
     case KG_NEXT:
       if (record->event.pressed) {
         register_code(KC_TAB);
@@ -757,6 +810,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
       break;
+    case LED_1: if (record->event.pressed) { ML_LED_1(true); } else { ML_LED_1(false); } return false; break;
+    case LED_2: if (record->event.pressed) { ML_LED_2(true); } else { ML_LED_2(false); } return false; break;
+    case LED_3: if (record->event.pressed) { ML_LED_3(true); } else { ML_LED_3(false); } return false; break;
+    case LED_4: if (record->event.pressed) { ML_LED_4(true); } else { ML_LED_4(false); } return false; break;
+    case LED_5: if (record->event.pressed) { ML_LED_5(true); } else { ML_LED_5(false); } return false; break;
+    case LED_6: if (record->event.pressed) { ML_LED_6(true); } else { ML_LED_6(false); } return false; break;
   }
 
   return true;

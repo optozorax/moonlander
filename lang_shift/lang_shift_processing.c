@@ -26,14 +26,10 @@ bool process_record_lang_shift(Key key, keyrecord_t* record) {
   // Обрабатываем клавиши, связанные с кастомным шифтом и кастомным переключением языка
   switch (key) {
     case SHF_1_O:
-      if (down) {
-        shift_once_use_to_next_key(1);
-      }
+      shift_once_process_key(1, down);
       return false;
     case SHF_3_O:
-      if (down) {
-        shift_once_use_to_next_key(3);
-      }
+      shift_once_process_key(3, down);
       return false;
     case SHF_1:
       if (down) {
