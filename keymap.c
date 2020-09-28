@@ -7,20 +7,19 @@
 enum custom_keycodes {
   RGB_SLD = ML_SAFE_RANGE,
 
-  // TODO
-  // // All of these modificators on 0 layer
-  // MY_CTRL,
-  // MY_ALT,
-  // MY_WIN,
-  // MY_SHAL, // Shift+Alt
-  // MY_CTAL, // Ctrl+Alt
-  // MY_CTSH, // Ctrl+Shift
-  // MY_MCAS, // Ctrl+Alt+Shift
+  // All of these modificators on 0 layer
+  MY_CTRL,
+  MY_ALT,
+  MY_WIN,
+  MY_SHAL, // Shift+Alt
+  MY_CTAL, // Ctrl+Alt
+  MY_CTSH, // Ctrl+Shift
+  MY_MCAS, // Ctrl+Alt+Shift
 
   // Russian specific keys
   RU_3DOT, // Three dots
   RU_CMSP, // Comma Space
-  RU_SDOT, // Space + Dot + AutoShift
+  RU_SDOT, // Space + Dot + AutoShiftx
 
   // English specific keys
   EN_3DOT, // Three dots
@@ -207,9 +206,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // LEFT HALF
     KC_ESC,  EN_AMPR, EN_LBRC, EN_RBRC, EN_PLUS, EN_EQL,  EN_GRV,
     KC_TAB,  EN_SCLN, EN_LCBR, EN_RCBR, EN_P,    EN_Y,    CMB_CTC,
-    MO(4),   EN_A,    EN_O,    EN_E,    EN_U,    EN_I,    CMB_CTV,
-    MO(5),   EN_QUOT, EN_Q,    EN_J,    EN_K,    EN_X,
-    CT_J,    MO(8), CT_SLSH, CMB_LY5, CMB_LY4,
+    TT(4),   EN_A,    EN_O,    EN_E,    EN_U,    EN_I,    CMB_CTV,
+    TT(5),   EN_QUOT, EN_Q,    EN_J,    EN_K,    EN_X,
+    CT_J,    TT(8),   CT_SLSH, CMB_LY5, CMB_LY4,
     CMB_CTL, // LEFT RED THUMB KEY
     CMB_SHF, CMB_BSP, CMB_ENT, // LEFT THUMB KEYS
 
@@ -218,7 +217,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     CMB_CTS, EN_F,    EN_G,    EN_C,    EN_R,    EN_L,    EN_BSLS,
     CMB_TAB, EN_D,    EN_H,    EN_T,    EN_N,    EN_S,    EN_MINS,
              EN_B,    EN_M,    EN_W,    EN_V,    EN_Z,    EN_HASH,
-                      CMB_COM, CMB_SLH, KG_NEXT, TG(6),   XXXXXXX,
+                      CMB_COM, CMB_SLH, KG_NEXT, TT(6),   XXXXXXX,
                       CMB_ALT, // RIGHT RED THUMB KEY
                       CMB_LAN, CMB_DOT, CMB_SPC // RIGHT THUMB KEYS
   ),
@@ -241,7 +240,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
              EN_S_B,  EN_S_M,  EN_S_W,  EN_S_V,  EN_S_Z,  EN_CIRC,
                       EN_COMM, _______, _______, _______, _______,
                       _______, // RIGHT RED THUMB KEY
-                      _______, _______, _______ // RIGHT THUMB KEYS
+                      _______, EN_3DOT, _______ // RIGHT THUMB KEYS
   ),
 
   //---------------------------------------------------------------------------
@@ -283,7 +282,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
              RU_S_SH, RU_S_SF, RU_S_B,  RU_S_JU, RU_S_H,  RU_S_JO,
                       RU_COMM, _______, _______, _______, _______,
                       _______, // RIGHT RED THUMB KEY
-                      _______,  _______,  _______ // RIGHT THUMB KEYS
+                      _______,  RU_3DOT,  _______ // RIGHT THUMB KEYS
     ),
 
   //---------------------------------------------------------------------------
@@ -331,11 +330,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //---------------------------------------------------------------------------
   [6] = MY_layout(
     // LEFT HALF
-    KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,
+    TG(6),   KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,
     KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_7,
     KC_LSFT, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_8,
     KC_LCTL, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,
-    XXXXXXX, XXXXXXX, TG(6),   KC_PERC, RU_CMSP,
+    XXXXXXX, XXXXXXX, XXXXXXX, KC_PERC, RU_CMSP,
     XXXXXXX, // LEFT RED THUMB KEY
     KC_SPC,  KC_LALT, KC_ENT, // LEFT THUMB KEYS
 
@@ -344,7 +343,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     XXXXXXX, KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_RBRC,
     XXXXXXX, KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
              KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_UNDS,
-                      KC_LEFT, KC_UP,   KC_DOWN, TG(6),   XXXXXXX,
+                      KC_LEFT, KC_UP,   KC_DOWN, XXXXXXX, XXXXXXX,
                       XXXXXXX, // RIGHT RED THUMB KEY
                       XXXXXXX, XXXXXXX, XXXXXXX // RIGHT THUMB KEYS
     ),
@@ -352,7 +351,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //---------------------------------------------------------------------------
   [7] = MY_layout(
     // LEFT HALF
-    _______,  LGUI(KC_6),  LGUI(KC_5),  LGUI(KC_4),  LGUI(KC_3),  LGUI(KC_2),  LGUI(KC_1),
+    TG(7),  LGUI(KC_6),  LGUI(KC_5),  LGUI(KC_4),  LGUI(KC_3),  LGUI(KC_2),  LGUI(KC_1),
     LGUI(LCTL(KC_SPACE)),  LGUI(KC_F4),  LGUI(KC_F3),  LGUI(KC_F2),  LGUI(KC_F1),  LGUI(S(KC_Q)),  LGUI(KC_A),
     LGUI(LCTL(KC_LEFT)),  LGUI(KC_LEFT),  LGUI(KC_DOWN),  LGUI(KC_UP),  LGUI(KC_RIGHT),  LGUI(LCTL(KC_RIGHT)), LGUI(KC_I),
     LGUI(LALT(KC_LEFT)),  LGUI(KC_F8),  LGUI(KC_F7),  LGUI(KC_F6),  LGUI(KC_F5),  LGUI(LALT(KC_RIGHT)),
@@ -373,8 +372,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //---------------------------------------------------------------------------
   [8] = MY_layout(
     // LEFT HALF
-    RGB_TOG, RGB_HUI, RGB_SAI, RGB_VAI, RGB_SPI, RGB_MOD, XXXXXXX,
-    RGB_LYR, RGB_HUD, RGB_SAD, RGB_VAD, RGB_SPD, RGB_RMOD,XXXXXXX,
+    TG(8),   RGB_HUI, RGB_SAI, RGB_VAI, RGB_SPI, RGB_MOD, RGB_TOG,
+    XXXXXXX, RGB_HUD, RGB_SAD, RGB_VAD, RGB_SPD, RGB_RMOD,RGB_LYR,
     RGB__0,  RGB__1,  RGB__2,  RGB__25, RGB__28, RGB__36, RGB__27,
     RGB__7,  RGB__13, RGB__15, RGB__16, RGB__17, XXXXXXX,
     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
@@ -407,29 +406,29 @@ const ComboWithKeycode combos[COMBO_COUNT] = {
   CHORD(SHF_1,   /* <- */ CMB_SHF),
   CHORD(KC_BSPC, /* <- */ CMB_BSP),
   CHORD(KC_ENT,  /* <- */ CMB_ENT),
-  CHORD(KC_LCTL, /* <- */ CMB_CTL),
+  CHORD(MY_CTRL, /* <- */ CMB_CTL),
   CHORD(CT_A,    /* <- */ CMB_SHF, CMB_CTL),
   CHORD(SHF_1_O, /* <- */ CMB_SHF, CMB_BSP),
   CHORD(KC_DEL,  /* <- */ CMB_BSP, CMB_CTL),
   CHORD(CT_BSPC, /* <- */ CMB_BSP, CMB_ENT),
-  CHORD(CT_SHF,  /* <- */ CMB_SHF, CMB_BSP, CMB_CTL),
+  CHORD(MY_CTSH, /* <- */ CMB_SHF, CMB_BSP, CMB_CTL),
   CHORD(MY_SCRN, /* <- */ CMB_BSP, CMB_ENT, CMB_CTL),
 
   // Left Left Thumb
-  CHORD(MO(4),   /* <- */ CMB_LY4),
-  CHORD(MO(5),   /* <- */ CMB_LY5),
-  CHORD(MO(6),   /* <- */ CMB_LY4, CMB_LY5),
+  CHORD(TT(4),   /* <- */ CMB_LY4),
+  CHORD(TT(5),   /* <- */ CMB_LY5),
+  CHORD(TT(7),   /* <- */ CMB_LY4, CMB_LY5),
 
   // Right Thumb
   CHORD(LA_CHNG, /* <- */ CMB_LAN),
   CHORD(EN_DOT,  /* <- */ CMB_DOT),
   CHORD(KC_SPC,  /* <- */ CMB_SPC),
-  CHORD(KC_LALT, /* <- */ CMB_ALT),
+  CHORD(MY_ALT,  /* <- */ CMB_ALT),
   CHORD(EN_SDOT, /* <- */ CMB_DOT, CMB_SPC),
   CHORD(LA_SYNC, /* <- */ CMB_LAN, CMB_DOT),
   CHORD(EN_UNDS, /* <- */ CMB_SPC, CMB_ALT),
   CHORD(EN_MINS, /* <- */ CMB_DOT, CMB_ALT),
-  CHORD(KC_LGUI, /* <- */ CMB_SPC, CMB_DOT, CMB_ALT),
+  CHORD(MY_WIN,  /* <- */ CMB_SPC, CMB_DOT, CMB_ALT),
   CHORD(XXXXXXX, /* <- */ CMB_LAN, CMB_DOT, CMB_ALT),
 
   // Right Right Thumb
@@ -443,7 +442,10 @@ const ComboWithKeycode combos[COMBO_COUNT] = {
   CHORD(KC_SPHY, /* <- */ CMB_CTS, CMB_TAB),
 
   // Right Thumb + Left Thumb
-  CHORD(EN_COMM, /* <- */ CMB_SHF, CMB_COM), // Костыль, потому что шифт является одновременно слоём, и одновременно они с запятой аккорды, поэтому нужно такая вещь для дополнительной подстраховки, ибо что-то там не работает...
+  // Костыль, потому что шифт является одновременно слоём, и одновременно они с запятой аккорды, поэтому нужно такая вещь для дополнительной подстраховки, ибо что-то там не работает...
+  CHORD(EN_COMM, /* <- */ CMB_SHF, CMB_COM), 
+  CHORD(EN_3DOT, /* <- */ CMB_SHF, CMB_DOT),
+  CHORD(RU_3DOT, /* <- */ CMS_SHF, CMS_DOT),
 
   // -------------------------------------------------------------------------
   // Shifted index keys
@@ -465,7 +467,7 @@ const ComboWithKeycode combos[COMBO_COUNT] = {
   CHORD(SHF_3,   /* <- */ CMS_SHF),
   CHORD(CT_A,    /* <- */ CMS_SHF, CMB_CTL),
   CHORD(SHF_3_O, /* <- */ CMS_SHF, CMB_BSP),
-  CHORD(CT_SHF,  /* <- */ CMS_SHF, CMB_BSP, CMB_CTL),
+  CHORD(MY_CTSH, /* <- */ CMS_SHF, CMB_BSP, CMB_CTL),
 
   // Right Thumb
   CHORD(RU_DOT,  /* <- */ CMS_DOT),
@@ -474,7 +476,7 @@ const ComboWithKeycode combos[COMBO_COUNT] = {
   CHORD(LA_SYNC, /* <- */ CMB_LAN, CMS_DOT),
   CHORD(RU_UNDS, /* <- */ CMS_SPC, CMB_ALT),
   CHORD(RU_MINS, /* <- */ CMS_DOT, CMB_ALT),
-  CHORD(KC_LGUI, /* <- */ CMS_SPC, CMS_DOT, CMB_ALT),
+  CHORD(MY_WIN,  /* <- */ CMS_SPC, CMS_DOT, CMB_ALT),
   CHORD(XXXXXXX, /* <- */ CMB_LAN, CMS_DOT, CMB_ALT),
 
   // Right Right Thumb
@@ -561,30 +563,34 @@ const uint8_t PROGMEM layermap[COLOR_LAYERS_COUNT][3] = {
 
   [4] = { 0, 255, 210 },
   [5] = { 76, 255, 255 },
-  [6] = { 188, 255, 255 },
+  [6] = { 228, 255, 255 },
 
-  [7] = { 228, 255, 255 },
+  [7] = { 188, 255, 255 },
   [8] = { 35, 255, 255 },
 };
 
 // Модификаторы, которые одновременно переключают слой на 0
-// TODO
-/*
 bool process_my_modifiers(uint16_t keycode, keyrecord_t *record) {
-  static uint8_t my_old_lang = 0;
-  #define PROCESS(_name, _register, _unregister) \
-    case _name: { \
+  static uint8_t layer_state_stack[3] = {};
+  static Lang lang_stack[3] = {};
+  static uint8_t modifiers_count = 0;
+  #define PROCESS(NAME, REGISTER, UNREGISTER) \
+    case NAME: { \
       if (record->event.pressed) { \
-        my_old_lang = lang_should_be; \
+        lang_stack[modifiers_count] = lang_should_be; \
+        layer_state_stack[modifiers_count] = layer_state; \
+        modifiers_count += 1; \
         lang_activate_from_user(0); \
-        default_layer_set(0); \
-        _register; \
+        layer_state = 0; \
+        REGISTER; \
       } else { \
-        lang_activate_from_user(my_old_lang); \
-        _unregister; \
+        UNREGISTER; \
+        modifiers_count -= 1; \
+        lang_activate_from_user(lang_stack[modifiers_count]); \
+        layer_state = layer_state_stack[modifiers_count]; \
       } \
       return false; \
-      } break;
+    } break;
 
   #define Rg(x) register_code(KC_L ## x)
   #define Un(x) unregister_code(KC_L ## x)
@@ -601,7 +607,6 @@ bool process_my_modifiers(uint16_t keycode, keyrecord_t *record) {
 
   return true;
 }
-*/
 
 // Мои языко-символьные клавиши
 bool process_my_lang_keys(uint16_t keycode, keyrecord_t *record) {
@@ -699,9 +704,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     return false;
   }
 
-  // TODO
-  // if (!process_my_modifiers(keycode, record))
-  //   return false;
+  if (!process_my_modifiers(keycode, record)) {
+    return false;
+  }
 
   switch (keycode) {
     case KG_NEXT:
