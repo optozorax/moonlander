@@ -96,18 +96,21 @@ LAYOUT_moonlander( \
 #define AL_F4 LALT(KC_F4) // Close window
 
 // Gui keys
-#define WN_E LGUI(KC_E)
-#define WN_D LGUI(KC_D)
-#define WN_1 LGUI(KC_1) // Telegram
-#define WN_2 LGUI(KC_2) // Yabrowser
-#define WN_3 LGUI(KC_3) // Console
-#define WN_4 LGUI(KC_4) // Nautilus
-#define WN_5 LGUI(KC_5) // CLion
-#define WN_6 LGUI(KC_6) // Sublime
-#define WN_7 LGUI(KC_7) // Firefox
-#define WN_8 LGUI(KC_8) // Git ahead
+#define WN_1 LGUI(KC_1)
+#define WN_2 LGUI(KC_2)
+#define WN_3 LGUI(KC_3)
+#define WN_4 LGUI(KC_4)
+#define WN_5 LGUI(KC_5)
+#define WN_6 LGUI(KC_6)
+#define WN_7 LGUI(KC_7)
+#define WN_8 LGUI(KC_8)
+#define WN_9 LGUI(KC_9)
+#define WN_F1 LGUI(KC_F1)
+#define WN_F2 LGUI(KC_F2)
+#define WN_F3 LGUI(KC_F3)
 #define WN_RGHT LGUI(KC_RGHT) // Window to right half
 #define WN_LEFT LGUI(KC_LEFT) // Window to left half
+#define WN_Q LGUI(KC_Q)
 #define WS_RGHT LGUI(S(KC_RGHT)) // Window to right display
 #define WS_LEFT LGUI(S(KC_LEFT)) // Window to left
 
@@ -247,8 +250,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [2] = MY_layout(
     // LEFT HALF
     _______, RU_PLUS, RU_MINS, RU_SCLN, RU_DQUO, RU_COLN, _______,
-    _______, RU_J,    RU_TS,   RU_U,    RU_JE,   RU_F,    CMB_CTC,
-    _______, RU_K,    RU_M,    RU_V,    RU_A,    RU_P,    CMB_CTV,
+    _______, RU_J,    RU_TS,   RU_U,    RU_JE,   RU_F,    _______,
+    _______, RU_K,    RU_M,    RU_V,    RU_A,    RU_P,    _______,
     _______, RU_JA,   RU_CH,   RU_S,    RU_I,    RU_Y,
     _______, _______, _______, _______, _______,
     _______, // LEFT RED THUMB KEY
@@ -268,8 +271,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [3] = MY_layout(
     // LEFT HALF
     _______, RU_7,    RU_5,    RU_3,    RU_1,    RU_9,    _______,
-    _______, RU_S_J,  RU_S_TS, RU_S_U,  RU_S_JE, RU_S_F,  CMB_CAC,
-    _______, RU_S_K,  RU_S_M,  RU_S_V,  RU_S_A,  RU_S_P,  CMB_CAV,
+    _______, RU_S_J,  RU_S_TS, RU_S_U,  RU_S_JE, RU_S_F,  _______,
+    _______, RU_S_K,  RU_S_M,  RU_S_V,  RU_S_A,  RU_S_P,  _______,
     _______, RU_S_JA, RU_S_CH, RU_S_S,  RU_S_I,  RU_S_Y,
     _______, _______, _______, _______, _______,
     _______, // LEFT RED THUMB KEY
@@ -288,19 +291,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //---------------------------------------------------------------------------
   [4] = MY_layout(
     // LEFT HALF
-    TG(4),   KC_F7,   KC_F5,   KC_F3,   KC_F1,   KC_F9,   CT_X,
-    AU_MUTE, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, WN_D,    CT_C,
-    _______, AU_VOLU, AU_NEXT, CS_TAB,  CT_TAB,  AL_TAB,  CT_V,
-    XXXXXXX, AU_VOLD, AU_PREV, CT_1,    CT_2,    AL_TTAB,
-    LA_SYNC, _______, _______, WN_E,    AU_PLAY,
-    TASK, // LEFT RED THUMB KEY
+    TG(4),   KC_F7,   KC_F5,   KC_F3,   KC_F1,   KC_F9,   _______,
+    AU_MUTE, _______, _______, _______, _______, _______, _______,
+    _______, AU_VOLU, AU_NEXT, CS_TAB,  CT_TAB,  _______, _______,
+    _______, AU_VOLD, AU_PREV, CT_1,    CT_2,    _______,
+    _______, _______, _______, _______, AU_PLAY,
+    _______, // LEFT RED THUMB KEY
     _______, _______, _______, // LEFT THUMB KEYS
 
     // RIGHT HALF
-    KC_PAUS, KC_F10,  KC_F2,   KC_F4,   KC_F6,   KC_F8,   KC_F11,
-    KC_INS,  CT_DEL,  KC_HOME, KC_END,  KC_PGUP, KC_PGDN, KC_F12,
-    CT_BSPC, CS_K,    KC_LEFT, KC_UP,   KC_DOWN, KC_RGHT, KC_PSCR,
-             CT_ENT,  CT_LEFT, CT_UP,   CT_DOWN, CT_RGHT, AL_PSCR,
+    _______, KC_F10,  KC_F2,   KC_F4,   KC_F6,   KC_F8,   KC_F11,
+    KC_INS,  _______, KC_HOME, KC_END,  KC_PGUP, KC_PGDN, KC_F12,
+    _______, CS_K,    KC_LEFT, KC_UP,   KC_DOWN, KC_RGHT, _______,
+             CT_ENT,  CT_LEFT, CT_UP,   CT_DOWN, CT_RGHT, _______,
                       _______, LA_CAPS, LA_ALSH, LA_CTSH, LA_WISP,
                       _______, // RIGHT RED THUMB KEY
                       _______, _______, _______ // RIGHT THUMB KEYS
@@ -309,19 +312,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //---------------------------------------------------------------------------
   [5] = MY_layout(
     // LEFT HALF
-    TG(5),   CT_1,    CT_2,    CT_3,    CT_4,     CT_5,     CT_X,
-    KC_F5,   KC_F6,   CS_T,    CT_T,    CT_W,     CT_J,     CT_C,
-    KC_BTN2, KC_BTN1, KC_BTN3, CS_TAB,  CT_TAB,   CT_D,     CT_V,
-    _______, CT_S,    KC_ENT,  KC_UP,   KC_DOWN,  CT_F,
-    XXXXXXX, _______, _______, _______, _______,  
-    RGB_MOD, // LEFT RED THUMB KEY
-    RGB_VAD, RGB_VAI, RGB_LYR, // LEFT THUMB KEYS
+    TG(5),   _______, _______, _______, _______,  _______,  _______,
+    KC_F5,   _______, CS_T,    CT_T,    CT_W,     _______,  _______,
+    _______, _______, _______, CS_TAB,  CT_TAB,   _______,  _______,
+    _______, _______, _______, KC_UP,   KC_DOWN,  CT_F,
+    _______, _______, _______, _______, _______,  
+    _______, // LEFT RED THUMB KEY
+    _______, _______, _______, // LEFT THUMB KEYS
 
     // RIGHT HALF
-    AU_TOG,  RGB_SLD, RGB_HUD, RGB_HUI, RGB_TOG, _______, RESET,
-    MU_TOG,  WN_6,    WN_1,    WN_2,    WN_3,    WN_4,    WN_5,
-    MU_MOD,  WN_7,    AL_ESC,  AL_F6,   AL_F10,  _______, AL_F4,
-             WN_8,    WN_LEFT, WN_RGHT, WS_LEFT, WS_RGHT, _______,
+    _______, _______, _______, _______, _______, _______, RESET,
+    _______, _______, _______, _______, _______, _______, _______,
+    _______, _______, _______, _______, _______, _______, _______,
+             _______, _______, _______, _______, _______, _______,
              MS_LEFT,  MS_UP,  MS_DOWN, MS_RGHT, _______,
                       _______, // RIGHT RED THUMB KEY
                       _______,  KC_MS_BTN2,  KC_MS_BTN1 // RIGHT THUMB KEYS
@@ -351,43 +354,43 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //---------------------------------------------------------------------------
   [7] = MY_layout(
     // LEFT HALF
-    TG(7),  LGUI(KC_6),  LGUI(KC_5),  LGUI(KC_4),  LGUI(KC_3),  LGUI(KC_2),  LGUI(KC_1),
-    LGUI(LCTL(KC_SPACE)),  LGUI(KC_F4),  LGUI(KC_F3),  LGUI(KC_F2),  LGUI(KC_F1),  LGUI(S(KC_Q)),  LGUI(KC_A),
-    LGUI(LCTL(KC_LEFT)),  LGUI(KC_LEFT),  LGUI(KC_DOWN),  LGUI(KC_UP),  LGUI(KC_RIGHT),  LGUI(LCTL(KC_RIGHT)), LGUI(KC_I),
-    LGUI(LALT(KC_LEFT)),  LGUI(KC_F8),  LGUI(KC_F7),  LGUI(KC_F6),  LGUI(KC_F5),  LGUI(LALT(KC_RIGHT)),
-    _______,    _______,  _______,  _______,  _______,
+    TG(8),   _______, _______, _______, _______, _______, _______,
+    _______, WN_8,    WN_7,    WN_6,    WN_5,    WN_F1,   _______,
+    WN_Q,    WN_4,    WN_3,    WN_2,    WN_1,    WN_F2,   _______,
+    _______, _______, WN_LEFT, WN_RGHT, WN_9,    WN_F3,
+    _______, _______, _______, _______, _______,
     _______, // LEFT RED THUMB KEY
-    _______,  _______,  _______, // LEFT THUMB KEYS
+    _______, _______, _______, // LEFT THUMB KEYS
 
     // RIGHT HALF
-    LGUI(S(KC_1)),    LGUI(S(KC_2)),  LGUI(S(KC_3)),  LGUI(S(KC_4)),  LGUI(S(KC_5)),  LGUI(S(KC_6)),  _______,
-    LGUI(KC_F), LGUI(KC_R),  KC_LEFT,  KC_UP,  KC_DOWN,  KC_RIGHT,  LGUI(KC_SPACE),
-    I3_CR,      LGUI(KC_D),  LGUI(S(KC_LEFT)),  LGUI(S(KC_UP)),    LGUI(S(KC_DOWN)),  LGUI(S(KC_RIGHT)),  LGUI(KC_G),
-                LGUI(KC_H),  LGUI(KC_V),  LGUI(KC_E),  LGUI(KC_W),  LGUI(KC_S),  LGUI(KC_N),
-                          _______,  _______,  _______,  _______,  _______,
-                          _______, // RIGHT RED THUMB KEY
-                          _______,  _______,  _______ // RIGHT THUMB KEYS
+    _______, _______, _______, _______, _______, _______, _______,
+    _______, _______, _______, _______, _______, _______, _______,
+    _______, _______, _______, _______, _______, _______, _______,
+             _______, _______, _______, _______, _______, _______,
+                      _______, _______, _______, _______, _______,
+                      _______, // RIGHT RED THUMB KEY
+                      _______, _______, _______ // RIGHT THUMB KEYS
   ),
   
   //---------------------------------------------------------------------------
   [8] = MY_layout(
     // LEFT HALF
     TG(8),   RGB_HUI, RGB_SAI, RGB_VAI, RGB_SPI, RGB_MOD, RGB_TOG,
-    XXXXXXX, RGB_HUD, RGB_SAD, RGB_VAD, RGB_SPD, RGB_RMOD,RGB_LYR,
+    _______, RGB_HUD, RGB_SAD, RGB_VAD, RGB_SPD, RGB_RMOD,RGB_LYR,
     RGB__0,  RGB__1,  RGB__2,  RGB__25, RGB__28, RGB__36, RGB__27,
-    RGB__7,  RGB__13, RGB__15, RGB__16, RGB__17, XXXXXXX,
-    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+    RGB__7,  RGB__13, RGB__15, RGB__16, RGB__17, _______,
+    _______, _______, AU_TOG,  MU_TOG,  MU_MOD,
     RGB_PRT, // LEFT RED THUMB KEY
     PIC_0,   PIC_1,   PIC_2, // LEFT THUMB KEYS
 
     // RIGHT HALF
-    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-    XXXXXXX, LED_1,   LED_2,   LED_3,   LED_4,   LED_5,   LED_6,
-             XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-                      XXXXXXX, // RIGHT RED THUMB KEY
-                      XXXXXXX, XXXXXXX, XXXXXXX // RIGHT THUMB KEYS
+    _______, _______, _______, _______, _______, _______, _______,
+    _______, _______, _______, _______, _______, _______, _______,
+    _______, LED_1,   LED_2,   LED_3,   LED_4,   LED_5,   LED_6,
+             _______, _______, _______, _______, _______, _______,
+                      _______, _______, _______, _______, _______,
+                      _______, // RIGHT RED THUMB KEY
+                      _______, _______, _______ // RIGHT THUMB KEYS
   ),
 };
 
