@@ -16,3 +16,10 @@ Flash:
 ```bash
 make moonlander:optozorax:flash
 ```
+
+Screenshot in kle.klava.org for firefox:
+```
+:screenshot base --selector '#keyboard-bg' --dpr 3
+```
+
+![](layout.png)

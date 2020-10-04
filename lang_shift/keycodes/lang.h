@@ -73,7 +73,7 @@ EN_SCLN, /* ; */
 EN_COLN, /* : */
 EN_QUOT, /* ' */
 EN_DQUO, /* " */
-EN_BSLS, /* */
+EN_BSLS, /* \ */
 EN_PIPE, /* | */
 
 EN_Z,    /* z */
