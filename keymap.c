@@ -97,6 +97,11 @@ LAYOUT_moonlander( \
 #define CS_M LCTL(S(KC_M))
 #define TASK LCTL(S(KC_ESC))
 
+#define AC_GRV RALT(KC_GRV)
+#define AC_ACT RALT(KC_QUOT)
+#define AC_CIRC RALT(KC_CIRC)
+#define AC_TILD RALT(KC_TILD)
+
 // Alt keys
 #define AL_TAB LALT(KC_TAB)
 #define AL_TTAB M(0)
@@ -225,9 +230,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [0] = MY_layout(
     // LEFT HALF
     KC_ESC,  EN_PLUS, EN_SCLN, EN_GRV,  EN_COLN, EN_EQL,  EN_AT,
-    EN_UNDS, XXXXXXX, EN_X,    EN_Y,    EN_P,    EN_S_I,  CMB_CTC,
+    EN_UNDS, AC_GRV,  EN_X,    EN_Y,    EN_P,    EN_S_I,  CMB_CTC,
     EN_DQUO, EN_A,    EN_O,    EN_E,    EN_U,    EN_I,    CMB_CTV,
-    EN_QUOT, XXXXXXX, EN_Q,    EN_J,    EN_K,    XXXXXXX,
+    EN_QUOT, AC_ACT,  EN_Q,    EN_J,    EN_K,    AC_CIRC,
     CT_J,    MO(8),   CT_SLSH, CMB_LY5, CMB_LY4,
     CMB_CTL, // LEFT RED THUMB KEY
     CMB_SHF, CMB_BSP, CMB_ENT, // LEFT THUMB KEYS
@@ -236,8 +241,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     CT_D,    EN_ASTR, EN_EXCL, EN_QUES, EN_HASH, EN_SLSH, CT_Z,
     CMB_CTS, EN_F,    EN_G,    EN_C,    EN_R,    EN_L,    EN_MINS,
     CMB_SHS, EN_D,    EN_H,    EN_T,    EN_N,    EN_S,    XXXXXXX,
-             EN_B,    EN_M,    EN_W,    EN_V,    EN_Z,    XXXXXXX,
-                      CMB_COM, CMB_SLH, KG_NEXT, TT(6),   XXXXXXX,
+             EN_B,    EN_M,    EN_W,    EN_V,    EN_Z,    AC_TILD,
+                      CMB_COM, CMB_SLH, KG_NEXT, TT(6),   MO(10),
                       CMB_ALT, // RIGHT RED THUMB KEY
                       CMB_LAN, CMB_DOT, CMB_SPC // RIGHT THUMB KEYS
   ),
@@ -246,9 +251,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [1] = MY_layout(
     // LEFT HALF
     _______, EN_7,    EN_5,    EN_3,    EN_1,    EN_9,    EN_CIRC,
-    _______, XXXXXXX, EN_S_X,  EN_S_Y,  EN_S_P,  EN_S_I,  CMB_CAC,
+    _______, AC_GRV,  EN_S_X,  EN_S_Y,  EN_S_P,  EN_S_I,  CMB_CAC,
     EN_AMPR, EN_S_A,  EN_S_O,  EN_S_E,  EN_S_U,  EN_S_I,  CMB_CAV,
-    EN_PIPE, XXXXXXX, EN_S_Q,  EN_S_J,  EN_S_K,  XXXXXXX, 
+    EN_PIPE, AC_ACT,  EN_S_Q,  EN_S_J,  EN_S_K,  AC_CIRC, 
     _______, _______, _______, _______, _______,
     _______, // LEFT RED THUMB KEY
     _______, _______, _______, // LEFT THUMB KEYS
@@ -275,7 +280,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     CMS_SHF, _______, _______, // LEFT THUMB KEYS
 
     // RIGHT HALF
-    CT_D,    RU_ASTR, RU_EXCL, RU_QUES, EN_HASH, EN_SLSH, CT_Z,
+    CT_D,    RU_ASTR, RU_EXCL, RU_QUES, EN_HASH, RU_SLSH, CT_Z,
     CMB_CTS, RU_SC,   RU_G,    RU_T,    RU_N,    RU_Z,    RU_MINS,
     CMB_SHS, CMS_R,   RU_O,    RU_L,    RU_D,    RU_ZH,   RU_E,
              CMS_SH,  RU_SF,   RU_B,    RU_JU,   RU_H,    RU_JO,
@@ -371,7 +376,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //---------------------------------------------------------------------------
   [7] = MY_layout(
     // LEFT HALF
-    TG(8),   _______, _______, _______, _______, _______, _______,
+    TG(7),   _______, _______, _______, _______, _______, _______,
     _______, WN_8,    WN_7,    WN_6,    WN_5,    WN_F1,   _______,
     WN_Q,    WN_4,    WN_3,    WN_2,    WN_1,    WN_F2,   _______,
     _______, _______, WN_LEFT, WN_RGHT, WN_9,    WN_F3,
@@ -435,9 +440,9 @@ const ComboWithKeycode combos[COMBO_COUNT] = {
   CHORD(MY_SCRN, /* <- */ CMB_BSP, CMB_ENT, CMB_CTL),
 
   // Left Left Thumb
-  CHORD(TT(4),   /* <- */ CMB_LY4),
-  CHORD(TT(5),   /* <- */ CMB_LY5),
-  CHORD(TT(7),   /* <- */ CMB_LY4, CMB_LY5),
+  CHORD(MO(4),   /* <- */ CMB_LY4),
+  CHORD(MO(5),   /* <- */ CMB_LY5),
+  CHORD(MO(7),   /* <- */ CMB_LY4, CMB_LY5),
 
   // Right Thumb
   CHORD(LA_CHNG, /* <- */ CMB_LAN),
@@ -454,7 +459,7 @@ const ComboWithKeycode combos[COMBO_COUNT] = {
   // Right Right Thumb
   CHORD(EN_CMSP, /* <- */ CMB_COM),
   CHORD(EN_BSLS, /* <- */ CMB_SLH),
-  CHORD(TT(9),   /* <- */ CMB_COM, CMB_SLH),
+  CHORD(MO(9),   /* <- */ CMB_COM, CMB_SLH),
 
   // Right Index
   CHORD(CT_S,    /* <- */ CMB_CTS),
@@ -509,7 +514,7 @@ const ComboWithKeycode combos[COMBO_COUNT] = {
   // Right Right Thumb
   CHORD(RU_CMSP, /* <- */ CMS_COM),
   CHORD(EN_BSLS, /* <- */ CMS_SLH),
-  CHORD(TT(9),   /* <- */ CMS_COM, CMS_SLH),
+  CHORD(MO(9),   /* <- */ CMS_COM, CMS_SLH),
 
   // Right Thumb + Left Thumb
   CHORD(RU_3DOT, /* <- */ CMS_SHF, CMB_DOT),

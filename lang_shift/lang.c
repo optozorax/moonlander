@@ -39,19 +39,28 @@ void lang_synchronize(void) {
       	register_code(KC_CAPS);
       	unregister_code(KC_CAPS);
       }
-      
     } break;
     case LANG_CHANGE_ALT_SHIFT: {
       register_code(KC_LALT);
       register_code(KC_LSHIFT);
       unregister_code(KC_LSHIFT);
       unregister_code(KC_LALT);
+
+      // Костыль, потому что при зажатом шифте если хочется нажать клавишу, которая переключает язык, то шифт слетает... 
+      if (shift_current == 1) {
+        register_code(KC_LSHIFT);
+      }
     } break;
     case LANG_CHANGE_CTRL_SHIFT: {
       register_code(KC_LCTRL);
       register_code(KC_LSHIFT);
       unregister_code(KC_LSHIFT);
       unregister_code(KC_LCTL);
+
+      // Костыль, потому что при зажатом шифте если хочется нажать клавишу, которая переключает язык, то шифт слетает...
+      if (shift_current == 1) {
+        register_code(KC_LSHIFT);
+      }
     } break;
     case LANG_CHANGE_WIN_SPACE: {
       register_code(KC_LGUI);
