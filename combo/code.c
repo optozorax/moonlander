@@ -48,9 +48,8 @@ typedef struct ComboWithKeycode {
   uint16_t keycode;
 } ComboWithKeycode;
 
-const ComboWithKeycode combos[COMBO_COUNT];
-
-const uint8_t combos_size = COMBO_COUNT;
+const ComboWithKeycode combos[];
+const uint8_t combos_size;
 
 typedef struct Combo {
   ComboKey array[COMBO_MAX_SIZE];
@@ -59,7 +58,7 @@ typedef struct Combo {
   uint32_t last_modify_time;
 } Combo;
 
-#define COMBO_DEBUG
+// #define COMBO_DEBUG
 
 // Write 1, if you want to print debug messages when transition activates
 #ifdef COMBO_DEBUG

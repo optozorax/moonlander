@@ -62,9 +62,12 @@ enum custom_ledmap_colors {
 extern bool g_suspend_state;
 extern rgb_config_t rgb_matrix_config;
 
-const uint8_t PROGMEM ledmap[COLOR_PICTURES_COUNT][DRIVER_LED_TOTAL];
-const uint8_t PROGMEM colormap[COLOR_COLORS_COUNT][3];
-const uint8_t PROGMEM layermap[COLOR_LAYERS_COUNT][3];
+const uint8_t PROGMEM ledmap[][DRIVER_LED_TOTAL];
+const uint8_t ledmap_size;
+const uint8_t PROGMEM colormap[][3];
+const uint8_t colormap_size;
+const uint8_t PROGMEM layermap[][3];
+const uint8_t layermap_size;
 
 void keyboard_post_init_user(void) {
   rgb_matrix_enable();
@@ -77,13 +80,10 @@ void set_layer_color(int layer) {
     uint8_t color = pgm_read_byte(&ledmap[layer][i]);
     HSV hsv;
 
-    uint8_t colormap_count = sizeof(colormap)/(sizeof(uint8_t) * 3);
-
     if (color == COLOR_TRANS) { continue; } else
     if (color == COLOR_LAYER) {
       uint8_t layer = biton32(layer_state);
-      uint8_t layers_count = sizeof(layermap)/(sizeof(uint8_t) * 3);
-      if (layer < layers_count) {
+      if (layer < layermap_size) {
         SET_COLOR(
           pgm_read_byte(&layermap[layer][0]),
           pgm_read_byte(&layermap[layer][1]),
@@ -92,7 +92,7 @@ void set_layer_color(int layer) {
       } else {
         SET_COLOR(0, 0, 0);
       }
-    } else if (color < colormap_count) {
+    } else if (color < colormap_size) {
       SET_COLOR(
         pgm_read_byte(&colormap[color][0]),
         pgm_read_byte(&colormap[color][1]),

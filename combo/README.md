@@ -21,13 +21,9 @@
 В `config.h` нужно прописать задание следующих переменных, модифицируя их под свои нужды:
 
 * `#define COMBO_KEYS_COUNT 5` - количество используемых клавиш для аккордов, для данной опции у вас в итоге получатся клавиши `CMB_000`, `CMB_001`, ... , `CMB_004`.
-* `#define COMBO_MAX_SIZE 3` - максимальное количество одновременно зажимаемых клавиш для одного аккорда, больше этого размера аккорд задавать нельзя.
+* `#define COMBO_MAX_SIZE 3` - максимальное количество одновременно зажимаемых клавиш для одного аккорда, больше этого размера аккорд задавать нельзя. При больших значениях потребляет больше памяти.
 * `#define COMBO_STACK_MAX_SIZE 3` - максимальное количество одновременно зажимаемых аккордов. То есть, например, у вас есть аккорд для получения шифта, вы его зажимаете, затем вы нажимаете другой аккорд один раз, это значит что максимально у вас было 2 одновременно зажатых аккорда. 3 должно хватить для всех целей.
 * `#define COMBO_WAIT_TIME 100` - время в миллисекундах в течении которого ждётся что все клавиши текущего аккорда будут нажаты. Если это время истекло, и текущую комбинацию нажатых клавиш можно трактовать как аккорд, то именно эта комбинация и пошлётся.
-* `#define COMBO_LAYER 4` - слой, на котором будут находиться нажимаемые клавиши для аккордов, об этом подробнее потом. Рекомендуется создать отдельный слой для этого, и разместить его самым последним.
-* `#define COMBO_COUNT 10` - количество аккордов, которое вы будете использовать.
-
-Так же необходимо включить опцию `STRICT_LAYER_RELEASE` в `config.h`, иначе будет такой баг, что когда позиция кейкода для аккорда будет совпадать с одновременно нажимаемой клавишей, то клавиша аккорда не отожмётся...
 
 ## Подключение кода
 
@@ -36,26 +32,22 @@
 #include "combo/code.c"
 ```
 
-## Написать какие аккорды существуют
+## Записать аккорды
 
-Далее надо записать какие комбинации зажатых клавиш для аккордов будут иметь место, записываются они при помощи макроса `CHORD` следующим образом:
+Далее надо записать аккорды и зажимаемые для них клавиши. Записывается при помощи макроса `CHORD`, где первым аргументом передаётся кейкод, который будет нажат (там можно задать даже кастомный кейкод, и переключение слоя), затем нужно указать клавиши `CMB_***` одновременное зажатие которых будет посылать зажатие данного аккорда.
 
 ```c
-const ComboKey combos[COMBO_COUNT][COMBO_MAX_SIZE + 1] = {
-  CHORD(0),
-  CHORD(1),
-  CHORD(2),
-  CHORD(3),
-  CHORD(4),
-  CHORD(0, 1),
-  CHORD(0, 2),
-  CHORD(1, 2),
-  CHORD(3, 4),
-  CHORD(0, 1, 2),
-};
+const ComboWithKeycode combos[] = {
+  // Left Index
+  CHORD(MO(4),         CMB_000),
+  CHORD(MY_KEY,        CMB_001),
+  CHORD(LGUI(S(KC_A)), CMB_000, CMB_001),
+  // ...
+ };
+const uint8_t combos_size = sizeof(combos)/sizeof(ComboWithKeycode);
 ```
 
-Здесь можно указывать аккорды в любом порядке, не обязательно по возрастанию количества клавиш и по возрастанию чисел внутри аккорда.
+Здесь при единичном зажатии клавиши `CMB_000` будет включаться 4 слой, а при нажатии этой клавиши одновременно с `CMB_001` будет нажиматься `Win+Shift+A`.
 
 ## Поместить аккорды на вашу раскладку
 
@@ -73,40 +65,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
   // ...
 ```
-
-## Задать каждому аккорду кейкод
-
-Именно здесь уже начинаются костыли. Из-за невозможности просто вызвать функцию для нажатия произвольного кейкода, будь то `TG(4)` или ваш кастомный кейкод, приходится прибегать к такой эмуляции, что как будто после срабатывания аккорда мы на самом деле нажимаем клавишу из слоя клавиатуры.
-
-Нужно внутри объявления раскладки, в переменной `keymaps` создать в самом конце слой, который не будет использовать макрос `keyboard`, а будет напрямую задаваться в виде набора строк и столбцов. Здесь клавиши нумеруются слева-направо, сверху-вниз. Нужно для каждого номера аккорда написать какая клавиша будет нажата для него.
-
-```c
-[4] = {
-  { SHF_1_O, KC_BSPC, KC_LCTL, KC_SLSH, KC_UP,   SHF_1,   XXXXXXX },
-  { KC_DEL,  MO(2),   KC_E,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX },
-  { XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX },
-  { XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX },
-  { XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX },
-  { XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX },
-  { XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX },
-  { XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX },
-  { XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX },
-  { XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX },
-  { XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX },
-  { XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX }
-},
-```
-
-То есть для такого слоя и для опсания аккордов из предыдущего пункта получаем следующую картину:
-* Для аккорда `CMB_000` будет нажата клавиша `SHF_1_O`
-* `CMB_001` - `KC_BSPC`
-* `CMB_002` - `KC_LCTL`
-* `CMB_003` - `KC_SLSH`
-* `CMB_004` - `KC_UP`
-* Для аккорда с одновременно нажатыми `CMB_000` + `CMB_001` получаем кейкод `SHF_1`
-* `CMB_000` + `CMB_002` - `XXXXXXX` (не будет нажато ничего) (такой пустой аккорд не обязательно задавать)
-* `CMB_003` + `CMB_004` - `MO(2)` (включаем слой на время зажатия этого аккорда)
-* `CMB_000` + `CMB_001` + `CMB_002` - `KC_E`.
 
 ## Вызов модуля для каждой клавиши
 
@@ -153,26 +111,6 @@ index 570d4798d..a3536ce16 100644
  }
  
  // translates function id to action
-diff --git a/tmk_core/common/action.c b/tmk_core/common/action.c
-index aa1a2999e..503ddf510 100644
---- a/tmk_core/common/action.c
-+++ b/tmk_core/common/action.c
-@@ -741,6 +741,7 @@ void process_action(keyrecord_t *record, action_t action) {
-  * FIXME: Needs documentation.
-  */
- void register_code(uint8_t code) {
-+    // uprintf("-----------   register: %d\n", code);
-     if (code == KC_NO) {
-         return;
-     }
-@@ -837,6 +838,7 @@ void register_code(uint8_t code) {
-  * FIXME: Needs documentation.
-  */
- void unregister_code(uint8_t code) {
-+    // uprintf("-----------UN register: %d\n", code);
-     if (code == KC_NO) {
-         return;
-     }
 diff --git a/tmk_core/common/keyboard.h b/tmk_core/common/keyboard.h
 index ff7736718..59ff1c893 100644
 --- a/tmk_core/common/keyboard.h

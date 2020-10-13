@@ -405,7 +405,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 };
 
-const ComboWithKeycode combos[COMBO_COUNT] = {
+const ComboWithKeycode combos[] = {
   // Left Index
   CHORD(CT_C,    /* <- */ CMB_CTC),
   CHORD(CT_V,    /* <- */ CMB_CTV),
@@ -483,6 +483,7 @@ const ComboWithKeycode combos[COMBO_COUNT] = {
   CHORD(RU_S_SH, /* <- */ CMS_SSH),
   CHORD(RU_S_HD, /* <- */ CMS_S_R, CMS_SSH),
 };
+const uint8_t combos_size = sizeof(combos)/sizeof(ComboWithKeycode);
 
 enum ledmap_colors {
   COLOR_BLACK = COLOR_SAFE_RANGE, // Чёрный цвет
@@ -494,7 +495,7 @@ enum ledmap_colors {
   COLOR_THUMB, // Большим пальцем
 };
 
-const uint8_t PROGMEM ledmap[COLOR_PICTURES_COUNT][DRIVER_LED_TOTAL] = {
+const uint8_t PROGMEM ledmap[][DRIVER_LED_TOTAL] = {
     [0] = {
       COLOR_ANYFN, COLOR_PINKY, COLOR_PINKY, COLOR_PINKY, COLOR_ANYFN,
       COLOR_PINKY, COLOR_PINKY, COLOR_PINKY, COLOR_PINKY, COLOR_ANYFN,
@@ -539,8 +540,9 @@ const uint8_t PROGMEM ledmap[COLOR_PICTURES_COUNT][DRIVER_LED_TOTAL] = {
       COLOR_LAYER, COLOR_LAYER, COLOR_LAYER
     },
 };
+const uint8_t ledmap_size = sizeof(ledmap)/(sizeof(uint8_t) * DRIVER_LED_TOTAL);
 
-const uint8_t PROGMEM colormap[COLOR_COLORS_COUNT][3] = {
+const uint8_t PROGMEM colormap[][3] = {
   [COLOR_BLACK] = { 0, 0, 0 },
   [COLOR_ANYFN] = { 0, 0, 255 },
   [COLOR_PINKY] = { 31, 255, 255 },
@@ -549,8 +551,9 @@ const uint8_t PROGMEM colormap[COLOR_COLORS_COUNT][3] = {
   [COLOR_INDEX] = { 224, 255, 255 },
   [COLOR_THUMB] = { 8, 255, 255 },
 };
+const uint8_t colormap_size = sizeof(colormap)/(sizeof(uint8_t) * 3);
 
-const uint8_t PROGMEM layermap[COLOR_LAYERS_COUNT][3] = {
+const uint8_t PROGMEM layermap[][3] = {
   [0] = { 0, 0, 255 },
   [1] = { 0, 0, 192 },
 
@@ -566,6 +569,7 @@ const uint8_t PROGMEM layermap[COLOR_LAYERS_COUNT][3] = {
 
   [9] = { 8, 255, 255 },
 };
+const uint8_t layermap_size = sizeof(layermap)/(sizeof(uint8_t) * 3);
 
 // Мои языко-символьные клавиши
 bool process_my_lang_keys(uint16_t keycode, keyrecord_t *record) {
