@@ -153,6 +153,7 @@ uint16_t combo_get_keycode(ComboPos pos) {
 }
 
 void combo_press(ComboPos pos, bool down) {
+  // uprintf("combo press pos: %d %s\n", pos, down ? "down" : "up");
   keyrecord_t record = {
     .event = {
       .key = {
@@ -172,6 +173,7 @@ void combo_press(ComboPos pos, bool down) {
 }
 
 void process_as_usual(keyrecord_t* record) {
+  // uprintf("process as usual\n");
   combo_enabled = false;
   process_record(record);
   combo_enabled = true;
@@ -220,7 +222,6 @@ void combo_onenter_3(Combo *combo, ComboKey key) {
 
   if (combo->size == 0) {
     combo_onenter_end(combo);
-    TRANSITION_DEBUG(i);
   }
 }
 
@@ -240,7 +241,7 @@ bool combo_process_1(Combo *combo, uint16_t key, keyrecord_t *record) {
     } else {
       if (neq_combo_pos(pos, NONE_COMBO_POS)) {
         combo_press(pos, true);
-        combo->state = 3;
+        combo_onenter_2(combo, pos, record);
         TRANSITION_DEBUG(k);
         return true;
       }
@@ -255,6 +256,9 @@ bool combo_process_1(Combo *combo, uint16_t key, keyrecord_t *record) {
 
         combo_onenter_3(combo, key_combo);
         TRANSITION_DEBUG(g);
+        if (combo->size == 0) {
+          TRANSITION_DEBUG(i);
+        }
         return false;  
       }
     } else {
@@ -268,6 +272,9 @@ bool combo_process_1(Combo *combo, uint16_t key, keyrecord_t *record) {
     if (up && neq_combo_key(key_combo, NONE_COMBO_KEY)) {
       combo_onenter_3(combo, key_combo);
       TRANSITION_DEBUG(f);
+      if (combo->size == 0) {
+        TRANSITION_DEBUG(i);
+      }
       return false;
     }
   }
@@ -287,6 +294,9 @@ bool combo_process_2(Combo *combo, uint16_t key, keyrecord_t *record) {
 
     combo_onenter_3(combo, key_combo);
     TRANSITION_DEBUG(c);
+    if (combo->size == 0) {
+      TRANSITION_DEBUG(i);
+    }
     return false;
   }
 
@@ -300,8 +310,10 @@ bool combo_process_3(Combo *combo, uint16_t key, keyrecord_t *record) {
 
   if (up && neq_combo_key(key_combo, NONE_COMBO_KEY) && combo_has_key(combo, key_combo)) {
     combo_onenter_3(combo, key_combo);
-
     TRANSITION_DEBUG(h);
+    if (combo->size == 0) {
+      TRANSITION_DEBUG(i);
+    }
     return false;
   }
 
@@ -318,14 +330,15 @@ bool combo_process_local_states(Combo *combo, uint16_t key, keyrecord_t *record)
 }
 
 bool combo_process(uint16_t key, keyrecord_t *record) {
+  bool down = record->event.pressed;
+  ComboKey key_combo = combo_key_to_combo_key(key);
+  // uprintf("%d pressed %s\n", key_combo, down ? "down" : "up");
+
   for (uint8_t i = 0; i < combo_stack_size; ++i) {
     Combo *combo = &combo_stack[i];
     if (!combo_process_local_states(combo, key, record))
       return false;
   }
-
-  bool down = record->event.pressed;
-  ComboKey key_combo = combo_key_to_combo_key(key);
 
   if (down && neq_combo_key(key_combo, NONE_COMBO_KEY)) {
     Combo* combo = &combo_stack[combo_stack_size];

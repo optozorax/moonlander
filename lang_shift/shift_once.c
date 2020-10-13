@@ -9,11 +9,13 @@ bool shift_once_is_enabled(void) {
 }
 
 void shift_once_use_to_next_key(uint8_t layer) {
-  shift_activate_from_user(true);
-  layer_on(layer);
-  shift_once_disable_stage = 2;
-  shift_once_layer_off = layer;
-  shift_once_enabled_time = timer_read();
+  if (shift_current == 0) {
+    shift_activate_from_user(true);
+    layer_on(layer);
+    shift_once_disable_stage = 2;
+    shift_once_layer_off = layer;
+    shift_once_enabled_time = timer_read();
+  }
 }
 
 void shift_once_process_key(uint8_t layer, bool down) {

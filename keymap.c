@@ -28,9 +28,6 @@ enum custom_keycodes {
   CT_A_V,
   CT_A_X,
 
-  KC_SPHY, // Space + Hyphen + Space
-  KC_HYSP, // Hyphen + Space
-
   LED_1,
   LED_2,
   LED_3,
@@ -236,7 +233,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
              EN_S_B,  EN_S_M,  EN_S_W,  EN_S_V,  EN_S_Z,  XXXXXXX,
                       _______, EN_PERC, _______, _______, _______,
                       _______, // RIGHT RED THUMB KEY
-                      _______, AG_3DOT, _______ // RIGHT THUMB KEYS
+                      _______, _______, _______ // RIGHT THUMB KEYS
   ),
 
   //---------------------------------------------------------------------------
@@ -278,7 +275,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
              CMS_SSH, RU_S_SF, RU_S_B,  RU_S_JU, RU_S_H,  RU_S_JO,
                       _______, RU_PERC, _______, _______, _______,
                       _______, // RIGHT RED THUMB KEY
-                      _______, AG_3DOT,  _______ // RIGHT THUMB KEYS
+                      _______, _______,  _______ // RIGHT THUMB KEYS
     ),
 
   //---------------------------------------------------------------------------
@@ -638,6 +635,13 @@ layer_state_t layer_state_set_user(layer_state_t state) {
   ML_LED_6(false);
 
   uint8_t layer = get_highest_layer(state);
+
+  rgb_matrix_sethsv(
+    pgm_read_byte(&layermap[layer][0]),
+    pgm_read_byte(&layermap[layer][1]),
+    pgm_read_byte(&layermap[layer][2])
+  );
+
   switch (layer) {
       default:
           break;
@@ -727,6 +731,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
     case CT_A_C:
       if (record->event.pressed) {
+        shift_activate(0);
         register_code(KC_LCTRL);
         register_code(KC_A);
         unregister_code(KC_A);
@@ -737,6 +742,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       return true;
     case CT_A_V:
       if (record->event.pressed) {
+        shift_activate(0);
         register_code(KC_LCTRL);
         register_code(KC_A);
         unregister_code(KC_A);
@@ -747,6 +753,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       return true;
     case CT_A_X:
       if (record->event.pressed) {
+        shift_activate(0);
         register_code(KC_LCTRL);
         register_code(KC_A);
         unregister_code(KC_A);
@@ -755,26 +762,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         unregister_code(KC_LCTRL);
       }
       return true;
-    case KC_SPHY:
-      if (record->event.pressed) {
-        register_code(KC_SPC);
-        unregister_code(KC_SPC);
-        register_code(KC_MINS);
-        unregister_code(KC_MINS);
-        register_code(KC_SPC);
-        unregister_code(KC_SPC);
-      }
-      return false;
-      break;
-    case KC_HYSP:
-      if (record->event.pressed) {
-        register_code(KC_MINS);
-        unregister_code(KC_MINS);
-        register_code(KC_SPC);
-        unregister_code(KC_SPC);
-      }
-      return false;
-      break;
     case LED_1: if (record->event.pressed) { ML_LED_1(true); } else { ML_LED_1(false); } return false; break;
     case LED_2: if (record->event.pressed) { ML_LED_2(true); } else { ML_LED_2(false); } return false; break;
     case LED_3: if (record->event.pressed) { ML_LED_3(true); } else { ML_LED_3(false); } return false; break;
