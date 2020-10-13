@@ -59,8 +59,10 @@ typedef struct Combo {
   uint32_t last_modify_time;
 } Combo;
 
+#define COMBO_DEBUG
+
 // Write 1, if you want to print debug messages when transition activates
-#if 0
+#ifdef COMBO_DEBUG
   #define TRANSITION_DEBUG(a) uprintf("transition '" #a "' now it is #%d: {", combo - &combo_stack[0]); \
     for (int i = 0; i < combo->size; ++i) { \
       uprintf("%d, ", combo->array[i]); \
@@ -153,7 +155,9 @@ uint16_t combo_get_keycode(ComboPos pos) {
 }
 
 void combo_press(ComboPos pos, bool down) {
-  // uprintf("combo press pos: %d %s\n", pos, down ? "down" : "up");
+  #ifdef COMBO_DEBUG
+  uprintf("combo press pos: %d %s\n", pos, down ? "down" : "up");
+  #endif
   keyrecord_t record = {
     .event = {
       .key = {
@@ -173,7 +177,9 @@ void combo_press(ComboPos pos, bool down) {
 }
 
 void process_as_usual(keyrecord_t* record) {
-  // uprintf("process as usual\n");
+  #ifdef COMBO_DEBUG
+  uprintf("process as usual\n");
+  #endif
   combo_enabled = false;
   process_record(record);
   combo_enabled = true;
@@ -241,7 +247,7 @@ bool combo_process_1(Combo *combo, uint16_t key, keyrecord_t *record) {
     } else {
       if (neq_combo_pos(pos, NONE_COMBO_POS)) {
         combo_press(pos, true);
-        combo_onenter_2(combo, pos, record);
+        combo->state = 2;
         TRANSITION_DEBUG(k);
         return true;
       }
@@ -332,7 +338,9 @@ bool combo_process_local_states(Combo *combo, uint16_t key, keyrecord_t *record)
 bool combo_process(uint16_t key, keyrecord_t *record) {
   bool down = record->event.pressed;
   ComboKey key_combo = combo_key_to_combo_key(key);
-  // uprintf("%d pressed %s\n", key_combo, down ? "down" : "up");
+  #ifdef COMBO_DEBUG
+  uprintf("%d pressed %s\n", key_combo, down ? "down" : "up");
+  #endif
 
   for (uint8_t i = 0; i < combo_stack_size; ++i) {
     Combo *combo = &combo_stack[i];

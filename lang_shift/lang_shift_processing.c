@@ -1,6 +1,7 @@
 void lang_press_key(Key key, bool down);
 void lang_tap_key(Key key);
 
+uint8_t lang_shift_current_shift_layer = 0;
 bool process_record_lang_shift(Key key, keyrecord_t* record) {
   bool down = record->event.pressed;
 
@@ -40,10 +41,11 @@ bool process_record_lang_shift(Key key, keyrecord_t* record) {
     case SHF_N:
       if (down) {
         shift_activate_from_user(true);
-        layer_on(lang_get_shift_layer_number());
+        lang_shift_current_shift_layer = lang_get_shift_layer_number();
+        layer_on(lang_shift_current_shift_layer);
       } else {
         shift_activate_from_user(false);
-        layer_off(lang_get_shift_layer_number());
+        layer_off(lang_shift_current_shift_layer);
       }
       return false;
     case SHF_1:
