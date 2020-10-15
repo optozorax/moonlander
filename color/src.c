@@ -1,77 +1,10 @@
-enum color_keycodes {
-	COLOR_START = ML_SAFE_RANGE,
-
-    RGB__0,
-	RGB__1,
-	RGB__2,
-	RGB__3,
-	RGB__4,
-	RGB__5,
-	RGB__6,
-	RGB__7,
-	RGB__8,
-	RGB__9,
-	RGB__10,
-	RGB__11,
-	RGB__12,
-	RGB__13,
-	RGB__14,
-	RGB__15,
-	RGB__16,
-	RGB__17,
-	RGB__18,
-	RGB__19,
-	RGB__20,
-	RGB__21,
-	RGB__22,
-	RGB__23,
-	RGB__24,
-	RGB__25,
-	RGB__26,
-	RGB__27,
-	RGB__28,
-	RGB__29,
-	RGB__30,
-	RGB__31,
-	RGB__32,
-	RGB__33,
-	RGB__34,
-	RGB__35,
-	RGB__36,
-
-	RGB_PRT,
-
-	PIC_0,
-	PIC_1,
-	PIC_2,
-
-	COLOR_NEW_SAFE_RANGE,
-};
-
-#undef ML_SAFE_RANGE
-#define ML_SAFE_RANGE COLOR_NEW_SAFE_RANGE
-
-enum custom_ledmap_colors {
-  COLOR_TRANS, // Прозрачный, пропускает обычную подсветку
-  COLOR_LAYER, // Цвет текущего слоя
-  COLOR_SAFE_RANGE, // Далее для создания своего цвета нужно начинать с этого промежутка
-};
-
-#define ___________ COLOR_TRANS
-
 extern bool g_suspend_state;
 extern rgb_config_t rgb_matrix_config;
 
-const uint8_t PROGMEM ledmap[][DRIVER_LED_TOTAL];
-const uint8_t ledmap_size;
-const uint8_t PROGMEM colormap[][3];
-const uint8_t colormap_size;
-const uint8_t PROGMEM layermap[][3];
-const uint8_t layermap_size;
-
-void keyboard_post_init_user(void) {
-  rgb_matrix_enable();
-}
+// А это вроде как не надо?
+// void keyboard_post_init_user(void) {
+//   rgb_matrix_enable();
+// }
 
 void set_layer_color(int layer) {
   #define SET_COLOR(H, S, V) hsv.h = H; hsv.s = S; hsv.v = V;
@@ -109,7 +42,7 @@ void set_layer_color(int layer) {
 }
 
 uint8_t draw_layer = COLOR_PICTURE_DEFAULT;
-void rgb_matrix_indicators_user(void) {
+void color_rgb_matrix_indicators(void) {
   if (g_suspend_state || keyboard_config.disable_layer_led) { return; }
   if (draw_layer != 0) {
   	set_layer_color(draw_layer - 1);
@@ -120,7 +53,7 @@ void color_set_picture(uint8_t picture) {
 	draw_layer = picture;
 }
 
-bool process_color(uint16_t keycode, keyrecord_t *record) {
+bool color_process_record(uint16_t keycode, keyrecord_t *record) {
 	switch (keycode) {
 		case PIC_0: if (record->event.pressed) { color_set_picture(0); } return false;
 		case PIC_1: if (record->event.pressed) { color_set_picture(1); } return false;

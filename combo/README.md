@@ -16,6 +16,10 @@
 
 Последовательность действий будет описана так, чтобы вы модифицировали свой файл `keymap.c` сверху-вниз.
 
+## Подключить другой модуль
+
+Необходимо подключить и настроить модуль [arbitrary_keycode](../arbitrary_keycode/README.md). Подключение файла из этого модуля необходимо поместить раньше подключения текущего модуля.
+
 ## Задать характеристики
 
 В `config.h` нужно прописать задание следующих переменных, модифицируя их под свои нужды:
@@ -25,11 +29,50 @@
 * `#define COMBO_STACK_MAX_SIZE 3` - максимальное количество одновременно зажимаемых аккордов. То есть, например, у вас есть аккорд для получения шифта, вы его зажимаете, затем вы нажимаете другой аккорд один раз, это значит что максимально у вас было 2 одновременно зажатых аккорда. 3 должно хватить для всех целей.
 * `#define COMBO_WAIT_TIME 100` - время в миллисекундах в течении которого ждётся что все клавиши текущего аккорда будут нажаты. Если это время истекло, и текущую комбинацию нажатых клавиш можно трактовать как аккорд, то именно эта комбинация и пошлётся.
 
+## Задание SAFE_RANGE
+
+Для пользовательских кейкодов существует такое понятие как `SAFE_RANGE`, обычно он используется для того чтобы после него помещать свои кейкоды, которые делают особые действия:
+
+```c
+enum custom_keycodes {
+  MY_KEY1 = SAFE_RANGE,
+  MY_KEY2,
+  // ...
+}
+```
+
+Таким образом гарантируется что пользовательские кейкоды не пересекутся с системными кейкодами. Обычно для этого используется `SAFE_RANGE`.
+
+Но иногда случается так, что клавиатура добавляет своих кейкодов, и создаёт новую переменную SAFE_RANGE, которую называет по-другому, нужно за этим следить. Посмотрите, нету ли у вас такой особой переменной. Например, в Moonlander эта переменная называется `ML_SAFE_RANGE`.
+
+После того как вы найдёте имя этой переменной, нужно написать:
+
+```c
+#define CUSTOM_SAFE_RANGE <ваша переменная>
+```
+
+Пример для Moonlander:
+```c
+#define CUSTOM_SAFE_RANGE ML_SAFE_RANGE
+```
+
+Затем при использовании своих кейкодов необходимо указывать именно `CUSTOM_SAFE_RANGE`, потому что данный модуль использует необходимое количество кейкодов из пользовательских кейкодов и переопределяет эту переменную. Пример:
+
+```c
+enum custom_keycodes {
+  KEYCODES_START = CUSTOM_SAFE_RANGE,
+
+  // English specific keys
+  EN_LTEQ, // <=
+  // ...
+};
+```
+
 ## Подключение кода
 
-В своём файле `keymap.c` в самом верху подключаем файл `combo/code.c`:
+В своём файле `keymap.c` в самом верху подключаем файл `combo/include.h`:
 ```c
-#include "combo/code.c"
+#include "combo/include.h"
 ```
 
 ## Записать аккорды
@@ -90,41 +133,6 @@ void matrix_scan_user(void) {
 ```
 
 **Объяснение:** функция `matrix_scan_user` вызывается примерно каждые 2 миллисекунды, она сканирует матрицу. Значит её вполне можно использовать для отслеживания собственных таймеров. Поэтому мы вызываем из неё функцию `user_timer`, которая лучше говорит о наших намерениях, чем `matrx_scan_user`. А уже в функции `user_timer` мы вызываем обработку случая когда мы слишком долго держим аккорд.
-
-# Модифицировать код qmk
-
-```diff
-diff --git a/quantum/keymap_common.c b/quantum/keymap_common.c
-index 570d4798d..a3536ce16 100644
---- a/quantum/keymap_common.c
-+++ b/quantum/keymap_common.c
-@@ -179,7 +179,11 @@ __attribute__((weak)) void action_function(keyrecord_t *record, uint8_t id, uint
- // translates key to keycode
- __attribute__((weak)) uint16_t keymap_key_to_keycode(uint8_t layer, keypos_t key) {
-     // Read entire word (16bits)
--    return pgm_read_word(&keymaps[(layer)][(key.row)][(key.col)]);
-+    if (key.use_custom_keycode) {
-+        return key.custom_keycode;
-+    } else {
-+        return pgm_read_word(&keymaps[(layer)][(key.row)][(key.col)]);
-+    }
- }
- 
- // translates function id to action
-diff --git a/tmk_core/common/keyboard.h b/tmk_core/common/keyboard.h
-index ff7736718..59ff1c893 100644
---- a/tmk_core/common/keyboard.h
-+++ b/tmk_core/common/keyboard.h
-@@ -29,6 +29,8 @@ extern "C" {
- typedef struct {
-     uint8_t col;
-     uint8_t row;
-+    bool use_custom_keycode;
-+    uint16_t custom_keycode;
- } keypos_t;
- 
- /* key event */
-```
 
 # Принцип работы
 

@@ -1,12 +1,16 @@
 #include QMK_KEYBOARD_H
 #include <quantum/pointing_device.h>
 #include "version.h"
-#include "lang_shift/code.c"
-#include "combo/code.c"
-#include "color/code.c"
+
+#include "arbitrary_keycode/include.h"
+
+#define CUSTOM_SAFE_RANGE ML_SAFE_RANGE
+#include "lang_shift/include.h"
+#include "combo/include.h"
+#include "color/include.h"
 
 enum custom_keycodes {
-  RGB_SLD = ML_SAFE_RANGE,
+  KEYCODES_START = CUSTOM_SAFE_RANGE,
 
   // English specific keys
   EN_LTEQ, // <=
@@ -27,6 +31,9 @@ enum custom_keycodes {
   CT_A_C,
   CT_A_V,
   CT_A_X,
+  CT_D,
+  CT_SLSH,
+  CT_Y,
 
   LED_1,
   LED_2,
@@ -124,7 +131,6 @@ LAYOUT_moonlander( \
 #define CT_DEL LCTL(KC_DEL)
 #define CT_BSPC LCTL(KC_BSPC)
 #define CT_TAB LCTL(KC_TAB)
-#define CT_SLSH LCTL(KC_SLSH)
 #define CT_1 LCTL(KC_1)
 #define CT_2 LCTL(KC_2)
 #define CT_3 LCTL(KC_3)
@@ -134,13 +140,10 @@ LAYOUT_moonlander( \
 #define CT_T LCTL(KC_T)
 #define CT_W LCTL(KC_W)
 #define CT_J LCTL(KC_J)
-#define CT_D LCTL(KC_D)
 #define CT_S LCTL(KC_S)
 #define CT_F LCTL(KC_F)
 #define CT_A LCTL(KC_A)
 #define CT_S LCTL(KC_S)
-#define CT_D LCTL(KC_D)
-#define CT_Y LCTL(KC_Y)
 #define CT_F5 LCTL(KC_F5)
 
 #define CT_X LCTL(KC_X)
@@ -577,40 +580,40 @@ bool process_my_lang_keys(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case EN_LTEQ:
       if (record->event.pressed) {
-        lang_tap_key(EN_LT);
-        lang_tap_key(AG_EQL);
+        lang_shift_tap_key(EN_LT);
+        lang_shift_tap_key(AG_EQL);
       }
       return false;
       break;
     case EN_GTEQ:
       if (record->event.pressed) {
-        lang_tap_key(EN_GT);
-        lang_tap_key(AG_EQL);
+        lang_shift_tap_key(EN_GT);
+        lang_shift_tap_key(AG_EQL);
       }
       return false;
       break;
     case EN_ARR1:
       if (record->event.pressed) {
-        lang_tap_key(AG_MINS);
-        lang_tap_key(EN_GT);
+        lang_shift_tap_key(AG_MINS);
+        lang_shift_tap_key(EN_GT);
       }
       return false;
       break;
     case EN_ARR2:
       if (record->event.pressed) {
-        lang_tap_key(AG_EQL);
-        lang_tap_key(EN_GT);
+        lang_shift_tap_key(AG_EQL);
+        lang_shift_tap_key(EN_GT);
       }
       return false;
       break;
     case EN_FISH:
       if (record->event.pressed) {
-        lang_tap_key(AG_COLN);
-        lang_tap_key(AG_COLN);
-        lang_tap_key(EN_LT);
-        lang_tap_key(EN_GT);
-        lang_tap_key(EN_LPRN);
-        lang_tap_key(EN_RPRN);
+        lang_shift_tap_key(AG_COLN);
+        lang_shift_tap_key(AG_COLN);
+        lang_shift_tap_key(EN_LT);
+        lang_shift_tap_key(EN_GT);
+        lang_shift_tap_key(EN_LPRN);
+        lang_shift_tap_key(EN_RPRN);
         register_code(KC_LEFT); unregister_code(KC_LEFT);
         register_code(KC_LEFT); unregister_code(KC_LEFT);
         register_code(KC_LEFT); unregister_code(KC_LEFT);
@@ -619,9 +622,9 @@ bool process_my_lang_keys(uint16_t keycode, keyrecord_t *record) {
       break;
     case EN_MACR:
       if (record->event.pressed) {
-        lang_tap_key(EN_HASH);
-        lang_tap_key(EN_LBRC);
-        lang_tap_key(EN_RBRC);
+        lang_shift_tap_key(EN_HASH);
+        lang_shift_tap_key(EN_LBRC);
+        lang_shift_tap_key(EN_RBRC);
         register_code(KC_LEFT); unregister_code(KC_LEFT);
       }
       return false;
@@ -655,7 +658,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  if (combo_enabled && !combo_process(keycode, record)) {
+  if (combo_enabled && !combo_process_record(keycode, record)) {
     return false;
   }
 
@@ -663,11 +666,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     return false;
   }
 
-  if (!process_record_lang_shift(keycode, record)) {
+  if (!lang_shift_process_record(keycode, record)) {
     return false;
   }
 
-  if (!process_color(keycode, record)) {
+  if (!color_process_record(keycode, record)) {
     return false;
   }
 
@@ -766,6 +769,33 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         unregister_code(KC_LCTRL);
       }
       return true;
+    case CT_D:
+      if (record->event.pressed) {
+        lang_activate(0);
+        register_code(KC_LCTRL);
+        register_code(KC_D);
+        unregister_code(KC_D);
+        unregister_code(KC_LCTRL);
+      }
+      return true;
+    case CT_Y:
+      if (record->event.pressed) {
+        shift_activate(0);
+        register_code(KC_LCTRL);
+        register_code(KC_Y);
+        unregister_code(KC_Y);
+        unregister_code(KC_LCTRL);
+      }
+      return true;
+    case CT_SLSH:
+      if (record->event.pressed) {
+        lang_activate(0);
+        register_code(KC_LCTRL);
+        register_code(KC_SLSH);
+        unregister_code(KC_SLSH);
+        unregister_code(KC_LCTRL);
+      }
+      return true;
     case LED_1: if (record->event.pressed) { ML_LED_1(true); } else { ML_LED_1(false); } return false; break;
     case LED_2: if (record->event.pressed) { ML_LED_2(true); } else { ML_LED_2(false); } return false; break;
     case LED_3: if (record->event.pressed) { ML_LED_3(true); } else { ML_LED_3(false); } return false; break;
@@ -813,11 +843,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 void user_timer(void) {
   combo_user_timer();
-  shift_user_timer();
-  shift_once_user_timer();
-  lang_user_timer();
+  lang_shift_user_timer();
 }
 
 void matrix_scan_user(void) {
   user_timer();
+}
+
+void rgb_matrix_indicators_user(void) {
+  color_rgb_matrix_indicators();
 }
