@@ -46,6 +46,15 @@ enum custom_keycodes {
   MS_UP_1,
   MS_LF_1,
   MS_RG_1,
+
+  MU_LANG,
+  MU_LAN1,
+  MU_LAN2,
+  MU_LAN3,
+  MU_LAN4,
+  MU_CTJ,
+  MU_SCR,
+  MU_WNL,
 };
 
 #define MY_layout( \
@@ -204,7 +213,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     EN_UNDS, AC_GRV,  EN_X,    EN_Y,    EN_P,    EN_S_I,  CMB_CTC,
     EN_DQUO, EN_A,    EN_O,    EN_E,    EN_U,    EN_I,    CMB_CTV,
     EN_QUOT, AC_ACT,  EN_Q,    EN_J,    EN_K,    AC_CIRC,
-    CT_J,    TT(8),   CT_SLSH, CMB_LYG, CMB_LYV,
+    MU_CTJ,  TT(8),   CT_SLSH, CMB_LYG, CMB_LYV,
     CMB_CTL, // LEFT RED THUMB KEY
     CMB_SHF, CMB_BSP, CMB_ENT, // LEFT THUMB KEYS
 
@@ -391,7 +400,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // LEFT HALF
     TG(9),   KC_SLCK, KC_CAPS, KC_INS,  KC_PAUS, KC_PSCR, KC_APP,
     _______, _______, _______, _______, _______, _______, _______,
-    _______, LA_CAPS, LA_ALSH, LA_CTSH, LA_WISP, _______, _______,
+    _______, MU_LAN1, MU_LAN2, MU_LAN3, MU_LAN4, _______, _______,
     KC_LSFT, _______, _______, _______, _______, _______,
     KC_LCTL, KC_LGUI, KC_LALT, KC_RALT, KC_RGUI,
     _______, // LEFT RED THUMB KEY
@@ -429,7 +438,7 @@ const ComboWithKeycode combos[] = {
   CHORD(KC_DEL,  /* <- */ CMB_BSP, CMB_CTL),
   CHORD(CT_BSPC, /* <- */ CMB_BSP, CMB_ENT),
   CHORD(CTSH_0,  /* <- */ CMB_SHF, CMB_BSP, CMB_CTL),
-  CHORD(MY_SCRN, /* <- */ CMB_BSP, CMB_ENT, CMB_CTL),
+  CHORD(MU_SCR,  /* <- */ CMB_BSP, CMB_ENT, CMB_CTL),
 
   // Left Left Thumb
   CHORD(MO(7),   /* <- */ CMB_LYV),
@@ -437,7 +446,7 @@ const ComboWithKeycode combos[] = {
   CHORD(MO(4),   /* <- */ CMB_LYV, CMB_LYG),
 
   // Right Thumb
-  CHORD(LA_CHNG, /* <- */ CMB_LAN),
+  CHORD(MU_LANG, /* <- */ CMB_LAN),
   CHORD(AG_DOT,  /* <- */ CMB_DOT),
   CHORD(KC_SPC,  /* <- */ CMB_SPC),
   CHORD(ALT_0,   /* <- */ CMB_ALT),
@@ -446,7 +455,7 @@ const ComboWithKeycode combos[] = {
   CHORD(CTAL_0,  /* <- */ CMB_SPC, CMB_ALT),
   CHORD(SHAL_0,  /* <- */ CMB_DOT, CMB_ALT),
   CHORD(WIN_0,   /* <- */ CMB_SPC, CMB_DOT, CMB_ALT),
-  CHORD(WN_L,    /* <- */ CMB_LAN, CMB_DOT, CMB_ALT),
+  CHORD(MU_WNL,  /* <- */ CMB_LAN, CMB_DOT, CMB_ALT),
 
   // Right Right Thumb
   CHORD(MO(4),   /* <- */ CMB_LYR),
@@ -633,6 +642,42 @@ bool process_my_lang_keys(uint16_t keycode, keyrecord_t *record) {
   return true;
 }
 
+// Музыка обязательно должна находиться вне функции, потому что она проигрывается асинхронно...
+float my_song1[][2] = SONG(QWERTY_SOUND);
+float my_song2[][2] = SONG(PLANCK_SOUND);
+float my_song3[][2] = SONG(AG_SWAP_SOUND);
+float my_song4[][2] = SONG(VIOLIN_SOUND);
+float my_song5[][2] = SONG(GUITAR_SOUND);
+float my_song6[][2] = SONG(CHROMATIC_SOUND);
+bool process_my_music_keys(uint16_t keycode, keyrecord_t *record) {
+  // https://github.com/qmk/qmk_firmware/blob/master/quantum/audio/song_list.h
+  // https://docs.qmk.fm/#/feature_audio
+
+  #define MUSIC_KEYCODE(FROM, TO, SONG) \
+    case FROM: \
+      if (record->event.pressed) { \
+        PLAY_SONG(SONG); \
+        press_arbitrary_keycode(TO, true); \
+      } else { \
+        press_arbitrary_keycode(TO, false); \
+      } \
+      return false; \
+      break;
+
+  switch (keycode) {
+    MUSIC_KEYCODE(MU_LANG, LA_CHNG, my_song1)
+    MUSIC_KEYCODE(MU_LAN1, LA_CAPS, my_song2)
+    MUSIC_KEYCODE(MU_LAN2, LA_ALSH, my_song4)
+    MUSIC_KEYCODE(MU_LAN3, LA_CTSH, my_song5)
+    MUSIC_KEYCODE(MU_LAN4, LA_WISP, my_song6)
+    MUSIC_KEYCODE(MU_CTJ, CT_J, my_song3)
+    MUSIC_KEYCODE(MU_SCR, MY_SCRN, my_song3)
+    MUSIC_KEYCODE(MU_WNL, WN_L, my_song3)
+  }
+
+  return true;
+}
+
 layer_state_t layer_state_set_user(layer_state_t state) {
   ML_LED_1(false);
   ML_LED_2(false);
@@ -671,6 +716,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
 
   if (!color_process_record(keycode, record)) {
+    return false;
+  }
+
+  if (!process_my_music_keys(keycode, record)) {
     return false;
   }
 
