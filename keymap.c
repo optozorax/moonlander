@@ -8,6 +8,7 @@
 #include "lang_shift/include.h"
 #include "combo/include.h"
 #include "color/include.h"
+#include "tt/include.h"
 
 enum custom_keycodes {
   KEYCODES_START = CUSTOM_SAFE_RANGE,
@@ -213,7 +214,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     EN_UNDS, AC_GRV,  EN_X,    EN_Y,    EN_P,    EN_S_I,  CMB_CTC,
     EN_DQUO, EN_A,    EN_O,    EN_E,    EN_U,    EN_I,    CMB_CTV,
     EN_QUOT, AC_ACT,  EN_Q,    EN_J,    EN_K,    AC_CIRC,
-    MU_CTJ,  TT(8),   CT_SLSH, CMB_LYG, CMB_LYV,
+    MU_CTJ,  TT_008,  CT_SLSH, CMB_LYG, CMB_LYV,
     CMB_CTL, // LEFT RED THUMB KEY
     CMB_SHF, CMB_BSP, CMB_ENT, // LEFT THUMB KEYS
 
@@ -222,7 +223,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     CMB_CTS, EN_F,    EN_G,    EN_C,    EN_R,    EN_L,    EN_MINS,
     CMB_CMS, EN_D,    EN_H,    EN_T,    EN_N,    EN_S,    XXXXXXX,
              EN_B,    EN_M,    EN_W,    EN_V,    EN_Z,    AC_TILD,
-                      CMB_LYR, CMB_SLH, KG_NEXT, TT(6),   TT(9),
+                      CMB_LYR, CMB_SLH, KG_NEXT, TT_006,  TT_009,
                       CMB_ALT, // RIGHT RED THUMB KEY
                       CMB_LAN, CMB_DOT, CMB_SPC // RIGHT THUMB KEYS
   ),
@@ -441,9 +442,9 @@ const ComboWithKeycode combos[] = {
   CHORD(MU_SCR,  /* <- */ CMB_BSP, CMB_ENT, CMB_CTL),
 
   // Left Left Thumb
-  CHORD(MO(7),   /* <- */ CMB_LYV),
-  CHORD(MO(5),   /* <- */ CMB_LYG),
-  CHORD(MO(4),   /* <- */ CMB_LYV, CMB_LYG),
+  CHORD(TT_007,   /* <- */ CMB_LYV),
+  CHORD(TT_005,   /* <- */ CMB_LYG),
+  CHORD(TT_004,   /* <- */ CMB_LYV, CMB_LYG),
 
   // Right Thumb
   CHORD(MU_LANG, /* <- */ CMB_LAN),
@@ -458,7 +459,7 @@ const ComboWithKeycode combos[] = {
   CHORD(MU_WNL,  /* <- */ CMB_LAN, CMB_DOT, CMB_ALT),
 
   // Right Right Thumb
-  CHORD(MO(4),   /* <- */ CMB_LYR),
+  CHORD(TT_004,   /* <- */ CMB_LYR),
   CHORD(AG_BSLS, /* <- */ CMB_SLH),
   CHORD(AG_3DOT, /* <- */ CMB_LYR, CMB_SLH),
 
@@ -653,13 +654,22 @@ bool process_my_music_keys(uint16_t keycode, keyrecord_t *record) {
   // https://github.com/qmk/qmk_firmware/blob/master/quantum/audio/song_list.h
   // https://docs.qmk.fm/#/feature_audio
 
+  static bool disable_music = false;
+
+  if (disable_music)
+    return true;
+
   #define MUSIC_KEYCODE(FROM, TO, SONG) \
     case FROM: \
       if (record->event.pressed) { \
         PLAY_SONG(SONG); \
+        disable_music = true; \
         press_arbitrary_keycode(TO, true); \
+        disable_music = false; \
       } else { \
+        disable_music = true; \
         press_arbitrary_keycode(TO, false); \
+        disable_music = false; \
       } \
       return false; \
       break;
@@ -673,6 +683,13 @@ bool process_my_music_keys(uint16_t keycode, keyrecord_t *record) {
     MUSIC_KEYCODE(MU_CTJ, CT_J, my_song3)
     MUSIC_KEYCODE(MU_SCR, MY_SCRN, my_song3)
     MUSIC_KEYCODE(MU_WNL, WN_L, my_song3)
+
+    case TG(4):
+    case TG(5):
+    case TG(6):
+    case TG(7):
+    case TG(8):
+    MUSIC_KEYCODE(TG(9), keycode, my_song6)
   }
 
   return true;
@@ -704,6 +721,10 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   if (combo_enabled && !combo_process_record(keycode, record)) {
+    return false;
+  }
+
+  if (!tt_process_record(keycode, record)) {
     return false;
   }
 
