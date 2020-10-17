@@ -13,49 +13,11 @@
 enum custom_keycodes {
   KEYCODES_START = CUSTOM_SAFE_RANGE,
 
-  // English specific keys
-  EN_LTEQ, // <=
-  EN_GTEQ, // >=
-  EN_ARR1, // ->
-  EN_ARR2, // =>
-  EN_FISH, // ::<>()◀️◀️◀️
-  EN_MACR, // #[]◀️
+  // Wow, such empty
 
-  KG_NEXT,
-
-  F6_CT_C,
-
-  MY_SCRN,
-
-  CT_SHF,
-
-  CT_A_C,
-  CT_A_V,
-  CT_A_X,
-  CT_D,
-  CT_SLSH,
-  CT_Y,
-
-  LED_1,
-  LED_2,
-  LED_3,
-  LED_4,
-  LED_5,
-  LED_6,
-
-  MS_DN_1,
-  MS_UP_1,
-  MS_LF_1,
-  MS_RG_1,
-
-  MU_LANG,
-  MU_LAN1,
-  MU_LAN2,
-  MU_LAN3,
-  MU_LAN4,
-  MU_CTJ,
-  MU_SCR,
-  MU_WNL,
+  NEW_NEW_SAFE_RANGE,
+  #undef CUSTOM_SAFE_RANGE
+  #define CUSTOM_SAFE_RANGE NEW_NEW_SAFE_RANGE
 };
 
 #define MY_layout( \
@@ -85,32 +47,21 @@ LAYOUT_moonlander( \
 )
 
 // Shift keys
-#define SH_F3 S(KC_F3)
-#define SH_PSCR S(KC_PSCR)
 #define SH_TAB S(KC_TAB)
 
 // Ctrl+Shift keys
-#define CS_TAB LCTL(S(KC_TAB))
 #define CS_T LCTL(S(KC_T))
 #define CS_K LCTL(S(KC_K))
 #define CS_M LCTL(S(KC_M))
-#define TASK LCTL(S(KC_ESC))
 
+// Compose keys
 #define AC_GRV RALT(KC_GRV)
 #define AC_ACT RALT(KC_QUOT)
 #define AC_CIRC RALT(KC_CIRC)
 #define AC_TILD RALT(KC_TILD)
 
 // Alt keys
-#define AL_TAB LALT(KC_TAB)
-#define AL_TTAB M(0)
-#define AL_D LALT(KC_D)
-#define AL_PSCR LALT(KC_PSCR)
-#define AL_F6 LALT(KC_F6) // Alt+Tab between same windows
-#define AL_ESC LALT(KC_ESC) // Alt+Tab with instant preview
-#define AL_F10 LALT(KC_F10) // Maximize window
-#define AL_F4 LALT(KC_F4) // Close window
-#define AL_UP LALT(KC_UP) // Close window
+#define AL_UP LALT(KC_UP)
 
 // Gui keys
 #define WN_1 LGUI(KC_1)
@@ -125,11 +76,7 @@ LAYOUT_moonlander( \
 #define WN_F1 LGUI(KC_F1)
 #define WN_F2 LGUI(KC_F2)
 #define WN_F3 LGUI(KC_F3)
-#define WN_RGHT LGUI(KC_RGHT) // Window to right half
-#define WN_LEFT LGUI(KC_LEFT) // Window to left half
 #define WN_Q LGUI(KC_Q)
-#define WS_RGHT LGUI(S(KC_RGHT)) // Window to right display
-#define WS_LEFT LGUI(S(KC_LEFT)) // Window to left
 #define WN_L LGUI(KC_L)
 
 // Ctrl keys
@@ -138,14 +85,9 @@ LAYOUT_moonlander( \
 #define CT_DOWN LCTL(KC_DOWN)
 #define CT_RGHT LCTL(KC_RGHT)
 #define CT_ENT LCTL(KC_ENT)
-#define CT_DEL LCTL(KC_DEL)
 #define CT_BSPC LCTL(KC_BSPC)
-#define CT_TAB LCTL(KC_TAB)
 #define CT_1 LCTL(KC_1)
 #define CT_2 LCTL(KC_2)
-#define CT_3 LCTL(KC_3)
-#define CT_4 LCTL(KC_4)
-#define CT_5 LCTL(KC_5)
 #define CT_Z LCTL(KC_Z)
 #define CT_T LCTL(KC_T)
 #define CT_W LCTL(KC_W)
@@ -155,18 +97,11 @@ LAYOUT_moonlander( \
 #define CT_A LCTL(KC_A)
 #define CT_S LCTL(KC_S)
 #define CT_F5 LCTL(KC_F5)
-
+#define CT_PGUP LCTL(KC_PGUP)
+#define CT_PGDN LCTL(KC_PGDN)
 #define CT_X LCTL(KC_X)
 #define CT_C LCTL(KC_C)
 #define CT_V LCTL(KC_V)
-
-// Audio keys
-#define AU_MUTE KC_AUDIO_MUTE
-#define AU_VOLU KC_AUDIO_VOL_UP
-#define AU_VOLD KC_AUDIO_VOL_DOWN
-#define AU_NEXT KC_MEDIA_NEXT_TRACK
-#define AU_PREV KC_MEDIA_PREV_TRACK
-#define AU_PLAY KC_MEDIA_PLAY_PAUSE
 
 #define RGB_LYR TOGGLE_LAYER_COLOR
 
@@ -205,6 +140,13 @@ LAYOUT_moonlander( \
 #define CMS_SH CMB_021
 #define CMS_S_R CMB_022
 #define CMS_SSH CMB_023
+
+// Подключаем обработку кастомных кейкодов
+#include "custom_lang.h"
+#include "custom_hotkeys.h"
+#include "moonlander_leds.h"
+#include "mouse_pixel_move.h"
+#include "song_keys.h"
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //---------------------------------------------------------------------------
@@ -295,7 +237,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [4] = MY_layout(
     // LEFT HALF
     TG(4),   KC_F7,   KC_F5,   KC_F3,   KC_F1,   KC_F9,   KC_F11,
-    _______, KC_HOME, KC_PGDN, KC_PGUP, KC_END,  SH_F3,   _______,
+    _______, KC_HOME, KC_PGDN, KC_PGUP, KC_END,  CT_J,    _______,
     CS_M,    KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, CS_K,    _______,
     _______, CT_LEFT, CT_DOWN, CT_UP,   CT_RGHT, CT_F,
     _______, _______, _______, _______, _______,
@@ -316,9 +258,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [5] = MY_layout(
     // LEFT HALF
     TG(5),   _______, _______, _______, _______,  _______,  _______,
-    AU_MUTE, KC_F5,   CS_T,    CT_T,    CT_W,     F6_CT_C,  _______,
-    AU_VOLU, AU_PREV, AU_NEXT, CS_TAB,  CT_TAB,   AU_PLAY,  _______,
-    AU_VOLD, CT_F5,   _______, CT_1,    CT_2,     _______,
+    KC_MUTE, KC_F5,   CS_T,    CT_T,    CT_W,     F6_CT_C,  _______,
+    KC_VOLU, KC_MPRV, KC_MNXT, CT_PGUP, CT_PGDN,  KC_MPLY,  _______,
+    KC_VOLD, CT_F5,   _______, CT_1,    CT_2,     _______,
     _______, _______, _______, _______, _______,  
     _______, // LEFT RED THUMB KEY
     _______, _______, _______, // LEFT THUMB KEYS
@@ -328,7 +270,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______, _______, KC_WH_L, KC_WH_U, KC_WH_D, KC_WH_R, _______,
     _______, _______, KC_MS_L, KC_MS_U, KC_MS_D, KC_MS_R, _______,
              _______, MS_LF_1, MS_UP_1, MS_DN_1, MS_RG_1, _______,
-             _______, _______, _______, _______, _______,
+                      MS_LF10, MS_UP10, MS_DN10, MS_RG10, _______,
                       _______, // RIGHT RED THUMB KEY
                       KC_BTN3, KC_BTN2, KC_BTN1 // RIGHT THUMB KEYS
   ),
@@ -498,6 +440,16 @@ const ComboWithKeycode combos[] = {
 };
 const uint8_t combos_size = sizeof(combos)/sizeof(ComboWithKeycode);
 
+const uint16_t tt_keys[][3] = {
+  { TT_004, MO(4), TG(4) },
+  { TT_005, MO(5), TG(5) },
+  { TT_006, MO(6), TG(6) },
+  { TT_007, MO(7), TG(7) },
+  { TT_008, MO(8), TG(8) },
+  { TT_009, MO(9), TG(9) },
+};
+const uint8_t tt_size = sizeof(tt_keys)/(sizeof(uint16_t) * 3);
+
 enum ledmap_colors {
   COLOR_BLACK = COLOR_SAFE_RANGE, // Чёрный цвет
   COLOR_ANYFN, // Цвет для кнопки, нажимаемой любым пальцем
@@ -584,118 +536,8 @@ const uint8_t PROGMEM layermap[][3] = {
 };
 const uint8_t layermap_size = sizeof(layermap)/(sizeof(uint8_t) * 3);
 
-// Мои языко-символьные клавиши
-bool process_my_lang_keys(uint16_t keycode, keyrecord_t *record) {
-  // English-specific codes
-  switch (keycode) {
-    case EN_LTEQ:
-      if (record->event.pressed) {
-        lang_shift_tap_key(EN_LT);
-        lang_shift_tap_key(AG_EQL);
-      }
-      return false;
-      break;
-    case EN_GTEQ:
-      if (record->event.pressed) {
-        lang_shift_tap_key(EN_GT);
-        lang_shift_tap_key(AG_EQL);
-      }
-      return false;
-      break;
-    case EN_ARR1:
-      if (record->event.pressed) {
-        lang_shift_tap_key(AG_MINS);
-        lang_shift_tap_key(EN_GT);
-      }
-      return false;
-      break;
-    case EN_ARR2:
-      if (record->event.pressed) {
-        lang_shift_tap_key(AG_EQL);
-        lang_shift_tap_key(EN_GT);
-      }
-      return false;
-      break;
-    case EN_FISH:
-      if (record->event.pressed) {
-        lang_shift_tap_key(AG_COLN);
-        lang_shift_tap_key(AG_COLN);
-        lang_shift_tap_key(EN_LT);
-        lang_shift_tap_key(EN_GT);
-        lang_shift_tap_key(EN_LPRN);
-        lang_shift_tap_key(EN_RPRN);
-        register_code(KC_LEFT); unregister_code(KC_LEFT);
-        register_code(KC_LEFT); unregister_code(KC_LEFT);
-        register_code(KC_LEFT); unregister_code(KC_LEFT);
-      }
-      return false;
-      break;
-    case EN_MACR:
-      if (record->event.pressed) {
-        lang_shift_tap_key(EN_HASH);
-        lang_shift_tap_key(EN_LBRC);
-        lang_shift_tap_key(EN_RBRC);
-        register_code(KC_LEFT); unregister_code(KC_LEFT);
-      }
-      return false;
-      break;
-  }
-  return true;
-}
-
-// Музыка обязательно должна находиться вне функции, потому что она проигрывается асинхронно...
-float my_song1[][2] = SONG(QWERTY_SOUND);
-float my_song2[][2] = SONG(PLANCK_SOUND);
-float my_song3[][2] = SONG(AG_SWAP_SOUND);
-float my_song4[][2] = SONG(VIOLIN_SOUND);
-float my_song5[][2] = SONG(GUITAR_SOUND);
-float my_song6[][2] = SONG(CHROMATIC_SOUND);
-bool process_my_music_keys(uint16_t keycode, keyrecord_t *record) {
-  // https://github.com/qmk/qmk_firmware/blob/master/quantum/audio/song_list.h
-  // https://docs.qmk.fm/#/feature_audio
-
-  static bool disable_music = false;
-
-  if (disable_music)
-    return true;
-
-  #define MUSIC_KEYCODE(FROM, TO, SONG) \
-    case FROM: \
-      if (record->event.pressed) { \
-        PLAY_SONG(SONG); \
-        disable_music = true; \
-        press_arbitrary_keycode(TO, true); \
-        disable_music = false; \
-      } else { \
-        disable_music = true; \
-        press_arbitrary_keycode(TO, false); \
-        disable_music = false; \
-      } \
-      return false; \
-      break;
-
-  switch (keycode) {
-    MUSIC_KEYCODE(MU_LANG, LA_CHNG, my_song1)
-    MUSIC_KEYCODE(MU_LAN1, LA_CAPS, my_song2)
-    MUSIC_KEYCODE(MU_LAN2, LA_ALSH, my_song4)
-    MUSIC_KEYCODE(MU_LAN3, LA_CTSH, my_song5)
-    MUSIC_KEYCODE(MU_LAN4, LA_WISP, my_song6)
-    MUSIC_KEYCODE(MU_CTJ, CT_J, my_song3)
-    MUSIC_KEYCODE(MU_SCR, MY_SCRN, my_song3)
-    MUSIC_KEYCODE(MU_WNL, WN_L, my_song3)
-
-    case TG(4):
-    case TG(5):
-    case TG(6):
-    case TG(7):
-    case TG(8):
-    MUSIC_KEYCODE(TG(9), keycode, my_song6)
-  }
-
-  return true;
-}
-
 layer_state_t layer_state_set_user(layer_state_t state) {
+  // Выключаем все леды, потому что они только просвечивают своим некрасивым цветом через прозрачные кейкапы, а для чего их использовать можно я не придумал
   ML_LED_1(false);
   ML_LED_2(false);
   ML_LED_3(false);
@@ -705,16 +547,12 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 
   uint8_t layer = get_highest_layer(state);
 
+  // Устанавливаем текущий цвет клавиатуры таким же какой сейчас цвет у слоя. Это создаёт красивый эффект для подсветок, которые используют текущий цвет.
   rgb_matrix_sethsv(
     pgm_read_byte(&layermap[layer][0]),
     pgm_read_byte(&layermap[layer][1]),
     pgm_read_byte(&layermap[layer][2])
   );
-
-  switch (layer) {
-      default:
-          break;
-  }
 
   return state;
 }
@@ -740,172 +578,20 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     return false;
   }
 
-  if (!process_my_music_keys(keycode, record)) {
+  if (!process_my_hotkeys(keycode, record)) {
     return false;
   }
 
-  switch (keycode) {
-    case KG_NEXT:
-      if (record->event.pressed) {
-        register_code(KC_TAB);
-        unregister_code(KC_TAB);
-        register_code(KC_TAB);
-        unregister_code(KC_TAB);
-        register_code(KC_LCTRL);
-        register_code(KC_RGHT);
-        unregister_code(KC_RGHT);
-        unregister_code(KC_LCTRL);
-      }    
-      return false;
-      break;
-    case F6_CT_C:
-      if (record->event.pressed) {
-        register_code(KC_F6);
-        unregister_code(KC_F6);
+  if (!process_moonlander_leds(keycode, record)) {
+    return false;
+  }
 
-        register_code(KC_LCTL);
-          register_code(KC_C);
-          unregister_code(KC_C);
-        unregister_code(KC_LCTL);
-      }
-      return false;
-      break;
-    case CT_SHF:
-      if (record->event.pressed) {
-        register_code(KC_LCTRL);
-        register_code(KC_LSHIFT);
-      } else {
-        unregister_code(KC_LSHIFT);
-        unregister_code(KC_LCTRL);
-      }
-      return false;
-    case MY_SCRN:
-      if (record->event.pressed) {
-        switch (lang_current_change) {
-          case LANG_CHANGE_CAPS: {
-            register_code(KC_LCTRL);
-            register_code(KC_LSHIFT);
-            register_code(KC_PSCR);
-            unregister_code(KC_PSCR);
-            unregister_code(KC_LSHIFT);
-            unregister_code(KC_LCTRL);
-          } break;
-          case LANG_CHANGE_ALT_SHIFT:
-          case LANG_CHANGE_CTRL_SHIFT: {
-            register_code(KC_LGUI);
-              register_code(KC_LSHIFT);
-              register_code(KC_S);
-            unregister_code(KC_S);
-              unregister_code(KC_LSHIFT);
-              unregister_code(KC_LGUI);
-          } break;
-          case LANG_CHANGE_WIN_SPACE: {
-            // No screenshot, maybe it android
-          } break;
-        } 
-      }
-      return false;
-      break;
-    case CT_A_C:
-      if (record->event.pressed) {
-        shift_activate(0);
-        register_code(KC_LCTRL);
-        register_code(KC_A);
-        unregister_code(KC_A);
-        register_code(KC_C);
-        unregister_code(KC_C);
-        unregister_code(KC_LCTRL);
-      }
-      return true;
-    case CT_A_V:
-      if (record->event.pressed) {
-        shift_activate(0);
-        register_code(KC_LCTRL);
-        register_code(KC_A);
-        unregister_code(KC_A);
-        register_code(KC_V);
-        unregister_code(KC_V);
-        unregister_code(KC_LCTRL);
-      }
-      return true;
-    case CT_A_X:
-      if (record->event.pressed) {
-        shift_activate(0);
-        register_code(KC_LCTRL);
-        register_code(KC_A);
-        unregister_code(KC_A);
-        register_code(KC_X);
-        unregister_code(KC_X);
-        unregister_code(KC_LCTRL);
-      }
-      return true;
-    case CT_D:
-      if (record->event.pressed) {
-        lang_activate(0);
-        register_code(KC_LCTRL);
-        register_code(KC_D);
-        unregister_code(KC_D);
-        unregister_code(KC_LCTRL);
-      }
-      return true;
-    case CT_Y:
-      if (record->event.pressed) {
-        shift_activate(0);
-        register_code(KC_LCTRL);
-        register_code(KC_Y);
-        unregister_code(KC_Y);
-        unregister_code(KC_LCTRL);
-      }
-      return true;
-    case CT_SLSH:
-      if (record->event.pressed) {
-        lang_activate(0);
-        register_code(KC_LCTRL);
-        register_code(KC_SLSH);
-        unregister_code(KC_SLSH);
-        unregister_code(KC_LCTRL);
-      }
-      return true;
-    case LED_1: if (record->event.pressed) { ML_LED_1(true); } else { ML_LED_1(false); } return false; break;
-    case LED_2: if (record->event.pressed) { ML_LED_2(true); } else { ML_LED_2(false); } return false; break;
-    case LED_3: if (record->event.pressed) { ML_LED_3(true); } else { ML_LED_3(false); } return false; break;
-    case LED_4: if (record->event.pressed) { ML_LED_4(true); } else { ML_LED_4(false); } return false; break;
-    case LED_5: if (record->event.pressed) { ML_LED_5(true); } else { ML_LED_5(false); } return false; break;
-    case LED_6: if (record->event.pressed) { ML_LED_6(true); } else { ML_LED_6(false); } return false; break;
-    #ifdef POINTING_DEVICE_ENABLE
-    case MS_DN_1: {
-      if (record->event.pressed) {
-        report_mouse_t currentReport = {};
-        currentReport.y = 1;
-        pointing_device_set_report(currentReport);
-      }
-      return false;
-      } break;
-    case MS_UP_1: {
-      if (record->event.pressed) {
-        report_mouse_t currentReport = {};
-        currentReport.y = -1;
-        pointing_device_set_report(currentReport);
-      }
-      return false;
-      } break;
-    case MS_LF_1: {
-      if (record->event.pressed) {
-        report_mouse_t currentReport = {};
-        currentReport.x = -1;
-        pointing_device_set_report(currentReport);
-      }
-      return false;
-      } break;
-    case MS_RG_1: {
-      if (record->event.pressed) {
-        report_mouse_t currentReport = {};
-        currentReport.x = 1;
-        pointing_device_set_report(currentReport);
-      }
-      return false;
-      } break;
-    #endif
+  if (!process_mouse_pixel_move(keycode, record)) {
+    return false;
+  }
+
+  if (!process_my_music_keys(keycode, record)) {
+    return false;
   }
 
   return true;
@@ -920,6 +606,11 @@ void matrix_scan_user(void) {
   user_timer();
 }
 
+// Нужно для color.h
 void rgb_matrix_indicators_user(void) {
   color_rgb_matrix_indicators();
+}
+
+void keyboard_post_init_user(void) {
+  rgb_matrix_enable();
 }

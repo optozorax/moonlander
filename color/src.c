@@ -1,11 +1,6 @@
 extern bool g_suspend_state;
 extern rgb_config_t rgb_matrix_config;
 
-// А это вроде как не надо?
-// void keyboard_post_init_user(void) {
-//   rgb_matrix_enable();
-// }
-
 void set_layer_color(int layer) {
   #define SET_COLOR(H, S, V) hsv.h = H; hsv.s = S; hsv.v = V;
 

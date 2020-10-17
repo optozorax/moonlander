@@ -16,15 +16,8 @@ enum tt_keycodes {
 	#define CUSTOM_SAFE_RANGE TT_NEW_SAFE_RANGE
 };
 
-uint16_t tt_keys[][3] = {
-	{ TT_004, MO(4), TG(4) },
-	{ TT_005, MO(5), TG(5) },
-	{ TT_006, MO(6), TG(6) },
-	{ TT_007, MO(7), TG(7) },
-	{ TT_008, MO(8), TG(8) },
-	{ TT_009, MO(9), TG(9) },
-};
-uint8_t tt_size = sizeof(tt_keys)/(sizeof(uint16_t) * 3);
+const uint16_t tt_keys[][3];
+const uint8_t tt_size;
 
 uint8_t tt_get_pos(uint16_t key) {
 	for (int i = 0; i < tt_size; ++i) {
