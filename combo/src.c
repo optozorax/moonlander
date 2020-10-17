@@ -266,6 +266,9 @@ bool combo_process_local_states(Combo *combo, uint16_t key, keyrecord_t *record)
 }
 
 bool combo_process_record(uint16_t key, keyrecord_t *record) {
+  if (!combo_enabled)
+    return true;
+
   bool down = record->event.pressed;
   ComboKey key_combo = combo_key_to_combo_key(key);
   #ifdef COMBO_DEBUG

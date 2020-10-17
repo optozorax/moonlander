@@ -85,12 +85,25 @@ enum custom_keycodes {
 
 ```c
 bool process_record_user(uint16_t key, keyrecord_t *record) {
-  if (!process_record_lang_shift(keycode, record))
+  if (!lang_shift_process_record(keycode, record))
     return false;
 
   ...
 }
 ```
+
+Затем нужно определить функцию `matrix_scan_user`, если она у вас ещё не определена, и вызывать функцию `user_timer`, а в этой функции вызывать `combo_user_timer();`:
+```c
+void user_timer(void) {
+  lang_shift_user_timer();
+}
+
+void matrix_scan_user(void) {
+  user_timer();
+}
+```
+
+**Объяснение:** функция `matrix_scan_user` вызывается примерно каждые 2 миллисекунды, она сканирует матрицу. Значит её вполне можно использовать для отслеживания собственных таймеров. Поэтому мы вызываем из неё функцию `user_timer`, которая лучше говорит о наших намерениях, чем `matrx_scan_user`. А уже в функции `user_timer` мы вызываем обработку случая автоматического отжатия шифта или обратного переключения языка
 
 ## Настройка раскладки
 
@@ -102,7 +115,7 @@ bool process_record_user(uint16_t key, keyrecord_t *record) {
 
 Причём в шифтовом слое для всех буквенных символов надо прописывать что будет нажат шифт. 
 
-А для шифта и переключения языка используете кейкоды `SHF_N`, `LA_CHNG`, etc. Остальные смотите в файле `keycodes/lang_shift_processing.h`.
+А для шифта и переключения языка используете кейкоды `SFT_N`, `LA_CHNG`, etc. Остальные смотите в файле `keycodes/lang_shift_processing.h`.
 
 Для английского и русского языка используйте кейкоды с префиксами `EN_*`, `RU_*`, все их посмотреть можно в файле `keycodes/lang.h`.
 
@@ -113,9 +126,9 @@ bool process_record_user(uint16_t key, keyrecord_t *record) {
 ```c
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //---------------------------------------------------------------------------
-  [0] = LAYOUT(EN_AMPR, EN_W,    SHF_N,   LA_CHNG), // & w <Шифт> <Переключение языка>
+  [0] = LAYOUT(EN_AMPR, EN_W,    SFT_N,   LA_CHNG), // & w <Шифт> <Переключение языка>
   [1] = LAYOUT(EN_7,    EN_S_W,  _______, RU_NUME), // 7 W <Шифт> №
-  [2] = LAYOUT(RU_7 ,   RU_JU,   SHF_N,   LA_CHNG), // 7 ю <Шифт> <Переключение языка>
+  [2] = LAYOUT(RU_7 ,   RU_JU,   SFT_N,   LA_CHNG), // 7 ю <Шифт> <Переключение языка>
   [3] = LAYOUT(RU_QUES, RU_S_JU, _______, EN_GRV ), // ? Ю <Шифт> `
 };
 ```
@@ -128,7 +141,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 # Once Shift
 
-Здесь так же представлены клавиши `SHF_N_O`, `SHF_1_O`, `SHF_3_O` (SHiFt Once), которые работают следующим образом:
+Здесь так же представлены клавиши `SFT_N_O`, `SFT_1_O`, `SFT_3_O` (SHiFt Once), которые работают следующим образом:
 * При зажатии применяют шифт только к одной следующей клавише, то есть он автоматически выключается после срабатывания на одной клавише.
 * При одиночном нажатии тоже срабатывает для следующей клавиши, как One Shot Shift, но без таймаута.
 

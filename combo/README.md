@@ -114,7 +114,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 В функции `process_record_user` в самом начале, перед всеми проверками, добавляем код обработки аккорда:
 ```c
 bool process_record_user(uint16_t key, keyrecord_t *record) {
-  if (combo_enabled && !combo_process(keycode, record))
+  if (!combo_process_record(keycode, record))
     return false;
 
   // ...

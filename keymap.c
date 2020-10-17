@@ -110,7 +110,7 @@ LAYOUT_moonlander( \
 #define CMB_CTC CMB_000
 #define CMB_CTV CMB_001
 // Left Thumb
-#define CMB_SHF CMB_002
+#define CMB_SFT CMB_002
 #define CMB_BSP CMB_003
 #define CMB_ENT CMB_004
 #define CMB_CTL CMB_005
@@ -158,7 +158,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     EN_QUOT, AC_ACT,  EN_Q,    EN_J,    EN_K,    AC_CIRC,
     MU_CTJ,  TT_008,  CT_SLSH, CMB_LYG, CMB_LYV,
     CMB_CTL, // LEFT RED THUMB KEY
-    CMB_SHF, CMB_BSP, CMB_ENT, // LEFT THUMB KEYS
+    CMB_SFT, CMB_BSP, CMB_ENT, // LEFT THUMB KEYS
 
     // RIGHT HALF
     CT_D,    EN_ASTR, EN_EXCL, EN_QUES, EN_HASH, EN_SLSH, CT_Z,
@@ -200,7 +200,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     EN_QUOT, RU_JA,   RU_CH,   RU_S,    RU_I,    RU_Y,
     _______, _______, _______, CMB_LYG, CMB_LYV,
     CMB_CTL, // LEFT RED THUMB KEY
-    CMB_SHF, CMB_BSP, CMB_ENT, // LEFT THUMB KEYS
+    CMB_SFT, CMB_BSP, CMB_ENT, // LEFT THUMB KEYS
 
     // RIGHT HALF
     CT_D,    RU_ASTR, RU_EXCL, RU_QUES, EN_HASH, RU_SLSH, CT_Z,
@@ -367,20 +367,20 @@ const ComboWithKeycode combos[] = {
   CHORD(CT_X,    /* <- */ CMB_CTC, CMB_CTV),
 
   // Left Index + Thumb
-  CHORD(CT_A_C,  /* <- */ CMB_SHF, CMB_CTC),
-  CHORD(CT_A_V,  /* <- */ CMB_SHF, CMB_CTV),
-  CHORD(CT_A_X,  /* <- */ CMB_SHF, CMB_CTC, CMB_CTV),
+  CHORD(CT_A_C,  /* <- */ CMB_SFT, CMB_CTC),
+  CHORD(CT_A_V,  /* <- */ CMB_SFT, CMB_CTV),
+  CHORD(CT_A_X,  /* <- */ CMB_SFT, CMB_CTC, CMB_CTV),
 
   // Left Thumb
-  CHORD(SHF_N,   /* <- */ CMB_SHF),
+  CHORD(SFT_N,   /* <- */ CMB_SFT),
   CHORD(KC_BSPC, /* <- */ CMB_BSP),
   CHORD(KC_ENT,  /* <- */ CMB_ENT),
   CHORD(CTRL_0,  /* <- */ CMB_CTL),
-  CHORD(CT_A,    /* <- */ CMB_SHF, CMB_CTL),
-  CHORD(SHF_N_O, /* <- */ CMB_SHF, CMB_BSP),
+  CHORD(CT_A,    /* <- */ CMB_SFT, CMB_CTL),
+  CHORD(SFT_N_O, /* <- */ CMB_SFT, CMB_BSP),
   CHORD(KC_DEL,  /* <- */ CMB_BSP, CMB_CTL),
   CHORD(CT_BSPC, /* <- */ CMB_BSP, CMB_ENT),
-  CHORD(CTSH_0,  /* <- */ CMB_SHF, CMB_BSP, CMB_CTL),
+  CHORD(CTSH_0,  /* <- */ CMB_SFT, CMB_BSP, CMB_CTL),
   CHORD(MU_SCR,  /* <- */ CMB_BSP, CMB_ENT, CMB_CTL),
 
   // Left Left Thumb
@@ -412,9 +412,9 @@ const ComboWithKeycode combos[] = {
 
   // Right Thumb + Left Thumb
   // Костыль, потому что шифт является одновременно слоём, и одновременно они с запятой аккорды, поэтому нужно такая вещь для дополнительной подстраховки, ибо что-то там не работает...
-  CHORD(AG_PERC, /* <- */ CMB_SHF, CMB_SLH), 
-  CHORD(EN_TILD, /* <- */ CMB_SHF, CMB_CTS),
-  CHORD(EN_DLR,  /* <- */ CMB_SHF, CMB_CMS),
+  CHORD(AG_PERC, /* <- */ CMB_SFT, CMB_SLH), 
+  CHORD(EN_TILD, /* <- */ CMB_SFT, CMB_CTS),
+  CHORD(EN_DLR,  /* <- */ CMB_SFT, CMB_CMS),
 
   // -------------------------------------------------------------------------
   // Shifted index keys
@@ -558,7 +558,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  if (combo_enabled && !combo_process_record(keycode, record)) {
+  if (!combo_process_record(keycode, record)) {
     return false;
   }
 

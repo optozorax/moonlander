@@ -311,7 +311,7 @@ void shift_once_process(Key key, keyrecord_t* record) {
     shift_once_disable_stage = 0;
     shift_activate_from_user(false);
   }
-  if (down && key != SHF_N_O && shift_once_disable_stage == 2) {
+  if (down && key != SFT_N_O && shift_once_disable_stage == 2) {
     shift_once_disable_stage = 1;
     layer_off(shift_once_layer_off);
   }
@@ -547,10 +547,10 @@ bool lang_shift_process_custom_keycodes(Key key, keyrecord_t* record) {
 
   // Обрабатываем клавиши, связанные с кастомным шифтом и кастомным переключением языка
   switch (key) {
-    case SHF_N_O:
+    case SFT_N_O:
       shift_once_process_key(lang_get_shift_layer_number(), down);
       return false;
-    case SHF_N:
+    case SFT_N:
       if (down) {
         shift_activate_from_user(true);
         lang_shift_current_shift_layer = lang_get_shift_layer_number();
