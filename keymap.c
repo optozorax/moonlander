@@ -92,6 +92,7 @@ LAYOUT_moonlander( \
 #define CT_T LCTL(KC_T)
 #define CT_W LCTL(KC_W)
 #define CT_J LCTL(KC_J)
+#define CT_G LCTL(KC_G)
 #define CT_S LCTL(KC_S)
 #define CT_F LCTL(KC_F)
 #define CT_A LCTL(KC_A)
@@ -237,7 +238,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [4] = MY_layout(
     // LEFT HALF
     TG(4),   KC_F7,   KC_F5,   KC_F3,   KC_F1,   KC_F9,   KC_F11,
-    _______, KC_HOME, KC_PGDN, KC_PGUP, KC_END,  CT_J,    _______,
+    CT_G,    KC_HOME, KC_PGDN, KC_PGUP, KC_END,  CT_J,    _______,
     CS_M,    KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, CS_K,    _______,
     _______, CT_LEFT, CT_DOWN, CT_UP,   CT_RGHT, CT_F,
     _______, _______, _______, _______, _______,
@@ -384,9 +385,9 @@ const ComboWithKeycode combos[] = {
   CHORD(MU_SCR,  /* <- */ CMB_BSP, CMB_ENT, CMB_CTL),
 
   // Left Left Thumb
-  CHORD(TT_007,   /* <- */ CMB_LYV),
-  CHORD(TT_005,   /* <- */ CMB_LYG),
-  CHORD(TT_004,   /* <- */ CMB_LYV, CMB_LYG),
+  CHORD(TT_007,  /* <- */ CMB_LYV),
+  CHORD(TT_005,  /* <- */ CMB_LYG),
+  CHORD(TT_004,  /* <- */ CMB_LYV, CMB_LYG),
 
   // Right Thumb
   CHORD(MU_LANG, /* <- */ CMB_LAN),
@@ -401,7 +402,7 @@ const ComboWithKeycode combos[] = {
   CHORD(MU_WNL,  /* <- */ CMB_LAN, CMB_DOT, CMB_ALT),
 
   // Right Right Thumb
-  CHORD(TT_004,   /* <- */ CMB_LYR),
+  CHORD(TT_004,  /* <- */ CMB_LYR),
   CHORD(AG_BSLS, /* <- */ CMB_SLH),
   CHORD(AG_3DOT, /* <- */ CMB_LYR, CMB_SLH),
 
