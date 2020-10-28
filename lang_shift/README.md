@@ -76,9 +76,9 @@ enum custom_keycodes {
 
 ## Подключить код
 
-В своём файле `keymap.c` в самом верху подключаем файл `lang_shift/code.c`:
+В своём файле `keymap.c` в самом верху подключаем файл `lang_shift/include.h`:
 ```c
-#include "lang_shift/code.c"
+#include "lang_shift/include.h"
 ```
 
 ## Вызов модуля для каждой клавиши
