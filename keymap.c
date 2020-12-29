@@ -249,7 +249,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_F12,  KC_F10,  KC_F2,   KC_F4,   KC_F6,   KC_F8,   _______,
     _______, EN_MACR, EN_RBRC, EN_RCBR, EN_LCBR, EN_LBRC, CT_ENT,
     _______, KC_TAB,  EN_GT,   AG_RPRN, AG_LPRN, EN_LT,   SH_TAB,
-             EN_FISH, EN_LTEQ, EN_ARR2, EN_ARR1, EN_GTEQ, _______,
+             EN_FISH, EN_GTEQ, EN_ARR2, EN_ARR1, EN_LTEQ, _______,
                       _______, _______, _______, _______, _______,
                       _______, // RIGHT RED THUMB KEY
                       _______, _______, _______ // RIGHT THUMB KEYS
@@ -351,7 +351,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_RCTL, KC_RSFT, _______, // LEFT THUMB KEYS
 
     // RIGHT HALF
-    _______, _______, KC_NLCK, KC_PSLS, KC_PAST, KC_PMNS, _______,
+    _______, _______, KC_NLCK, KC_PSLS, KC_PAST, KC_PMNS, RESET,
     _______, _______, KC_P7,   KC_P8,   KC_P9,   KC_PPLS, _______,
     _______, _______, KC_P4,   KC_P5,   KC_P6,   KC_PENT, _______,
              _______, KC_P1,   KC_P2,   KC_P3,   KC_PEQL, _______,
