@@ -290,7 +290,7 @@ bool combo_process_record(uint16_t key, keyrecord_t *record) {
     combo->size = 1;
     combo->state = 1;
     combo->last_modify_time = timer_read();
-    combo->row = record->event.key.col;
+    combo->col = record->event.key.col;
     combo->row = record->event.key.row;
     TRANSITION_DEBUG(a);
     return false;
