@@ -537,28 +537,33 @@ const uint8_t PROGMEM layermap[][3] = {
 };
 const uint8_t layermap_size = sizeof(layermap)/(sizeof(uint8_t) * 3);
 
+bool initted_for_layer_state = false;
 layer_state_t layer_state_set_user(layer_state_t state) {
-  // Выключаем все леды, потому что они только просвечивают своим некрасивым цветом через прозрачные кейкапы, а для чего их использовать можно я не придумал
-  ML_LED_1(false);
-  ML_LED_2(false);
-  ML_LED_3(false);
-  ML_LED_4(false);
-  ML_LED_5(false);
-  ML_LED_6(false);
+  if (initted_for_layer_state) {
+    // Выключаем все леды, потому что они только просвечивают своим некрасивым цветом через прозрачные кейкапы, а для чего их использовать можно я не придумал
+    ML_LED_1(false);
+    ML_LED_2(false);
+    ML_LED_3(false);
+    ML_LED_4(false);
+    ML_LED_5(false);
+    ML_LED_6(false);
 
-  uint8_t layer = get_highest_layer(state);
+    uint8_t layer = get_highest_layer(state);
 
-  // Устанавливаем текущий цвет клавиатуры таким же какой сейчас цвет у слоя. Это создаёт красивый эффект для подсветок, которые используют текущий цвет.
-  rgb_matrix_sethsv(
-    pgm_read_byte(&layermap[layer][0]),
-    pgm_read_byte(&layermap[layer][1]),
-    pgm_read_byte(&layermap[layer][2])
-  );
+    // Устанавливаем текущий цвет клавиатуры таким же какой сейчас цвет у слоя. Это создаёт красивый эффект для подсветок, которые используют текущий цвет.
+    rgb_matrix_sethsv(
+      pgm_read_byte(&layermap[layer][0]),
+      pgm_read_byte(&layermap[layer][1]),
+      pgm_read_byte(&layermap[layer][2])
+    );
+  }
 
   return state;
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  initted_for_layer_state = true;
+
   if (!combo_process_record(keycode, record)) {
     return false;
   }
