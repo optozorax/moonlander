@@ -45,7 +45,7 @@ bool combo_has_key(Combo *combo, ComboKey key) {
 
 uint8_t combo_get_len(ComboPos elem_index) {
   for (uint8_t i = 0; i < COMBO_MAX_SIZE + 1; ++i) {
-    if (eq_combo_key(combos[elem_index.repr].to_press[i], NONE_COMBO_KEY)) {
+    if (eq_combo_key(COMBO_KEY(pgm_read_byte(&(combos[elem_index.repr].to_press[i]))), NONE_COMBO_KEY)) {
       return i;
     }
   }
@@ -55,7 +55,7 @@ uint8_t combo_get_len(ComboPos elem_index) {
 bool combo_elem_has_key(ComboPos elem_index, ComboKey key) {
   uint8_t len = combo_get_len(elem_index);
   for (uint8_t i = 0; i < len; ++i) {
-    if (eq_combo_key(combos[elem_index.repr].to_press[i], key)) {
+    if (eq_combo_key(COMBO_KEY(pgm_read_byte(&(combos[elem_index.repr].to_press[i]))), key)) {
       return true;
     }
   }
@@ -68,7 +68,7 @@ ComboPos combo_get_pos(Combo *combo) {
     if (combo_get_len(COMBO_POS(i)) == combo->size) {
       bool found = true;
       for (uint8_t j = 0; j < combo->size; ++j) {
-        found &= combo_has_key(combo, combos[i].to_press[j]);
+        found &= combo_has_key(combo, COMBO_KEY(pgm_read_byte(&(combos[i].to_press[j]))));
       }
       if (found) {
         return COMBO_POS(i);
@@ -95,7 +95,7 @@ bool combo_has_prefix(Combo *combo, ComboKey another_key) {
 }
 
 uint16_t combo_get_keycode(ComboPos pos) {
-  return combos[pos.repr].keycode;
+  return pgm_read_word(&(combos[pos.repr].keycode));
 }
 
 void combo_press(ComboPos pos, bool down, uint8_t col, uint8_t row) {

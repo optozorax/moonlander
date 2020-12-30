@@ -361,7 +361,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 };
 
-const ComboWithKeycode combos[] = {
+const ComboWithKeycode combos[] PROGMEM = {
   // Left Index
   CHORD(CT_C,    /* <- */ CMB_CTC),
   CHORD(CT_V,    /* <- */ CMB_CTV),

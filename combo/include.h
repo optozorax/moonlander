@@ -54,7 +54,7 @@ typedef struct ComboWithKeycode {
   uint16_t keycode;
 } ComboWithKeycode;
 
-const ComboWithKeycode combos[];
+const ComboWithKeycode PROGMEM combos[];
 const uint8_t combos_size;
 
 bool combo_process_record(uint16_t key, keyrecord_t *record);
