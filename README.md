@@ -228,9 +228,9 @@
 
 Так же есть прикольный режим подсветки, когда текущие нажатия подсвечиваются в режиме тепловой карты, можно использовать для записи видео для клавогонок: https://t.me/klavaorgwork/161127.
 
-Так же ещё есть видео, где очень подробно освещается что и как у меня работает в подсветке, и на этой основе параллельно как работает прошивка и раскладка:
+Так же ещё есть видео, где очень подробно освещается что и как у меня работает в подсветке, и на этой основе параллельно объясняется как работает прошивка и раскладка:
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/ImsooykMguA" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+[![](http://img.youtube.com/vi/ImsooykMguA/0.jpg)](http://www.youtube.com/watch?v=ImsooykMguA "")
 
 ### Звуки
 
