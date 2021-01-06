@@ -108,9 +108,11 @@
 
 Так же я не хочу вдаваться в споры об эргономике, про которую я ничего не знаю, и которая меня не интересует.
 
-Но в любом случае, у любой правильной клавиатуры, шансов быть эргономичной намного больше, чем у любой СК.
+Но в любом случае, у любой правильной клавиатуры, шансов быть эргономичной намного больше, чем у любой СК. И все эти принципы "правильной" клавиатуры не делают с ней ничего плохо.
 
-**Раскладка** - под этим словом понимается много чего, более подробно можно прочитать тут: http://klavarog.tk/page/термины/виды_раскладок. В данном месте я буду рассказывать о не-буквенной и немного о буквенных раскладках.
+**Раскладка** - под этим словом понимается много чего, на вики можно более подробно прочитать про [виды раскладок](http://klavarog.tk/page/термины/виды_раскладок). В данном месте я буду рассказывать о не-буквенной и немного о буквенных раскладках.
+
+[**Клавогонки**](https://klavogonki.ru) - сайт-тренажёр для слепой печати где можно хорошо развивать скорость печати.
 
 # Про Moonlander
 
@@ -140,10 +142,14 @@
 
 [![](img/zones.png)](https://kle.klava.org/#/gists/337191ca7166c6cb93781f50f71181ca)
 [![](img/base.png)](https://kle.klava.org/#/gists/9a4b993ea6bff1ff0f9b7a33bc755623)
-[![](img/langs.png)](https://kle.klava.org/#/gists/91178524f9e3273d73aec89aefab0ab0)
-[![](img/red_green.png)](https://kle.klava.org/#/gists/2e94ef1a8f6616e655bfc218fcda885e)
-[![](img/violet_yellow.png)](https://kle.klava.org/#/gists/b6323946c89a4dd6b0c5c29c0531132a)
-[![](img/game_nuclear.png)](https://kle.klava.org/#/gists/d119e7590b585c0c3a8706e953f40745)
+[![](img/english.png)](https://kle.klava.org/#/gists/91178524f9e3273d73aec89aefab0ab0)
+[![](img/russian.png)](https://kle.klava.org/#/gists/07c65db22ed9614664a2eb42cf88ef1f)
+[![](img/red.png)](https://kle.klava.org/#/gists/2e94ef1a8f6616e655bfc218fcda885e)
+[![](img/green.png)](https://kle.klava.org/#/gists/0611ab0f9b2546eb385ccd9c35e18782)
+[![](img/violet.png)](https://kle.klava.org/#/gists/b6323946c89a4dd6b0c5c29c0531132a)
+[![](img/yellow.png)](https://kle.klava.org/#/gists/266a463f773aeb71fdd808377a9ea597)
+[![](img/game.png)](https://kle.klava.org/#/gists/d119e7590b585c0c3a8706e953f40745)
+[![](img/nuclear_war_case_layer.png)](https://kle.klava.org/#/gists/5a6a1244d0f353c495d5aa0f3065d2c1)
 
 # Как ты сделал эту раскладку?
 
