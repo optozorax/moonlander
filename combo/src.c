@@ -3,8 +3,8 @@ typedef struct Combo {
   uint8_t size;
   uint8_t state;
   uint32_t last_modify_time;
-  uint8_t row;
-  uint8_t col;
+  // uint8_t row;
+  // uint8_t col;
 } Combo;
 
 #ifdef COMBO_DEBUG
@@ -290,8 +290,8 @@ bool combo_process_record(uint16_t key, keyrecord_t *record) {
     combo->size = 1;
     combo->state = 1;
     combo->last_modify_time = timer_read();
-    combo->col = record->event.key.col;
-    combo->row = record->event.key.row;
+    // combo->col = record->event.key.col;
+    // combo->row = record->event.key.row;
     TRANSITION_DEBUG(a);
     return false;
   }
@@ -306,7 +306,7 @@ void combo_user_timer(void) {
       if (timer_read() - combo->last_modify_time > COMBO_WAIT_TIME) {
         ComboPos pos = combo_get_pos(combo);
         if (neq_combo_pos(pos, NONE_COMBO_POS)) {
-          combo_press(pos, true, combo->col, combo->row);
+          combo_press(pos, true, 0, 0);
           combo->state = 2;
           TRANSITION_DEBUG(d);
         }

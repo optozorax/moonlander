@@ -53,6 +53,7 @@ LAYOUT_moonlander( \
 #define CS_T LCTL(S(KC_T))
 #define CS_K LCTL(S(KC_K))
 #define CS_M LCTL(S(KC_M))
+#define CS_P LCTL(S(KC_P))
 
 // Compose keys
 #define AC_GRV RALT(KC_GRV)
@@ -62,6 +63,7 @@ LAYOUT_moonlander( \
 
 // Alt keys
 #define AL_UP LALT(KC_UP)
+#define AL_PSCR LALT(KC_PSCR)
 
 // Gui keys
 #define WN_1 LGUI(KC_1)
@@ -249,7 +251,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_F12,  KC_F10,  KC_F2,   KC_F4,   KC_F6,   KC_F8,   _______,
     _______, EN_MACR, EN_RBRC, EN_RCBR, EN_LCBR, EN_LBRC, CT_ENT,
     _______, KC_TAB,  EN_GT,   AG_RPRN, AG_LPRN, EN_LT,   SH_TAB,
-             EN_FISH, EN_GTEQ, EN_ARR2, EN_ARR1, EN_LTEQ, _______,
+             EN_FISH, EN_GTEQ, EN_ARR2, EN_ARR1, EN_LTEQ, EN_CLTG,
                       _______, _______, _______, _______, _______,
                       _______, // RIGHT RED THUMB KEY
                       _______, _______, _______ // RIGHT THUMB KEYS
@@ -261,7 +263,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     TG(5),   _______, _______, _______, _______,  _______,  _______,
     KC_MUTE, KC_F5,   CS_T,    CT_T,    CT_W,     F6_CT_C,  _______,
     KC_VOLU, KC_MPRV, KC_MNXT, CT_PGUP, CT_PGDN,  KC_MPLY,  _______,
-    KC_VOLD, CT_F5,   _______, CT_1,    CT_2,     _______,
+    KC_VOLD, CT_F5,   CS_P,    CT_1,    CT_2,     AL_PSCR,
     _______, _______, _______, _______, _______,  
     _______, // LEFT RED THUMB KEY
     _______, _______, _______, // LEFT THUMB KEYS
@@ -551,7 +553,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     uint8_t layer = get_highest_layer(state);
 
     // Устанавливаем текущий цвет клавиатуры таким же какой сейчас цвет у слоя. Это создаёт красивый эффект для подсветок, которые используют текущий цвет.
-    rgb_matrix_sethsv(
+    rgb_matrix_sethsv_noeeprom(
       pgm_read_byte(&layermap[layer][0]),
       pgm_read_byte(&layermap[layer][1]),
       pgm_read_byte(&layermap[layer][2])

@@ -16,6 +16,8 @@ enum custom_hotkeys_keycodes {
   CT_D,
   CT_SLSH,
   CT_Y,
+  KC_LF5,
+  KC_RG5,
 
   CUSTOM_HOTKEYS_NEW_SAFE_RANGE,
   #undef CUSTOM_SAFE_RANGE

@@ -13,6 +13,7 @@ enum custom_lang_keycodes {
   EN_ARR2, // =>
   EN_FISH, // ::<>()◀️◀️◀️
   EN_MACR, // #[]◀️
+  EN_CLTG, // </
 
   CUSTOM_LANG_NEW_SAFE_RANGE,
   #undef CUSTOM_SAFE_RANGE
@@ -71,6 +72,13 @@ bool process_my_lang_keys(uint16_t keycode, keyrecord_t *record) {
         lang_shift_tap_key(EN_LBRC);
         lang_shift_tap_key(EN_RBRC);
         register_code(KC_LEFT); unregister_code(KC_LEFT);
+      }
+      return false;
+      break;
+    case EN_CLTG:
+      if (record->event.pressed) {
+        lang_shift_tap_key(EN_LT);
+        lang_shift_tap_key(AG_SLSH);
       }
       return false;
       break;
