@@ -1,5 +1,7 @@
 # Моя раскладка для Moonlander на QMK
 
+<div style="display: none">Внимание! Данную статью лучше читать в моём блоге: https://optozorax.github.io/moonlander-layout. Там лучше оформлены видео.</div>
+
 ![](img/moonlander_start.jpg)
 
 [![](img/zones.png)](https://kle.klava.org/#/gists/337191ca7166c6cb93781f50f71181ca)
