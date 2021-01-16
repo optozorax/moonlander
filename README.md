@@ -764,7 +764,7 @@ _Термин_ 🛠
 Вот видео, в котором я набираю простой текст одной рукой, и где можно увидеть как именно происходит печать на Кладенце:
 
 <div style="display: none">
-[![](http://img.youtube.com/vi/tRhdZPuxcyI/0.jpg)](http://www.youtube.com/watch?v=tRhdZPuxcyI "")
+http://www.youtube.com/watch?v=tRhdZPuxcyI
 </div>
 
 <center>
@@ -966,7 +966,7 @@ _Термин_ 🛠
 Вот даже есть видео про этот подход:
 
 <div style="display: none">
-[![](http://img.youtube.com/vi/AKGXZ1ReU54/0.jpg)](http://www.youtube.com/watch?v=AKGXZ1ReU54 "")
+http://www.youtube.com/watch?v=AKGXZ1ReU54
 </div>
 
 <center>
@@ -1086,7 +1086,7 @@ _Принцип_ 📖
 Посмотреть как настраивается мунляндер можно в этом видео:
 
 <div style="display: none">
-[![](http://img.youtube.com/vi/Gs-kb3McXfU/0.jpg)](http://www.youtube.com/watch?v=Gs-kb3McXfU "")
+http://www.youtube.com/watch?v=Gs-kb3McXfU
 </div>
 
 <center>
@@ -1186,7 +1186,7 @@ _Идея_ 💡
 Так же ещё есть видео, где при помощи подсветки я объясняю как у меня работают некоторые клавиши, связанные с <kbd>Shift</kbd>'ом:
 
 <div style="display: none">
-[![](http://img.youtube.com/vi/ImsooykMguA/0.jpg)](http://www.youtube.com/watch?v=ImsooykMguA "")
+http://www.youtube.com/watch?v=ImsooykMguA
 </div>
 
 <center>
