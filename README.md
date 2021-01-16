@@ -381,7 +381,7 @@ _Неадекватность СК для десятипала_ ❌
 
 Так же стаггер `\\\\` можно очень хорошо увидеть на этой фотографии:
 
-[![](img/wrong_planck.png)](https://www.reddit.com/r/MechanicalKeyboards/comments/ac6k1b/big_boi/)
+[![](img/wrong_planck.jpg)](https://www.reddit.com/r/MechanicalKeyboards/comments/ac6k1b/big_boi/)
 
 Но этот стаггер не точно такой же как и на СК. Давайте сравним насколько смещается каждый новый ряд относительно предыдущего на СК:
 
