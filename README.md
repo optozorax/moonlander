@@ -766,6 +766,7 @@ _Термин_ 🛠
 <div style="display: none">
 [![](http://img.youtube.com/vi/tRhdZPuxcyI/0.jpg)](http://www.youtube.com/watch?v=tRhdZPuxcyI "")
 </div>
+
 <center>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/tRhdZPuxcyI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </center>
@@ -967,10 +968,10 @@ _Термин_ 🛠
 <div style="display: none">
 [![](http://img.youtube.com/vi/AKGXZ1ReU54/0.jpg)](http://www.youtube.com/watch?v=AKGXZ1ReU54 "")
 </div>
+
 <center>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/AKGXZ1ReU54" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </center>
-
 
 Я же в свою очередь, очень не люблю нажимать клавишу <kbd>Shift</kbd> на скорости, соответственно мне и не будут нравиться нажатия слоефикатора.
 
@@ -1087,6 +1088,7 @@ _Принцип_ 📖
 <div style="display: none">
 [![](http://img.youtube.com/vi/Gs-kb3McXfU/0.jpg)](http://www.youtube.com/watch?v=Gs-kb3McXfU "")
 </div>
+
 <center>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Gs-kb3McXfU" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </center>
@@ -1146,7 +1148,17 @@ _Принцип_ 📖
 _Принцип_ 📖
 > В любой правильной клавиатуре должны быть физические возможности, позволяющие сообщать о текущем слое, будь то подсветка, экран или маленькие светодиоды.
 
-Так же цветом текущего слоя подсвечиваются и все нажимаемые клавиши. То есть если сейчас русский, то все нажимаемые клавиши — тоже синие. По мне так, очень красиво. Посмотреть как это выглядит вживую можно здесь: https://t.me/klavaorgwork/168706.
+Так же цветом текущего слоя подсвечиваются и все нажимаемые клавиши. То есть если сейчас русский, то все нажимаемые клавиши — тоже синие. По мне так, очень красиво. Посмотреть как это выглядит вживую можно здесь: 
+
+<div style="display: none">
+https://t.me/klavaorgwork/168706.
+</div>
+
+<center>
+<video controls>
+<source src="/submodules/moonlander/video/layer.mp4" type="video/mp4">
+</video>
+</center> 
 
 Так-то от подсветки каждого символа можно и отказаться, если будет альтернатива для индикации слоя. Три цветных лампочки не вариант, уже опробовано на эргодоксе. А вот один RGB светодиод — тема.
 
@@ -1170,6 +1182,7 @@ _Идея_ 💡
 <div style="display: none">
 [![](http://img.youtube.com/vi/ImsooykMguA/0.jpg)](http://www.youtube.com/watch?v=ImsooykMguA "")
 </div>
+
 <center>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/ImsooykMguA" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </center>
