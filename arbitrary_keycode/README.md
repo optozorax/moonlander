@@ -9,10 +9,10 @@
 # Применение
 
 ```c
-press_arbitrary_keycode(MO(4), true, 0, 1);
+press_arbitrary_keycode(MO(4), true);
 ```
 
-Где кейкод - `MO(4)`, а `true` означает что клавиша будет зажата, `false` будет означать что она отпущена. Далее `0` и `1` обозначают столбец и строку соответственно, может быть нужно для подсветки. Сигнатуру и реализацию можно посмотреть в файле `include.h`.
+Где кейкод - `MO(4)`, а `true` означает что клавиша будет зажата, `false` будет означать что она отпущена. Сигнатуру и реализацию можно посмотреть в файле `include.h`.
 
 # Использование
 
@@ -24,15 +24,8 @@ press_arbitrary_keycode(MO(4), true, 0, 1);
 
 ## Модифицировать код QMK
 
-Использоваться этот патч напрямую скорее всего не получится, потому что я его сделал для репозитория `qmk` от `zsa`, так что смотрите вручную где что находится и исправляйте. Благо кода менять нужно не много.
-
+1. В файле `quantum/keymap_common.c` в функции `keymap_key_to_keycode`:
 ```diff
-diff --git a/quantum/keymap_common.c b/quantum/keymap_common.c
-index 570d4798d..a3536ce16 100644
---- a/quantum/keymap_common.c
-+++ b/quantum/keymap_common.c
-@@ -179,7 +179,11 @@ __attribute__((weak)) void action_function(keyrecord_t *record, uint8_t id, uint
- // translates key to keycode
  __attribute__((weak)) uint16_t keymap_key_to_keycode(uint8_t layer, keypos_t key) {
      // Read entire word (16bits)
 -    return pgm_read_word(&keymaps[(layer)][(key.row)][(key.col)]);
@@ -42,19 +35,22 @@ index 570d4798d..a3536ce16 100644
 +        return pgm_read_word(&keymaps[(layer)][(key.row)][(key.col)]);
 +    }
  }
- 
- // translates function id to action
-diff --git a/tmk_core/common/keyboard.h b/tmk_core/common/keyboard.h
-index ff7736718..59ff1c893 100644
---- a/tmk_core/common/keyboard.h
-+++ b/tmk_core/common/keyboard.h
-@@ -29,6 +29,8 @@ extern "C" {
+```
+
+2. В файле `tmk_core/common/keyboard.h` в структуре `keypos_t`:
+```
  typedef struct {
      uint8_t col;
      uint8_t row;
 +    bool use_custom_keycode;
 +    uint16_t custom_keycode;
  } keypos_t;
- 
- /* key event */
+```
+
+3. В файле `quantum/rgb_matrix.c` в функции `process_rgb_matrix`. Это необходимо, чтобы вызове этой функции не подсвечивались рандомные клавиши.
+```diff
+ bool process_rgb_matrix(uint16_t keycode, keyrecord_t *record) {
++    if (record->event.key.custom_keycode) {
++        return true;
++    }
 ```

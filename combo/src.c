@@ -3,8 +3,6 @@ typedef struct Combo {
   uint8_t size;
   uint8_t state;
   uint32_t last_modify_time;
-  // uint8_t row;
-  // uint8_t col;
 } Combo;
 
 #ifdef COMBO_DEBUG
@@ -98,13 +96,13 @@ uint16_t combo_get_keycode(ComboPos pos) {
   return pgm_read_word(&(combos[pos.repr].keycode));
 }
 
-void combo_press(ComboPos pos, bool down, uint8_t col, uint8_t row) {
+void combo_press(ComboPos pos, bool down) {
   #ifdef COMBO_DEBUG
   uprintf("combo press pos: %d %s\n", pos, down ? "down" : "up");
   #endif
 
   combo_enabled = false;
-  press_arbitrary_keycode(combo_get_keycode(pos), down, col, row);
+  press_arbitrary_keycode(combo_get_keycode(pos), down);
   combo_enabled = true;
 }
 
@@ -122,7 +120,7 @@ void combo_onenter_1(Combo *combo) {
 }
 
 void combo_onenter_2(Combo *combo, ComboPos pos, keyrecord_t* record) {
-  combo_press(pos, true, record->event.key.col, record->event.key.row);
+  combo_press(pos, true);
   process_as_usual(record);
   combo->state = 2;
 }
@@ -171,14 +169,18 @@ bool combo_process_1(Combo *combo, uint16_t key, keyrecord_t *record) {
 
   if (down && neq_combo_key(key_combo, NONE_COMBO_KEY)) {
     if (combo_has_prefix(combo, key_combo)) {
-      combo->array[combo->size] = key_combo;
-      combo->size++;
-      combo->last_modify_time = timer_read();
-      TRANSITION_DEBUG(e);
+      if (combo->size == COMBO_MAX_SIZE) {
+        combo_max_size_error();
+      } else {
+        combo->array[combo->size] = key_combo;
+        combo->size++;
+        combo->last_modify_time = timer_read();
+        TRANSITION_DEBUG(e);
+      }
       return false;
     } else {
       if (neq_combo_pos(pos, NONE_COMBO_POS)) {
-        combo_press(pos, true, record->event.key.col, record->event.key.row);
+        combo_press(pos, true);
         combo->state = 2;
         TRANSITION_DEBUG(k);
         return true;
@@ -189,8 +191,8 @@ bool combo_process_1(Combo *combo, uint16_t key, keyrecord_t *record) {
   if (neq_combo_pos(pos, NONE_COMBO_POS)) {
     if (neq_combo_key(key_combo, NONE_COMBO_KEY)) {
       if (up && combo_has_key(combo, key_combo)) {
-        combo_press(pos, true, record->event.key.col, record->event.key.row);
-        combo_press(pos, false, record->event.key.col, record->event.key.row);
+        combo_press(pos, true);
+        combo_press(pos, false);
 
         combo_onenter_3(combo, key_combo);
         TRANSITION_DEBUG(g);
@@ -228,7 +230,7 @@ bool combo_process_2(Combo *combo, uint16_t key, keyrecord_t *record) {
   if (up && neq_combo_key(key_combo, NONE_COMBO_KEY) && combo_has_key(combo, key_combo)) {
 
     ComboPos pos = combo_get_pos(combo);
-    combo_press(pos, false, record->event.key.col, record->event.key.row);
+    combo_press(pos, false);
 
     combo_onenter_3(combo, key_combo);
     TRANSITION_DEBUG(c);
@@ -284,15 +286,17 @@ bool combo_process_record(uint16_t key, keyrecord_t *record) {
   }
 
   if (down && neq_combo_key(key_combo, NONE_COMBO_KEY)) {
-    Combo* combo = &combo_stack[combo_stack_size];
-    combo_stack_size++;
-    combo->array[0] = key_combo;
-    combo->size = 1;
-    combo->state = 1;
-    combo->last_modify_time = timer_read();
-    // combo->col = record->event.key.col;
-    // combo->row = record->event.key.row;
-    TRANSITION_DEBUG(a);
+    if (combo_stack_size == COMBO_STACK_MAX_SIZE) {
+      combo_max_count_error();
+    } else {
+      Combo* combo = &combo_stack[combo_stack_size];
+      combo_stack_size++;
+      combo->array[0] = key_combo;
+      combo->size = 1;
+      combo->state = 1;
+      combo->last_modify_time = timer_read();
+      TRANSITION_DEBUG(a);
+    }
     return false;
   }
 
@@ -306,7 +310,7 @@ void combo_user_timer(void) {
       if (timer_read() - combo->last_modify_time > COMBO_WAIT_TIME) {
         ComboPos pos = combo_get_pos(combo);
         if (neq_combo_pos(pos, NONE_COMBO_POS)) {
-          combo_press(pos, true, 0, 0);
+          combo_press(pos, true);
           combo->state = 2;
           TRANSITION_DEBUG(d);
         }

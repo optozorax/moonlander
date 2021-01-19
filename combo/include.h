@@ -59,6 +59,8 @@ const uint8_t combos_size;
 
 bool combo_process_record(uint16_t key, keyrecord_t *record);
 void combo_user_timer(void);
+void combo_max_count_error(void);
+void combo_max_size_error(void);
 
 // Инклюжу код напрямую, потому что нельзя сделать линковку, ведь код внутри использует кейкоды отсюда, и обязательно нужно это делать через safe_range
 #include "src.c"

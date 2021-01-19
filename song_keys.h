@@ -44,11 +44,11 @@ bool process_my_music_keys(uint16_t keycode, keyrecord_t *record) {
       if (record->event.pressed) { \
         PLAY_SONG(SONG); \
         disable_music = true; \
-        press_arbitrary_keycode(TO, true, record->event.key.col, record->event.key.row); \
+        press_arbitrary_keycode(TO, true); \
         disable_music = false; \
       } else { \
         disable_music = true; \
-        press_arbitrary_keycode(TO, false, record->event.key.col, record->event.key.row); \
+        press_arbitrary_keycode(TO, false); \
         disable_music = false; \
       } \
       return false; \
