@@ -16,6 +16,7 @@ enum custom_hotkeys_keycodes {
   CT_D,
   CT_SLSH,
   CT_Y,
+  CT_Z,
   KC_LF5,
   KC_RG5,
 
@@ -117,6 +118,7 @@ bool process_my_hotkeys(uint16_t keycode, keyrecord_t *record) {
         lang_activate(0);
         register_code(KC_LCTRL);
         register_code(KC_D);
+      } else {
         unregister_code(KC_D);
         unregister_code(KC_LCTRL);
       }
@@ -126,7 +128,18 @@ bool process_my_hotkeys(uint16_t keycode, keyrecord_t *record) {
         shift_activate(0);
         register_code(KC_LCTRL);
         register_code(KC_Y);
+      } else {
         unregister_code(KC_Y);
+        unregister_code(KC_LCTRL);
+      }
+      return false;
+    case CT_Z:
+      if (record->event.pressed) {
+        shift_activate(0);
+        register_code(KC_LCTRL);
+        register_code(KC_Z);
+      } else {
+        unregister_code(KC_Z);
         unregister_code(KC_LCTRL);
       }
       return false;
@@ -135,6 +148,7 @@ bool process_my_hotkeys(uint16_t keycode, keyrecord_t *record) {
         lang_activate(0);
         register_code(KC_LCTRL);
         register_code(KC_SLSH);
+      } else {
         unregister_code(KC_SLSH);
         unregister_code(KC_LCTRL);
       }

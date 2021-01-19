@@ -18,6 +18,7 @@ typedef struct Combo {
 Combo combo_stack[COMBO_STACK_MAX_SIZE] = {};
 uint8_t combo_stack_size = 0;
 bool combo_enabled = true;
+bool combo_k_enabled = true;
 
 bool combo_is_combo_key(uint16_t key) {
   return CMB_000 <= key && key < CMB_000 + COMBO_KEYS_COUNT;
@@ -115,6 +116,15 @@ void process_as_usual(keyrecord_t* record) {
   combo_enabled = true;
 }
 
+void process_combo_as_usual(keyrecord_t* record) {
+  #ifdef COMBO_DEBUG
+  uprintf("process combo as usual\n");
+  #endif
+  combo_k_enabled = false;
+  process_record(record);
+  combo_k_enabled = true;
+}
+
 void combo_onenter_1(Combo *combo) {
   combo->state = 1;
 }
@@ -179,11 +189,12 @@ bool combo_process_1(Combo *combo, uint16_t key, keyrecord_t *record) {
       }
       return false;
     } else {
-      if (neq_combo_pos(pos, NONE_COMBO_POS)) {
+      if (neq_combo_pos(pos, NONE_COMBO_POS) && combo_k_enabled) {
         combo_press(pos, true);
+        process_combo_as_usual(record);
         combo->state = 2;
         TRANSITION_DEBUG(k);
-        return true;
+        return false;
       }
     }
   }

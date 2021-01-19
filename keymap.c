@@ -90,7 +90,6 @@ LAYOUT_moonlander( \
 #define CT_BSPC LCTL(KC_BSPC)
 #define CT_1 LCTL(KC_1)
 #define CT_2 LCTL(KC_2)
-#define CT_Z LCTL(KC_Z)
 #define CT_T LCTL(KC_T)
 #define CT_W LCTL(KC_W)
 #define CT_J LCTL(KC_J)
