@@ -368,11 +368,6 @@ const ComboWithKeycode combos[] PROGMEM = {
   CHORD(CT_V,    /* <- */ CMB_CTV),
   CHORD(CT_X,    /* <- */ CMB_CTC, CMB_CTV),
 
-  // Left Index + Thumb
-  CHORD(CT_A_C,  /* <- */ CMB_SFT, CMB_CTC),
-  CHORD(CT_A_V,  /* <- */ CMB_SFT, CMB_CTV),
-  CHORD(CT_A_X,  /* <- */ CMB_SFT, CMB_CTC, CMB_CTV),
-
   // Left Thumb
   CHORD(SFT_N,   /* <- */ CMB_SFT),
   CHORD(KC_BSPC, /* <- */ CMB_BSP),
@@ -411,12 +406,6 @@ const ComboWithKeycode combos[] PROGMEM = {
   CHORD(CT_S,    /* <- */ CMB_CTS),
   CHORD(AG_CMSP, /* <- */ CMB_CMS),
   CHORD(AG_COMM, /* <- */ CMB_CTS, CMB_CMS),
-
-  // Right Thumb + Left Thumb
-  // Костыль, потому что шифт является одновременно слоём, и одновременно они с запятой аккорды, поэтому нужно такая вещь для дополнительной подстраховки, ибо что-то там не работает...
-  CHORD(AG_PERC, /* <- */ CMB_SFT, CMB_SLH), 
-  CHORD(EN_TILD, /* <- */ CMB_SFT, CMB_CTS),
-  CHORD(EN_DLR,  /* <- */ CMB_SFT, CMB_CMS),
 
   // -------------------------------------------------------------------------
   // Shifted index keys
