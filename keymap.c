@@ -370,10 +370,10 @@ const ComboWithKeycode combos[] PROGMEM = {
   CHORD(CT_X,    /* <- */ CMB_CTC, CMB_CTV),
 
   // Left Thumb
-  CHORD(SFT_N,   /* <- */ CMB_SFT),
+  IMMEDIATE_CHORD(SFT_N, SFT_N,     /* <-! */ CMB_SFT),
   CHORD(KC_BSPC, /* <- */ CMB_BSP),
   CHORD(KC_ENT,  /* <- */ CMB_ENT),
-  CHORD(CTRL_0,  /* <- */ CMB_CTL),
+  IMMEDIATE_CHORD(CTRL_0, CTRL_0,   /* <-! */ CMB_CTL),
   CHORD(CT_A,    /* <- */ CMB_SFT, CMB_CTL),
   CHORD(SFT_N_O, /* <- */ CMB_SFT, CMB_BSP),
   CHORD(KC_DEL,  /* <- */ CMB_BSP, CMB_CTL),
@@ -382,9 +382,9 @@ const ComboWithKeycode combos[] PROGMEM = {
   CHORD(MU_SCR,  /* <- */ CMB_BSP, CMB_ENT, CMB_CTL),
 
   // Left Left Thumb
-  CHORD(TT_007,  /* <- */ CMB_LYV),
-  CHORD(TT_005,  /* <- */ CMB_LYG),
-  CHORD(TT_004,  /* <- */ CMB_LYV, CMB_LYG),
+  IMMEDIATE_CHORD(TT_007, TT_007,   /* <-! */ CMB_LYV),
+  IMMEDIATE_CHORD(TT_005, TT_005,   /* <-! */ CMB_LYG),
+  IMMEDIATE_CHORD(TT_004, TT_004,   /* <-! */ CMB_LYV, CMB_LYG),
 
   // Right Thumb
   CHORD(MU_LANG, /* <- */ CMB_LAN),
