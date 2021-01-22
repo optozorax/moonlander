@@ -9,6 +9,7 @@
 #include "combo/include.h"
 #include "color/include.h"
 #include "tt/include.h"
+#include "repeat/include.h"
 
 enum custom_keycodes {
   KEYCODES_START = CUSTOM_SAFE_RANGE,
@@ -241,7 +242,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     TG(4),   KC_F7,   KC_F5,   KC_F3,   KC_F1,   KC_F9,   KC_F11,
     CT_G,    KC_HOME, KC_PGDN, KC_PGUP, KC_END,  CT_J,    _______,
     CS_M,    KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, CS_K,    _______,
-    _______, CT_LEFT, CT_DOWN, CT_UP,   CT_RGHT, CT_F,
+    RP_000,  CT_LEFT, CT_DOWN, CT_UP,   CT_RGHT, CT_F,
     _______, _______, _______, _______, _______,
     _______, // LEFT RED THUMB KEY
     _______, _______, _______, // LEFT THUMB KEYS
@@ -271,8 +272,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______, _______, _______, _______, _______, _______, RESET,
     _______, _______, KC_WH_L, KC_WH_U, KC_WH_D, KC_WH_R, _______,
     _______, _______, KC_MS_L, KC_MS_U, KC_MS_D, KC_MS_R, _______,
-             _______, MS_LF_1, MS_UP_1, MS_DN_1, MS_RG_1, _______,
-                      MS_LF10, MS_UP10, MS_DN10, MS_RG10, _______,
+             _______, RP_001,  RP_002,  RP_003,  RP_004,  _______,
+                      RP_005,  RP_006,  RP_007,  RP_008,  _______,
                       _______, // RIGHT RED THUMB KEY
                       KC_BTN3, KC_BTN2, KC_BTN1 // RIGHT THUMB KEYS
   ),
@@ -441,6 +442,19 @@ const uint16_t tt_keys[][3] = {
 };
 const uint8_t tt_size = sizeof(tt_keys)/(sizeof(uint16_t) * 3);
 
+const uint16_t repeat_keys[][2] = {
+  { RP_000, AR_L5 },
+  { RP_001, MS_LF_1 },
+  { RP_002, MS_UP_1 },
+  { RP_003, MS_DN_1 },
+  { RP_004, MS_RG_1 },
+  { RP_005, MS_LF10 },
+  { RP_006, MS_UP10 },
+  { RP_007, MS_DN10 },
+  { RP_008, MS_RG10 },
+};
+const uint8_t repeat_size = sizeof(repeat_keys)/(sizeof(uint16_t) * 2);
+
 enum ledmap_colors {
   COLOR_BLACK = COLOR_SAFE_RANGE, // Чёрный цвет
   COLOR_ANYFN, // Цвет для кнопки, нажимаемой любым пальцем
@@ -562,6 +576,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     return false;
   }
 
+  if (!rp_process_record(keycode, record)) {
+    return false;
+  }
+
   if (!process_my_lang_keys(keycode, record)) {
     return false;
   }
@@ -605,9 +623,15 @@ void combo_max_size_error(void) {
   uprintf("COMBO ERROR: MAX COMBO SIZE HAS REACHED\n");
 }
 
+void repeated_key_error(void) {
+  PLAY_SONG(error_song2); 
+  uprintf("REPEATED KEY ERROR\n"); 
+}
+
 void user_timer(void) {
   combo_user_timer();
   lang_shift_user_timer();
+  rp_timer();
 }
 
 void matrix_scan_user(void) {
