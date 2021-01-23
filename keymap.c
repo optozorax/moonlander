@@ -382,9 +382,9 @@ const ComboWithKeycode combos[] PROGMEM = {
   CHORD(MU_SCR,  /* <- */ CMB_BSP, CMB_ENT, CMB_CTL),
 
   // Left Left Thumb
-  IMMEDIATE_CHORD(TT_007, TT_007,   /* <-! */ CMB_LYV),
-  IMMEDIATE_CHORD(TT_005, TT_005,   /* <-! */ CMB_LYG),
-  IMMEDIATE_CHORD(TT_004, TT_004,   /* <-! */ CMB_LYV, CMB_LYG),
+  IMMEDIATE_CHORD(TT_007, TT_UNDO,  /* <-! */ CMB_LYV),
+  IMMEDIATE_CHORD(TT_005, TT_UNDO,  /* <-! */ CMB_LYG),
+  IMMEDIATE_CHORD(TT_004, TT_UNDO,  /* <-! */ CMB_LYV, CMB_LYG),
 
   // Right Thumb
   CHORD(MU_LANG, /* <- */ CMB_LAN),
