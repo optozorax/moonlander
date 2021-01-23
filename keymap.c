@@ -105,6 +105,9 @@ LAYOUT_moonlander( \
 #define CT_X LCTL(KC_X)
 #define CT_C LCTL(KC_C)
 #define CT_V LCTL(KC_V)
+#define CT_PLUS LCTL(KC_EQL)
+#define CT_MINS LCTL(KC_MINS)
+#define CT_BSLS LCTL(KC_BSLS)
 
 #define RGB_LYR TOGGLE_LAYER_COLOR
 
@@ -143,6 +146,8 @@ LAYOUT_moonlander( \
 #define CMS_SH CMB_021
 #define CMS_S_R CMB_022
 #define CMS_SSH CMB_023
+
+#define TT_CTJ TT_000
 
 // Подключаем обработку кастомных кейкодов
 #include "custom_lang.h"
@@ -249,8 +254,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     // RIGHT HALF
     KC_F12,  KC_F10,  KC_F2,   KC_F4,   KC_F6,   KC_F8,   _______,
-    _______, EN_MACR, EN_RBRC, EN_RCBR, EN_LCBR, EN_LBRC, CT_ENT,
-    _______, KC_TAB,  EN_GT,   AG_RPRN, AG_LPRN, EN_LT,   SH_TAB,
+    CT_PLUS, EN_MACR, EN_RBRC, EN_RCBR, EN_LCBR, EN_LBRC, CT_ENT,
+    CT_MINS, KC_TAB,  EN_GT,   AG_RPRN, AG_LPRN, EN_LT,   SH_TAB,
              EN_FISH, EN_GTEQ, EN_ARR2, EN_ARR1, EN_LTEQ, EN_CLTG,
                       _______, _______, _______, _______, _______,
                       _______, // RIGHT RED THUMB KEY
@@ -433,6 +438,7 @@ const ComboWithKeycode combos[] PROGMEM = {
 const uint8_t combos_size = sizeof(combos)/sizeof(ComboWithKeycode);
 
 const uint16_t tt_keys[][3] = {
+  { TT_CTJ, CT_J,  CT_BSLS }, // Убийство программы, если нажать три раза, то выдаёт Ctrl+\, что убивает безоговорочно.
   { TT_004, MO(4), TG(4) },
   { TT_005, MO(5), TG(5) },
   { TT_006, MO(6), TG(6) },
@@ -568,6 +574,10 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   initted_for_layer_state = true;
 
+  if (!process_my_music_keys(keycode, record)) {
+    return false;
+  }
+
   if (!combo_process_record(keycode, record)) {
     return false;
   }
@@ -601,10 +611,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
 
   if (!process_mouse_pixel_move(keycode, record)) {
-    return false;
-  }
-
-  if (!process_my_music_keys(keycode, record)) {
     return false;
   }
 

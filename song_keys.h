@@ -60,7 +60,7 @@ bool process_my_music_keys(uint16_t keycode, keyrecord_t *record) {
     MUSIC_KEYCODE(MU_LAN2, LA_ALSH, my_song4)
     MUSIC_KEYCODE(MU_LAN3, LA_CTSH, my_song5)
     MUSIC_KEYCODE(MU_LAN4, LA_WISP, my_song6)
-    MUSIC_KEYCODE(MU_CTJ, CT_J, my_song3)
+    MUSIC_KEYCODE(MU_CTJ, TT_CTJ, my_song3)
     MUSIC_KEYCODE(MU_SCR, MY_SCRN, my_song3)
     MUSIC_KEYCODE(MU_WNL, WN_L, my_song3)
 
