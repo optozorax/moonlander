@@ -56,15 +56,6 @@ LAYOUT_moonlander( \
 #define CS_M LCTL(S(KC_M))
 #define CS_P LCTL(S(KC_P))
 
-// Compose keys
-#define AC_GRV RALT(KC_GRV)
-#define AC_ACT RALT(KC_QUOT)
-#define AC_CIRC RALT(KC_CIRC)
-#define AC_TILD RALT(KC_TILD)
-#define AC_SUB RALT(KC_UNDS)
-#define AC_SUP RALT(KC_CIRC)
-#define AC_CRCL RALT(KC_LPRN)
-
 // Alt keys
 #define AL_UP LALT(KC_UP)
 #define AL_PSCR LALT(KC_PSCR)
@@ -164,6 +155,12 @@ LAYOUT_moonlander( \
 #define CMB_RB3 CMB_033
 #define CMB_LB4 CMB_034
 #define CMB_RB4 CMB_035
+
+// Brackets on XCompose layer
+#define CMB_LTR CMB_036
+#define CMB_RTR CMB_037
+#define CMB_LCR CMB_038
+#define CMB_RCR CMB_039
 
 #define TT_CTJ TT_000
 
@@ -426,18 +423,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [L_CYAN] = MY_layout(
     // LEFT HALF
     TG_CYAN, _______, _______, _______, _______, _______,  _______,
-    XC_NIN,  XC_IN,   XC_LCRN, _______, _______, _______,  _______,
-    _______, _______, _______, _______, _______, _______,  _______,
-    _______, _______, _______, _______, _______, _______,
+    XC_NIN,  XC_IN,   XC_SBST, XC_DEGR, XC_PLMN, XC_MU,    _______,
+    XC_MUSC, XC_LEFT, XC_DOWN, XC_UP,   XC_RGHT, XC_LMBD,  _______,
+    XC_ANGL, XC_IFAI, XC_EXST, XC_ALL,  XC_THEN, XC_PI,
     _______, _______, _______, _______, _______,  
     _______, // LEFT RED THUMB KEY
     _______, _______, _______, // LEFT THUMB KEYS
 
     // RIGHT HALF
     _______, _______, _______, _______, _______, _______, _______,
-    _______, _______, _______, _______, _______, _______, _______,
-    _______, _______, _______, _______, _______, _______, _______,
-             _______, _______, _______, _______, _______, _______,
+    _______, XC_CRSS, CMB_LCR, CMB_RCR, XC_APRX, XC_EMPT, XC_TM,
+    _______, XC_DONE, CMB_LTR, CMB_RTR, XC_DASH, XC_TIMS, XC_NEQ,
+             XC_SPRK, XC_TMBU, XC_TMBD, XC_BULL, XC_INF, XC_COPY,
                       _______, _______, _______, _______, _______,
                       _______, // RIGHT RED THUMB KEY
                       _______, _______, _______ // RIGHT THUMB KEYS
@@ -605,6 +602,17 @@ const ComboWithKeycode combos[] PROGMEM = {
   CHORD(EN_2B2,  /* <- */ CMB_LB2, CMB_RB2),
   CHORD(EN_2B3,  /* <- */ CMB_LB3, CMB_RB3),
   CHORD(EN_2B4,  /* <- */ CMB_LB4, CMB_RB4),
+
+  // -------------------------------------------------------------------------
+  // Brackets on XCompose layer
+
+  CHORD(XC_LTRE, /* <- */ CMB_LTR),
+  CHORD(XC_RTRE, /* <- */ CMB_RTR),
+  CHORD(XC_BTRE, /* <- */ CMB_LTR, CMB_RTR),
+
+  CHORD(XC_LCRN, /* <- */ CMB_LCR),
+  CHORD(XC_RCRN, /* <- */ CMB_RCR),
+  CHORD(XC_BCRN, /* <- */ CMB_LCR, CMB_RCR),
 };
 const uint8_t combos_size = sizeof(combos)/sizeof(ComboWithKeycode);
 
