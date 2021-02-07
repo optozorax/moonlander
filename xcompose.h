@@ -89,7 +89,7 @@ bool process_my_xcompose(uint16_t keycode, keyrecord_t *record) {
 
     // Number modifiers
     CASE_PROCESS(AC_SUB, PRESS(KC_UNDS))  // _
-    CASE_PROCESS(AC_SUP, PRESS(KC_CIRC))  // ^
+    CASE_PROCESS(AC_SUP, PRESS(KC_SLSH))  // ^
     CASE_PROCESS(AC_CRCL, PRESS(KC_LPRN)) // (
 
     // Greek symbols

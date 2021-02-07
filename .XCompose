@@ -1,16 +1,16 @@
 include "%L"
 
 # Superscript numbers
-<Multi_key> <asciicircum> <0>       : "⁰"
-<Multi_key> <asciicircum> <1>       : "¹"
-<Multi_key> <asciicircum> <2>       : "²"
-<Multi_key> <asciicircum> <3>       : "³"
-<Multi_key> <asciicircum> <4>       : "⁴"
-<Multi_key> <asciicircum> <5>       : "⁵"
-<Multi_key> <asciicircum> <6>       : "⁶"
-<Multi_key> <asciicircum> <7>       : "⁷"
-<Multi_key> <asciicircum> <8>       : "⁸"
-<Multi_key> <asciicircum> <9>       : "⁹"
+<Multi_key> <slash> <0>             : "⁰"
+<Multi_key> <slash> <1>             : "¹"
+<Multi_key> <slash> <2>             : "²"
+<Multi_key> <slash> <3>             : "³"
+<Multi_key> <slash> <4>             : "⁴"
+<Multi_key> <slash> <5>             : "⁵"
+<Multi_key> <slash> <6>             : "⁶"
+<Multi_key> <slash> <7>             : "⁷"
+<Multi_key> <slash> <8>             : "⁸"
+<Multi_key> <slash> <9>             : "⁹"
 
 # Subscript numbers
 <Multi_key> <underscore> <0>        : "₀"
