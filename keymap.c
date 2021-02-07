@@ -212,7 +212,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     // RIGHT HALF
     CT_D,    RU_ASTR, RU_EXCL, RU_QUES, EN_HASH, RU_SLSH, CT_Z,
-    CMB_CTS, RU_SC,   RU_G,    RU_T,    RU_N,    RU_Z,    RU_MINS,
+    CMB_CTS, RU_SC,   RU_Z,    RU_T,    RU_N,    RU_G,    RU_MINS,
     CMB_CMS, CMS_R,   RU_O,    RU_L,    RU_D,    RU_ZH,   RU_E,
              CMS_SH,  RU_SF,   RU_B,    RU_JU,   RU_H,    RU_JO,
                       CMB_LYR, CMB_SLH, _______, _______, _______,
@@ -233,7 +233,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     // RIGHT HALF
     RU_NUME, RU_0,    RU_2,    RU_4,    RU_6,    RU_8,    CT_Y,
-    CMB_TLD, RU_S_SC, RU_S_G,  RU_S_T,  RU_S_N,  RU_S_Z,  RU_MINS,
+    CMB_TLD, RU_S_SC, RU_S_Z,  RU_S_T,  RU_S_N,  RU_S_G,  RU_MINS,
     CMB_DLR, CMS_S_R, RU_S_O,  RU_S_L,  RU_S_D,  RU_S_ZH, RU_S_E,
              CMS_SSH, RU_S_SF, RU_S_B,  RU_S_JU, RU_S_H,  RU_S_JO,
                       _______, RU_PERC, _______, _______, _______,
@@ -378,12 +378,12 @@ const ComboWithKeycode combos[] PROGMEM = {
   IMMEDIATE_CHORD(SFT_N, SFT_N,     /* <-! */ CMB_SFT),
   CHORD(KC_BSPC, /* <- */ CMB_BSP),
   CHORD(KC_ENT,  /* <- */ CMB_ENT),
-  IMMEDIATE_CHORD(CTRL_0, CTRL_0,   /* <-! */ CMB_CTL),
+  IMMEDIATE_CHORD(CTRL_EN, CTRL_EN, /* <-! */ CMB_CTL),
   CHORD(CT_A,    /* <- */ CMB_SFT, CMB_CTL),
   CHORD(SFT_N_O, /* <- */ CMB_SFT, CMB_BSP),
   CHORD(KC_DEL,  /* <- */ CMB_BSP, CMB_CTL),
   CHORD(CT_BSPC, /* <- */ CMB_BSP, CMB_ENT),
-  CHORD(CTSH_0,  /* <- */ CMB_SFT, CMB_BSP, CMB_CTL),
+  CHORD(CTSH_EN, /* <- */ CMB_SFT, CMB_BSP, CMB_CTL),
   CHORD(MU_SCR,  /* <- */ CMB_BSP, CMB_ENT, CMB_CTL),
 
   // Left Left Thumb
@@ -395,12 +395,12 @@ const ComboWithKeycode combos[] PROGMEM = {
   CHORD(MU_LANG, /* <- */ CMB_LAN),
   CHORD(AG_DOT,  /* <- */ CMB_DOT),
   CHORD(KC_SPC,  /* <- */ CMB_SPC),
-  CHORD(ALT_0,   /* <- */ CMB_ALT),
+  CHORD(ALT_EN,  /* <- */ CMB_ALT),
   CHORD(AG_SDOT, /* <- */ CMB_DOT, CMB_SPC),
   CHORD(LA_SYNC, /* <- */ CMB_LAN, CMB_DOT),
-  CHORD(CTAL_0,  /* <- */ CMB_SPC, CMB_ALT),
-  CHORD(SHAL_0,  /* <- */ CMB_DOT, CMB_ALT),
-  CHORD(WIN_0,   /* <- */ CMB_SPC, CMB_DOT, CMB_ALT),
+  CHORD(CTAL_EN, /* <- */ CMB_SPC, CMB_ALT),
+  CHORD(SHAL_EN, /* <- */ CMB_DOT, CMB_ALT),
+  CHORD(WIN_EN,   /* <- */ CMB_SPC, CMB_DOT, CMB_ALT),
   CHORD(MU_WNL,  /* <- */ CMB_LAN, CMB_DOT, CMB_ALT),
 
   // Right Right Thumb
