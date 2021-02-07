@@ -4,7 +4,7 @@
   #error "You must specify variable CUSTOM_SAFE_RANGE for lang_shift extension."
 #endif
 
-#define TT_KEYS_COUNT 10
+#define TT_KEYS_COUNT 30
 
 enum tt_keycodes {
 	TT_START = CUSTOM_SAFE_RANGE,
