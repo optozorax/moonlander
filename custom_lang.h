@@ -25,6 +25,7 @@ enum custom_lang_keycodes {
   EN_2B2,  // []◀️
   EN_2B3,  // {}◀️
   EN_2B4,  // <>◀️
+  AG_CMNT, // /* ⎵ ⎵ */◀️◀️◀️
 
   CUSTOM_LANG_NEW_SAFE_RANGE,
   #undef CUSTOM_SAFE_RANGE
@@ -177,7 +178,20 @@ bool process_my_lang_keys(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
       break;
-
+    case AG_CMNT:
+      if (record->event.pressed) {
+        lang_shift_tap_key(AG_SLSH);
+        lang_shift_tap_key(AG_ASTR);
+        register_code(KC_SPC); unregister_code(KC_SPC);
+        register_code(KC_SPC); unregister_code(KC_SPC);
+        lang_shift_tap_key(AG_ASTR);
+        lang_shift_tap_key(AG_SLSH);
+        register_code(KC_LEFT); unregister_code(KC_LEFT);
+        register_code(KC_LEFT); unregister_code(KC_LEFT);
+        register_code(KC_LEFT); unregister_code(KC_LEFT);
+      }
+      return false;
+      break;
   }
   return true;
 }
