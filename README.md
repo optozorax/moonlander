@@ -1154,8 +1154,7 @@ _Принцип_ 📖
 <div style="display: none">https://t.me/klavaorgwork/168706.</div>
 
 <center>
-<video width="100%" controls>
-<source src="/submodules/moonlander/video/layer.mp4" type="video/mp4">
+<video width="100%" controls src="/submodules/moonlander/video/layer.mp4" type="video/mp4">
 </video>
 </center> 
 
@@ -1177,8 +1176,7 @@ _Идея_ 💡
 <div style="display: none">https://t.me/klavaorgwork/161127</div>
 
 <center>
-<video width="100%" controls>
-<source src="/submodules/moonlander/video/heatmap.mp4" type="video/mp4">
+<video width="100%" controls src="/submodules/moonlander/video/heatmap.mp4" type="video/mp4">
 </video>
 </center> 
 
@@ -1209,8 +1207,7 @@ http://www.youtube.com/watch?v=ImsooykMguA
 <div style="display: none">https://t.me/klavaorgwork/169552.</div>
 
 <center>
-<video width="100%" controls>
-<source src="/submodules/moonlander/video/sounds.mp4" type="video/mp4">
+<video width="100%" controls src="/submodules/moonlander/video/sounds.mp4" type="video/mp4">
 </video>
 </center> 
 
@@ -1219,8 +1216,7 @@ http://www.youtube.com/watch?v=ImsooykMguA
 <div style="display: none">https://t.me/klavaorgwork/161147.</div>
 
 <center>
-<video width="100%" controls>
-<source src="/submodules/moonlander/video/startup_sound.mp4" type="video/mp4">
+<video width="100%" controls src="/submodules/moonlander/video/startup_sound.mp4" type="video/mp4">
 </video>
 </center> 
 
@@ -1233,8 +1229,7 @@ http://www.youtube.com/watch?v=ImsooykMguA
 <div style="display: none">https://t.me/klavaorgwork/161165.</div>
 
 <center>
-<video width="100%" controls>
-<source src="/submodules/moonlander/video/musical_regime.mp4" type="video/mp4">
+<video width="100%" controls src="/submodules/moonlander/video/musical_regime.mp4" type="video/mp4">
 </video>
 </center> 
 
@@ -1264,8 +1259,7 @@ _Термин_ 🛠
 <div style="display: none">https://t.me/klavaorgwork/170818.</div>
 
 <center>
-<video width="100%" controls>
-<source src="/submodules/moonlander/video/switches.mp4" type="video/mp4">
+<video width="100%" controls src="/submodules/moonlander/video/switches.mp4" type="video/mp4">
 </video>
 </center> 
 
@@ -1274,8 +1268,7 @@ _Термин_ 🛠
 <div style="display: none">https://t.me/klavaorgwork/170824.</div>
 
 <center>
-<video width="100%" controls>
-<source src="/submodules/moonlander/video/two_lubricated.mp4" type="video/mp4">
+<video width="100%" controls src="/submodules/moonlander/video/two_lubricated.mp4" type="video/mp4">
 </video>
 </center> 
 
@@ -1284,8 +1277,7 @@ _Термин_ 🛠
 <div style="display: none">https://t.me/klavaorgwork/171013.</div>
 
 <center>
-<video width="50%" controls>
-<source src="/submodules/moonlander/video/all_lubricated.mp4" type="video/mp4">
+<video width="50%" controls src="/submodules/moonlander/video/all_lubricated.mp4" type="video/mp4">
 </video>
 </center> 
 
