@@ -21,7 +21,7 @@ enum custom_lang_keycodes {
   EN2AMPR, // &&
   EN2PIPE, // ||
   EN_HOME, // ~/
-  AG_2B1,  // ()◀️
+  AG_2B1,  // ()
   EN_2B2,  // []◀️
   EN_2B3,  // {}◀️
   EN_2B4,  // <>◀️
@@ -150,7 +150,6 @@ bool process_my_lang_keys(uint16_t keycode, keyrecord_t *record) {
       if (record->event.pressed) {
         lang_shift_tap_key(AG_LPRN);
         lang_shift_tap_key(AG_RPRN);
-        register_code(KC_LEFT); unregister_code(KC_LEFT);
       }
       return false;
       break;
