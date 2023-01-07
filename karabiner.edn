@@ -1,0 +1,21 @@
+;; located in /Users/optozorax/.config/karabiner.edn
+;; resulting json in /Users/optozorax/.config/karabiner/karabiner.json
+;; run: goku
+{
+    :templates {:launch "open -a\"%s\""}
+    :main [{
+        :des "launcher mode"
+        :rules [
+                [:f13 [:launch "Telegram 2"]]
+
+                [:f24 [:launch "visual studio code"]]
+                [:f22 [:launch "sublime text"]]
+
+                [:f23 [:launch "yandex"]]
+                [:f21 [:launch "firefox"]]
+                
+                [:f16 [:launch "finder"]]
+                [:f18 [:launch "iterm"]]
+        ]
+    }]
+}

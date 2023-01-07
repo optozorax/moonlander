@@ -1,0 +1,55 @@
+/* 
+located in ~/Library/KeyBindings/DefaultKeyBinding.dict
+https://github.com/Granitosaurus/macos-compose
+https://cocoadev.github.io/KeyBindings/
+ */
+
+{
+    "^\\" = {
+        "0" = {
+            "0" = { "9" = ("insertText:", "!"); };
+            "1" = { "9" = ("insertText:", "µ"); };
+            "2" = { "9" = ("insertText:", "λ"); };
+            "3" = { "9" = ("insertText:", "π"); };
+            "4" = { "9" = ("insertText:", "∉"); };
+            "5" = { "9" = ("insertText:", "∈"); };
+            "6" = { "9" = ("insertText:", "⊂"); };
+            "7" = { "9" = ("insertText:", "∠"); };
+            "8" = { "9" = ("insertText:", "⇔"); };
+            "9" = { "9" = ("insertText:", "∃"); };
+        };
+        "1" = {
+            "0" = { "9" = ("insertText:", "∀"); };
+            "1" = { "9" = ("insertText:", "⇒"); };
+            "2" = { "9" = ("insertText:", "±"); };
+            "3" = { "9" = ("insertText:", "°"); };
+            "4" = { "9" = ("insertText:", "≈"); };
+            "5" = { "9" = ("insertText:", "∅"); };
+            "6" = { "9" = ("insertText:", "×"); };
+            "7" = { "9" = ("insertText:", "≠"); };
+            "8" = { "9" = ("insertText:", "∞"); };
+            "9" = { "9" = ("insertText:", "←"); };
+        };
+        "2" = {
+            "0" = { "9" = ("insertText:", "↓"); };
+            "1" = { "9" = ("insertText:", "↑"); };
+            "2" = { "9" = ("insertText:", "→"); };
+            "3" = { "9" = ("insertText:", "«"); };
+            "4" = { "9" = ("insertText:", "»"); };
+            "5" = { "9" = ("insertText:", "—"); };
+            "6" = { "9" = ("insertText:", "•"); };
+            "7" = { "9" = ("insertText:", "⌜"); };
+            "8" = { "9" = ("insertText:", "⌟"); };
+            "9" = { "9" = ("insertText:", "♪"); };
+        };
+        "3" = {
+            "0" = { "9" = ("insertText:", "™"); };
+            "1" = { "9" = ("insertText:", "©"); };
+            "2" = { "9" = ("insertText:", "❌"); };
+            "3" = { "9" = ("insertText:", "✅"); };
+            "4" = { "9" = ("insertText:", "✨"); };
+            "5" = { "9" = ("insertText:", "👍"); };
+            "6" = { "9" = ("insertText:", "👎"); };
+        };
+    };
+}

@@ -74,7 +74,7 @@ enum custom_xcompose_keycodes {
 // Мои языко-символьные клавиши
 bool process_my_xcompose(uint16_t keycode, keyrecord_t *record) {
   #define PRESS(X) tap_code16(X);
-  #define COMPOSE PRESS(KC_SLCK)
+  #define COMPOSE if (system_current == SYSTEM_MACOS) { register_code(KC_LCTRL); register_code(KC_BSLS); unregister_code(KC_BSLS); unregister_code(KC_LCTRL); } else { PRESS(KC_SLCK); }
   #define CASE_PROCESS(WHAT, DO) case WHAT: if (record->event.pressed) { COMPOSE DO } return false; break;
   #define XC_PROCESS(WHAT, ...) CASE_PROCESS(WHAT, MAP(TO_NUM, __VA_ARGS__) PRESS(KC_9))
   #define TO_NUM(x) PRESS(KC_ ## x)
@@ -140,5 +140,12 @@ bool process_my_xcompose(uint16_t keycode, keyrecord_t *record) {
     XC_PROCESS(XC_TMBU, 3, 5) // 👍
     XC_PROCESS(XC_TMBD, 3, 6) // 👎
   }
+
+  #undef PRESS
+  #undef COMPOSE
+  #undef CASE_PROCESS
+  #undef XC_PROCESS
+  #undef TO_NUM
+
   return true;
 }

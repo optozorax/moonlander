@@ -2,12 +2,10 @@
 #include <quantum/pointing_device.h>
 #include "version.h"
 
-// fix for leds
-extern bool mcp23018_leds[3];
-
 #include "arbitrary_keycode/include.h"
 
 #define CUSTOM_SAFE_RANGE ML_SAFE_RANGE
+#include "system.h"
 #include "lang_shift/include.h"
 #include "combo/include.h"
 #include "color/include.h"
@@ -54,8 +52,6 @@ LAYOUT_moonlander( \
 #define SH_TAB S(KC_TAB)
 
 // Ctrl+Shift keys
-#define CS_T LCTL(S(KC_T))
-#define CS_K LCTL(S(KC_K))
 #define CS_M LCTL(S(KC_M))
 #define CS_P LCTL(S(KC_P))
 
@@ -77,33 +73,13 @@ LAYOUT_moonlander( \
 #define WN_F2 LGUI(KC_F2)
 #define WN_F3 LGUI(KC_F3)
 #define WN_Q LGUI(KC_Q)
-#define WN_L LGUI(KC_L)
 
 // Ctrl keys
-#define CT_LEFT LCTL(KC_LEFT)
-#define CT_UP LCTL(KC_UP)
-#define CT_DOWN LCTL(KC_DOWN)
-#define CT_RGHT LCTL(KC_RGHT)
-#define CT_ENT LCTL(KC_ENT)
-#define CT_BSPC LCTL(KC_BSPC)
 #define CT_1 LCTL(KC_1)
 #define CT_2 LCTL(KC_2)
-#define CT_T LCTL(KC_T)
-#define CT_W LCTL(KC_W)
 #define CT_J LCTL(KC_J)
 #define CT_G LCTL(KC_G)
-#define CT_S LCTL(KC_S)
-#define CT_F LCTL(KC_F)
-#define CT_A LCTL(KC_A)
-#define CT_S LCTL(KC_S)
 #define CT_F5 LCTL(KC_F5)
-#define CT_PGUP LCTL(KC_PGUP)
-#define CT_PGDN LCTL(KC_PGDN)
-#define CT_X LCTL(KC_X)
-#define CT_C LCTL(KC_C)
-#define CT_V LCTL(KC_V)
-#define CT_PLUS LCTL(KC_EQL)
-#define CT_MINS LCTL(KC_MINS)
 #define CT_BSLS LCTL(KC_BSLS)
 
 #define RGB_LYR TOGGLE_LAYER_COLOR
@@ -345,10 +321,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [L_RED] = MY_layout(
     // LEFT HALF
     TG_RED,  _______, _______, _______, _______, _______, _______,
-    CT_G,    KC_HOME, KC_PGDN, KC_PGUP, KC_END,  CT_J,    _______,
-    CS_M,    KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, CS_K,    _______,
+    CT_G,    MY_HOME, KC_PGDN, KC_PGUP, MY_END,  CT_J,    _______,
+    _______, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, CS_K,    _______,
     _______, CT_LEFT, CT_DOWN, CT_UP,   CT_RGHT, CT_F,
-    _______, _______, _______, _______, TT_CYAN,
+    _______, _______, _______, _______, _______,
     _______, // LEFT RED THUMB KEY
     _______, _______, _______, // LEFT THUMB KEYS
 
@@ -387,9 +363,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [L_VIOL] = MY_layout(
     // LEFT HALF
     TG_VIOL, _______, _______, _______, _______, _______, _______,
-    AL_UP,   WN_8,    WN_7,    WN_6,    WN_5,    _______, _______,
-    WN_Q,    WN_4,    WN_3,    WN_2,    WN_1,    _______, _______,
-    KC_F2,   KC_LGUI, _______, WN_5,    WN_9,    _______,
+    AL_UP,   APP_8,   APP_7,   APP_6,   APP_5,   _______, _______,
+    WN_Q,    APP_4,   APP_3,   APP_2,   APP_1,   _______, _______,
+    KC_F2,   MY_APPS, _______, APP_0,   APP_9,   _______,
     _______, _______, _______, _______, _______,
     _______, // LEFT RED THUMB KEY
     _______, _______, _______, // LEFT THUMB KEYS
@@ -410,7 +386,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     TG_GRAY, _______, _______, _______, _______, _______,  _______,
     _______, KC_WH_L, KC_WH_D, KC_WH_U, KC_WH_R, _______,  _______,
     KC_BTN1, RP_001,  RP_003,  RP_002,  RP_004,  KC_BTN2,  _______,
-    _______, RP_005,  RP_007,  RP_006,  RP_008,  KC_BTN3,
+    KC_LGUI, RP_005,  RP_007,  RP_006,  RP_008,  KC_BTN3,
     _______, _______, _______, _______, _______,  
     _______, // LEFT RED THUMB KEY
     _______, _______, _______, // LEFT THUMB KEYS
@@ -493,7 +469,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [L_NUCL] = MY_layout(
     // LEFT HALF
     TG_NUCL, KC_SLCK, KC_CAPS, KC_INS,  KC_PAUS, KC_PSCR, KC_APP,
-    _______, _______, _______, _______, _______, _______, _______,
+    SYS_PRT, SYS_LIN, SYS_WIN, SYS_MAC, _______, _______, _______,
     _______, MU_LAN1, MU_LAN2, MU_LAN3, MU_LAN4, _______, _______,
     KC_LSFT, _______, _______, _______, _______, _______,
     KC_LCTL, KC_LGUI, KC_LALT, KC_RALT, KC_RGUI,
@@ -738,32 +714,14 @@ const uint8_t PROGMEM layermap[][3] = {
 };
 const uint8_t layermap_size = sizeof(layermap)/(sizeof(uint8_t) * 3);
 
-bool initted_for_layer_state = false;
-layer_state_t layer_state_set_user(layer_state_t state) {
-  if (initted_for_layer_state) {
-    // Выключаем все леды, потому что они только просвечивают своим некрасивым цветом через прозрачные кейкапы, а для чего их использовать можно я не придумал
-    ML_LED_1(false);
-    ML_LED_2(false);
-    ML_LED_3(false);
-    ML_LED_4(false);
-    ML_LED_5(false);
-    ML_LED_6(false);
-
-    uint8_t layer = get_highest_layer(state);
-
-    // Устанавливаем текущий цвет клавиатуры таким же какой сейчас цвет у слоя. Это создаёт красивый эффект для подсветок, которые используют текущий цвет.
-    rgb_matrix_sethsv_noeeprom(
-      pgm_read_byte(&layermap[layer][0]),
-      pgm_read_byte(&layermap[layer][1]),
-      pgm_read_byte(&layermap[layer][2])
-    );
-  }
-
-  return state;
-}
-
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  initted_for_layer_state = true;
+  // Выключаем все леды, потому что они только просвечивают своим некрасивым цветом через прозрачные кейкапы, а для чего их использовать можно я не придумал
+  ML_LED_1(false);
+  ML_LED_2(false);
+  ML_LED_3(false);
+  ML_LED_4(false);
+  ML_LED_5(false);
+  ML_LED_6(false);
 
   if (!process_my_music_keys(keycode, record)) {
     return false;
@@ -798,6 +756,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
 
   if (!process_my_hotkeys(keycode, record)) {
+    return false;
+  }
+
+  if (!process_system_keys(keycode, record)) {
     return false;
   }
 
