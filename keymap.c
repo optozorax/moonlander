@@ -2,6 +2,9 @@
 #include <quantum/pointing_device.h>
 #include "version.h"
 
+// fix for leds
+extern bool mcp23018_leds[3];
+
 #include "arbitrary_keycode/include.h"
 
 #define CUSTOM_SAFE_RANGE ML_SAFE_RANGE
@@ -105,62 +108,65 @@ LAYOUT_moonlander( \
 
 #define RGB_LYR TOGGLE_LAYER_COLOR
 
-// Chords
-// Left Index
-#define CMB_CTC CMB_000
-#define CMB_CTV CMB_001
-// Left Thumb
-#define CMB_SFT CMB_002
-#define CMB_BSP CMB_003
-#define CMB_ENT CMB_004
-#define CMB_CTL CMB_005
-// Left Left Thumb
-#define CMB_LYV CMB_006
-#define CMB_LYG CMB_007
-// Right Thumb
-#define CMB_LAN CMB_008
-#define CMB_DOT CMB_009
-#define CMB_SPC CMB_010
-#define CMB_ALT CMB_011
+enum Combos {
+  // Chords
+  // Left Index
+  CMB_CTC = CMB_000,
+  CMB_CTV,
+  // Left Thumb
+  CMB_SFT,
+  CMB_BSP,
+  CMB_ENT,
+  CMB_CTL,
+  // Left Left Thumb
+  CMB_LYV,
+  CMB_LYG,
+  // Right Thumb
+  CMB_RED,
+  CMB_LAN,
+  CMB_DOT,
+  CMB_SPC,
+  CMB_ALT,
 
-// Shifted index keys
-#define CMB_CAC CMB_012
-#define CMB_CAV CMB_013
+  // Shifted index keys
+  CMB_CAC,
+  CMB_CAV,
 
-// Russian index keys on letters
-#define CMS_R CMB_014
-#define CMS_SH CMB_015
-#define CMS_S_R CMB_016
-#define CMS_SSH CMB_017
+  // Russian index keys on letters
+  CMS_R,
+  CMS_SH,
+  CMS_S_R,
+  CMS_SSH,
 
-// Left number-row
-#define CMB_PLS CMB_018
-#define CMB_SCL CMB_019
-#define CMB_GRV CMB_020
-#define CMB_EXL CMB_021
-#define CMB_ASR CMB_022
-// Right number-row
-#define CMB_EQL CMB_023
-#define CMB_CLN CMB_024
-#define CMB_CMM CMB_025
-#define CMB_QUE CMB_026
-#define CMB_SLS CMB_027
+  // Left number-row
+  CMB_PLS,
+  CMB_SCL,
+  CMB_GRV,
+  CMB_EXL,
+  CMB_ASR,
+  // Right number-row
+  CMB_EQL,
+  CMB_CLN,
+  CMB_CMM,
+  CMB_QUE,
+  CMB_SLS,
 
-// Brackets on red layer, order: 1 - (), 2 - [], 3 - {}, 4 - <>
-#define CMB_LB1 CMB_028
-#define CMB_RB1 CMB_029
-#define CMB_LB2 CMB_030
-#define CMB_RB2 CMB_031
-#define CMB_LB3 CMB_032
-#define CMB_RB3 CMB_033
-#define CMB_LB4 CMB_034
-#define CMB_RB4 CMB_035
+  // Brackets on red layer, order: 1 - (), 2 - [], 3 - {}, 4 - <>
+  CMB_LB1,
+  CMB_RB1,
+  CMB_LB2,
+  CMB_RB2,
+  CMB_LB3,
+  CMB_RB3,
+  CMB_LB4,
+  CMB_RB4,
 
-// Brackets on XCompose layer
-#define CMB_LTR CMB_036
-#define CMB_RTR CMB_037
-#define CMB_LCR CMB_038
-#define CMB_RCR CMB_039
+  // Brackets on XCompose layer
+  CMB_LTR,
+  CMB_RTR,
+  CMB_LCR,
+  CMB_RCR,
+};
 
 #define TT_CTJ TT_000
 
@@ -256,7 +262,7 @@ enum Layers {
     CT_S,    RU1,     RU2,     RU3,     RU4,     RU5,     AG_MINS, \
     CT_D,    RH1,     RH2,     RH3,     RH4,     RH5,     RH6, \
              RD1,     RD2,     RD3,     RD4,     RD5,     RD6, \
-                      TT_RED,  AG_3DOT, KG_NEXT, TT_GAME, TT_NUCL, \
+                      CMB_RED, AG_3DOT, KG_NEXT, TT_GAME, TT_NUCL, \
                       CMB_ALT, /* RIGHT RED THUMB KEY */ \
                       CMB_LAN, CMB_DOT, CMB_SPC /* RIGHT THUMB KEYS */ \
   ), \
@@ -393,7 +399,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______, AC_SUB,  AG_4,    AG_5,    AG_6,    _______, _______,
     _______, AC_SUP,  AG_0,    AG_1,    AG_2,    AG_3,    _______,
              AC_CRCL, AG_9,    AG_8,    AG_7,    _______, _______,
-                      TT_CYAN, _______, _______, _______, _______,
+                      _______, _______, _______, _______, _______,
                       _______, // RIGHT RED THUMB KEY
                       _______, _______, _______ // RIGHT THUMB KEYS
   ),
@@ -525,8 +531,10 @@ const ComboWithKeycode combos[] PROGMEM = {
 
   // Left Left Thumb
   IMMEDIATE_CHORD(TT_VIOL, TT_UNDO, /* <-! */ CMB_LYV),
+  IMMEDIATE_CHORD(TT_RED,  TT_UNDO, /* <-! */ CMB_RED),
   IMMEDIATE_CHORD(TT_GREN, TT_UNDO, /* <-! */ CMB_LYG),
   IMMEDIATE_CHORD(TT_RED,  TT_UNDO, /* <-! */ CMB_LYV, CMB_LYG),
+  IMMEDIATE_CHORD(TT_CYAN, TT_UNDO, /* <-! */ CMB_LYV, CMB_RED),
 
   // Right Thumb
   CHORD(MU_LANG, /* <- */ CMB_LAN),
