@@ -715,14 +715,6 @@ const uint8_t PROGMEM layermap[][3] = {
 const uint8_t layermap_size = sizeof(layermap)/(sizeof(uint8_t) * 3);
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  // Выключаем все леды, потому что они только просвечивают своим некрасивым цветом через прозрачные кейкапы, а для чего их использовать можно я не придумал
-  ML_LED_1(false);
-  ML_LED_2(false);
-  ML_LED_3(false);
-  ML_LED_4(false);
-  ML_LED_5(false);
-  ML_LED_6(false);
-
   if (!process_my_music_keys(keycode, record)) {
     return false;
   }
