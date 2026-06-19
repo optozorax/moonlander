@@ -6,26 +6,49 @@
 
 # Как прошить
 
-Если вы попробуете скачать исходный код вашей раскладки, сделанной на Oryx, то она будет работать только с [форком QMK от ZSA](https://github.com/zsa/qmk_firmware) и на ветке [firmware20](https://github.com/zsa/qmk_firmware/tree/firmware20). Конечно, можно использовать обычный QMK, но там вроде чего-то не хватает. Поэтому первым делом надо скачать этот форк (команды ниже не работают для винды).
+Если вы попробуете скачать исходный код вашей раскладки, сделанной на Oryx, то она будет работать только с [форком QMK от ZSA](https://github.com/zsa/qmk_firmware) и на ветке [firmware20](https://github.com/zsa/qmk_firmware/tree/firmware20). Конечно, можно использовать обычный QMK, но там вроде чего-то не хватает. 
+
+Вот подробная установка:
 
 ```bash
-git clone https://github.com/zsa/qmk_firmware zsa_qmk
-cd zsa_qmk
-./util/qmk_install.sh
 git submodule init
 git submodule update
+mkdir _deps
+cd _deps
+git clone https://github.com/zsa/qmk_firmware zsa_qmk
+cd zsa_qmk
+git checkout firmware20
+git submodule init
+git submodule update
+./util/qmk_install.sh
+mkdir keyboards/moonlander/keymaps/optozorax
 ```
 
-Затем нужно создать символьную ссылку на папку с вашей раскладкой. Делать именно символьную ссылку нужно, чтобы не хранить свою раскладку где-то в дебрях этого форка QMK:
+Далее запускаем эту команду для того чтобы скопировать раскладку в папку `zsa_qmk`. И запускайте её каждый раз когда обновляете код:
 
 ```bash
-ln -s /home/optozorax/my/moonlander ~/zsa_qmk/keyboards/moonlander/keymaps/optozorax
+./../../update.sh
 ```
 
-Чтобы прошить, нужно внутри этого форка вызвать такую команду:
+Затем надо применить патч для `arbitrary_keycode`, потому что он требует небольших изменений в QMK:
+
+```bash
+git apply ../../qmk.patch
+```
+
+Для компиляции запускайте
+```bash
+make moonlander:optozorax
+```
+
+Для прошивки запускайте эту команду:
 ```bash
 make moonlander:optozorax:flash
 ```
+
+Делать всё это либо на Linux, либо на WSL если вы на винде. На винде не запускайте команду прошивки, а лучше скачайте приложение от ZSA и прошивайте им: https://www.zsa.io/flash
+
+Компиляция на винде через mingw не работает.
 
 # Установка софтварных штук
 

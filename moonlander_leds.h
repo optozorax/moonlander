@@ -4,6 +4,8 @@
   #error "You must specify variable CUSTOM_SAFE_RANGE for moonlander leds keycodes."
 #endif
 
+extern bool mcp23018_leds[3];
+
 enum moonlander_leds_keycodes {
   MOONLANDER_LEDS_START = CUSTOM_SAFE_RANGE,
 
