@@ -1,52 +1,8 @@
-diff --git a/keyboards/moonlander/keymaps/optozorax/arbitrary_keycode/include.h b/keyboards/moonlander/keymaps/optozorax/arbitrary_keycode/include.h
-index 98ce165..63382ad 100644
---- a/keyboards/moonlander/keymaps/optozorax/arbitrary_keycode/include.h
-+++ b/keyboards/moonlander/keymaps/optozorax/arbitrary_keycode/include.h
-@@ -1,7 +1,5 @@
- #pragma once
- 
--#error "Для начала прочитай https://github.com/klavarog/arbitrary_keycode и измени код QMK как там сказано, затем можно эту ошибку закомментировать."
--
- void press_arbitrary_keycode(uint16_t keycode, bool down) {
- 	keyrecord_t record = {
- 	  .event = {
-diff --git a/quantum/keymap_common.c b/quantum/keymap_common.c
-index 39ba4a0..b76c901 100644
---- a/quantum/keymap_common.c
-+++ b/quantum/keymap_common.c
-@@ -179,7 +179,11 @@ __attribute__((weak)) void action_function(keyrecord_t *record, uint8_t id, uint
- // translates key to keycode
- __attribute__((weak)) uint16_t keymap_key_to_keycode(uint8_t layer, keypos_t key) {
-     // Read entire word (16bits)
--    return pgm_read_word(&keymaps[(layer)][(key.row)][(key.col)]);
-+    if (key.use_custom_keycode) {
-+        return key.custom_keycode;
-+    } else {
-+        return pgm_read_word(&keymaps[(layer)][(key.row)][(key.col)]);
-+    }
- }
- 
- // translates function id to action
-diff --git a/quantum/rgb_matrix.c b/quantum/rgb_matrix.c
-index ab9d4bd..1d6d6a7 100644
---- a/quantum/rgb_matrix.c
-+++ b/quantum/rgb_matrix.c
-@@ -186,6 +186,10 @@ void rgb_matrix_set_color(int index, uint8_t red, uint8_t green, uint8_t blue) {
- void rgb_matrix_set_color_all(uint8_t red, uint8_t green, uint8_t blue) { rgb_matrix_driver.set_color_all(red, green, blue); }
- 
- bool process_rgb_matrix(uint16_t keycode, keyrecord_t *record) {
-+    if (record->event.key.use_custom_keycode) {
-+        return true;
-+    }
-+
- #if RGB_DISABLE_TIMEOUT > 0
-     if (record->event.pressed) {
-         rgb_anykey_timer = 0;
-diff --git a/tmk_core/common/keyboard.h b/tmk_core/common/keyboard.h
-index 711d24c..13d497f 100644
---- a/tmk_core/common/keyboard.h
-+++ b/tmk_core/common/keyboard.h
-@@ -27,5 +27,7 @@ extern "C" {
+diff --git a/quantum/keyboard.h b/quantum/keyboard.h
+index 0f39fde682..c7bf31b8e8 100644
+--- a/quantum/keyboard.h
++++ b/quantum/keyboard.h
+@@ -30,6 +30,8 @@ extern "C" {
  typedef struct {
      uint8_t col;
      uint8_t row;
@@ -54,4 +10,33 @@ index 711d24c..13d497f 100644
 +    uint16_t custom_keycode;
  } keypos_t;
  
- /* key event */
+ typedef enum keyevent_type_t { TICK_EVENT = 0, KEY_EVENT = 1, ENCODER_CW_EVENT = 2, ENCODER_CCW_EVENT = 3, COMBO_EVENT = 4, DIP_SWITCH_ON_EVENT = 5, DIP_SWITCH_OFF_EVENT = 6 } keyevent_type_t;
+diff --git a/quantum/keymap_common.c b/quantum/keymap_common.c
+index abdcd5c7ba..44a229b569 100644
+--- a/quantum/keymap_common.c
++++ b/quantum/keymap_common.c
+@@ -199,6 +199,8 @@ action_t action_for_keycode(uint16_t keycode) {
+ // translates key to keycode
+ __attribute__((weak)) uint16_t keymap_key_to_keycode(uint8_t layer, keypos_t key) {
+-    if (key.row < MATRIX_ROWS && key.col < MATRIX_COLS) {
++    if (key.use_custom_keycode) {
++        return key.custom_keycode;
++    } else if (key.row < MATRIX_ROWS && key.col < MATRIX_COLS) {
+         return keycode_at_keymap_location(layer, key.row, key.col);
+     }
+ #ifdef ENCODER_MAP_ENABLE
+diff --git a/quantum/process_keycode/process_rgb_matrix.c b/quantum/process_keycode/process_rgb_matrix.c
+index fd2aa1a0c7..9ff7c36aba 100644
+--- a/quantum/process_keycode/process_rgb_matrix.c
++++ b/quantum/process_keycode/process_rgb_matrix.c
+@@ -8,6 +8,10 @@
+ #include "modifiers.h"
+ 
+ bool process_rgb_matrix(uint16_t keycode, keyrecord_t *record) {
++    if (record->event.key.use_custom_keycode) {
++        return true;
++    }
++
+ #ifdef RGB_TRIGGER_ON_KEYDOWN
+     if (record->event.pressed) {
+ #else

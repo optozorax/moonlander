@@ -6,6 +6,13 @@
 
 extern bool mcp23018_leds[3];
 
+#define ML_LED_1 STATUS_LED_1
+#define ML_LED_2 STATUS_LED_2
+#define ML_LED_3 STATUS_LED_3
+#define ML_LED_4 STATUS_LED_4
+#define ML_LED_5 STATUS_LED_5
+#define ML_LED_6 STATUS_LED_6
+
 enum moonlander_leds_keycodes {
   MOONLANDER_LEDS_START = CUSTOM_SAFE_RANGE,
 

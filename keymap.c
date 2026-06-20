@@ -1,6 +1,16 @@
 #include QMK_KEYBOARD_H
-#include <quantum/pointing_device.h>
 #include "version.h"
+
+// Compatibility aliases for names used by this firmware20-era keymap.
+#define ML_SAFE_RANGE ZSA_SAFE_RANGE
+#define DRIVER_LED_TOTAL RGB_MATRIX_LED_COUNT
+#define KC_LSHIFT KC_LSFT
+#define KC_LCTRL KC_LCTL
+#define KC_SLCK KC_SCRL
+#define KC_NLCK KC_NUM
+#define AU_TOG AU_TOGG
+#define MU_TOG MU_TOGG
+#define MU_MOD MU_NEXT
 
 #include "arbitrary_keycode/include.h"
 
@@ -794,8 +804,9 @@ void matrix_scan_user(void) {
 }
 
 // Нужно для color.h
-void rgb_matrix_indicators_user(void) {
+bool rgb_matrix_indicators_user(void) {
   color_rgb_matrix_indicators();
+  return true;
 }
 
 void keyboard_post_init_user(void) {

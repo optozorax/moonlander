@@ -1,4 +1,3 @@
-extern bool g_suspend_state;
 extern rgb_config_t rgb_matrix_config;
 
 void set_layer_color(int layer) {
@@ -38,7 +37,7 @@ void set_layer_color(int layer) {
 
 uint8_t draw_layer = COLOR_PICTURE_DEFAULT;
 void color_rgb_matrix_indicators(void) {
-  if (g_suspend_state || keyboard_config.disable_layer_led) { return; }
+  if (rgb_matrix_get_suspend_state() || keyboard_config.disable_layer_led) { return; }
   if (draw_layer != 0) {
   	set_layer_color(draw_layer - 1);
   }
