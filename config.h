@@ -13,6 +13,14 @@
 // 2 ms scheduling resolution instead of firmware25's unusable 200 ms default.
 #define AUDIO_STATE_TIMER_FREQUENCY 1000
 
+// Temporarily expose the mouse-button layer while the Navigator is moving.
+// L_TRPD is layer 8; config.h is also compiled outside keymap.c, so it cannot
+// refer to the L_GRAY enum name directly.
+#define AUTOMOUSE_LAYER 8
+#define AUTOMOUSE_TIMEOUT 300
+#define AUTOMOUSE_DELAY 0
+#define AUTOMOUSE_THRESHOLD 0
+
 // firmware20's DAC timer made these sound one octave below their definitions.
 #define STARTUP_SONG SONG(E__NOTE(_E5), E__NOTE(_A5), ED_NOTE(_E6))
 #define AUDIO_ON_SONG SONG(E__NOTE(_A4), E__NOTE(_A5))

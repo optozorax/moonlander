@@ -175,6 +175,7 @@ enum Layers {
   L_GREN,
   L_VIOL,
   L_GRAY,
+  L_TRPD,
   L_CYAN,
   L_YELW,
 
@@ -355,7 +356,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_MUTE, KC_F5,   CS_T,    CT_T,    CT_W,     F6_CT_C,  _______,
     KC_VOLU, KC_MPRV, KC_MNXT, CT_PGUP, CT_PGDN,  KC_MPLY,  _______,
     KC_VOLD, CT_F5,   CS_P,    CT_1,    CT_2,     AL_PSCR,
-    _______, _______, _______, _______, _______,  
+    _______, _______, _______, _______, _______,
     _______, // LEFT RED THUMB KEY
     _______, _______, _______, // LEFT THUMB KEYS
 
@@ -398,6 +399,27 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_BTN1, RP_001,  RP_003,  RP_002,  RP_004,  KC_BTN2,  _______,
     KC_LGUI, RP_005,  RP_007,  RP_006,  RP_008,  KC_BTN3,
     _______, _______, _______, _______, _______,  
+    _______, // LEFT RED THUMB KEY
+    _______, _______, _______, // LEFT THUMB KEYS
+
+    // RIGHT HALF
+    _______, _______, _______, _______, _______, _______, _______,
+    _______, _______, _______, _______, _______, _______, _______,
+    _______, _______, _______, _______, _______, _______, _______,
+             _______, _______, _______, _______, _______, _______,
+                      _______, _______, _______, _______, _______,
+                      _______, // RIGHT RED THUMB KEY
+                      _______, _______, _______ // RIGHT THUMB KEYS
+  ),
+
+  //---------------------------------------------------------------------------
+  [L_TRPD] = MY_layout(
+    // LEFT HALF
+    _______, _______, _______, _______, _______, _______,  _______,
+    _______, KC_WH_L, KC_WH_D, KC_WH_U, KC_WH_R, _______,  _______,
+    _______, _______, KC_BTN3, KC_BTN2, KC_BTN1, _______,  _______,
+    _______, RP_001,  RP_003,  RP_002,  RP_004,  _______,
+    _______, _______, _______, _______, _______,
     _______, // LEFT RED THUMB KEY
     _______, _______, _______, // LEFT THUMB KEYS
 
@@ -705,6 +727,8 @@ const uint8_t PROGMEM colormap[][3] = {
 const uint8_t colormap_size = sizeof(colormap)/(sizeof(uint8_t) * 3);
 
 const uint8_t PROGMEM layermap[][3] = {
+  // Layer colors use HSV (hue, saturation, value), not RGB. A value of 0
+  // means zero brightness and therefore always produces black.
   [L_EN] = { 0, 0, 255 },
   [L_EN_S] = { 0, 0, 192 },
 
@@ -715,6 +739,7 @@ const uint8_t PROGMEM layermap[][3] = {
   [L_GREN] = { 76, 255, 255 },
   [L_VIOL] = { 188, 255, 255 },
   [L_GRAY] = { 0, 0, 128 },
+  [L_TRPD] = { 54, 255, 245 },
   [L_CYAN] = { 128, 255, 255 },
 
   [L_YELW] = { 35, 255, 255 },
