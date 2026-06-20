@@ -6,6 +6,18 @@
 #define FIRMWARE_VERSION u8"xbJpL/wy5xo"
 #define RGB_MATRIX_STARTUP_SPD 60
 
+// Match the timing used by QMK's pre-audio-overhaul implementation.
+#define TEMPO_DEFAULT 200
+
+// dac_basic advances playback every two timer ticks. 1000 Hz gives songs a
+// 2 ms scheduling resolution instead of firmware25's unusable 200 ms default.
+#define AUDIO_STATE_TIMER_FREQUENCY 1000
+
+// firmware20's DAC timer made these sound one octave below their definitions.
+#define STARTUP_SONG SONG(E__NOTE(_E5), E__NOTE(_A5), ED_NOTE(_E6))
+#define AUDIO_ON_SONG SONG(E__NOTE(_A4), E__NOTE(_A5))
+#define AUDIO_OFF_SONG SONG(E__NOTE(_A5), E__NOTE(_A4))
+
 #undef RGB_MATRIX_MAXIMUM_BRIGHTNESS
 #define RGB_MATRIX_MAXIMUM_BRIGHTNESS 255
 

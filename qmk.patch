@@ -1,3 +1,17 @@
+diff --git a/platforms/chibios/drivers/audio_dac_basic.c b/platforms/chibios/drivers/audio_dac_basic.c
+index 99b938e610..79f33ba5ff 100644
+--- a/platforms/chibios/drivers/audio_dac_basic.c
++++ b/platforms/chibios/drivers/audio_dac_basic.c
+@@ -78,5 +78,8 @@ GPTConfig gpt7cfg1 = {.frequency = AUDIO_DAC_SAMPLE_RATE,
+ static void gpt_audio_state_cb(GPTDriver *gptp);
+-GPTConfig   gptStateUpdateCfg = {.frequency = 10,
++#ifndef AUDIO_STATE_TIMER_FREQUENCY
++#    define AUDIO_STATE_TIMER_FREQUENCY 10
++#endif
++GPTConfig gptStateUpdateCfg = {.frequency = AUDIO_STATE_TIMER_FREQUENCY,
+                                .callback  = gpt_audio_state_cb,
+                                .cr2       = TIM_CR2_MMS_1, /* MMS = 010 = TRGO on Update Event.    */
+                                .dier      = 0U};
 diff --git a/quantum/keyboard.h b/quantum/keyboard.h
 index 0f39fde682..c7bf31b8e8 100644
 --- a/quantum/keyboard.h

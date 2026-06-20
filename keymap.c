@@ -776,13 +776,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   return true;
 }
 
-float error_song1[][2] = SONG(MUSIC_OFF_SOUND);
+float error_song1[][2] = SONG(E__NOTE(_A5), E__NOTE(_GS5), E__NOTE(_FS5), E__NOTE(_E5), E__NOTE(_D5), E__NOTE(_CS5), E__NOTE(_B4), E__NOTE(_A4));
 void combo_max_count_error(void) {
   PLAY_SONG(error_song1);
   uprintf("COMBO ERROR: MAX COMBOS COUNT HAS REACHED\n");
 }
 
-float error_song2[][2] = SONG(VOICE_CHANGE_SOUND);
+float error_song2[][2] = SONG(Q__NOTE(_A4), Q__NOTE(_CS5), Q__NOTE(_E5), Q__NOTE(_A5));
 void combo_max_size_error(void) {
   PLAY_SONG(error_song2); 
   uprintf("COMBO ERROR: MAX COMBO SIZE HAS REACHED\n");

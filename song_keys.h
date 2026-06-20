@@ -22,12 +22,14 @@ enum songs_keycodes {
 };
 
 // Музыка обязательно должна находиться вне функции, потому что она проигрывается асинхронно...
-float my_song1[][2] = SONG(QWERTY_SOUND);
-float my_song2[][2] = SONG(PLANCK_SOUND);
-float my_song3[][2] = SONG(AG_SWAP_SOUND);
-float my_song4[][2] = SONG(VIOLIN_SOUND);
-float my_song5[][2] = SONG(GUITAR_SOUND);
-float my_song6[][2] = SONG(CHROMATIC_SOUND);
+// firmware20's Moonlander DAC driver played every declared frequency one octave
+// lower. Keep that sound while using firmware25's corrected audio driver.
+float my_song1[][2] = SONG(E__NOTE(_GS5), E__NOTE(_A5), S__NOTE(_REST), Q__NOTE(_E6));
+float my_song2[][2] = SONG(ED_NOTE(_E6), E__NOTE(_CS6), E__NOTE(_E5), E__NOTE(_A5), M__NOTE(_CS6, 20));
+float my_song3[][2] = SONG(SD_NOTE(_B4), SD_NOTE(_A4), SD_NOTE(_B4), SD_NOTE(_A4));
+float my_song4[][2] = SONG(Q__NOTE(_G4), Q__NOTE(_D5), Q__NOTE(_A5), Q__NOTE(_E6));
+float my_song5[][2] = SONG(Q__NOTE(_E4), Q__NOTE(_A4), Q__NOTE(_D5), Q__NOTE(_G5));
+float my_song6[][2] = SONG(Q__NOTE(_A4), Q__NOTE(_AS4), Q__NOTE(_B4), Q__NOTE(_C5), Q__NOTE(_CS5));
 
 // Эта функция должна находиться самой последней по приоритету
 bool process_my_music_keys(uint16_t keycode, keyrecord_t *record) {
