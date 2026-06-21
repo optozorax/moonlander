@@ -71,7 +71,7 @@ bool rp_process_record(uint16_t key, keyrecord_t *record) {
 					repeated_keys_size++;
 					repeated_key->key = key;
 					repeated_key->to_repeat = repeat_keys[pos][1];
-					repeated_key->start_time = timer_read();
+					repeated_key->start_time = timer_read32();
 					repeated_key->is_wait = true;
 					press_arbitrary_keycode(repeated_key->to_repeat, true);
 					press_arbitrary_keycode(repeated_key->to_repeat, false);
@@ -99,7 +99,7 @@ bool rp_process_record(uint16_t key, keyrecord_t *record) {
 void rp_timer(void) {
 	for (int i = 0; i < repeated_keys_size; ++i) {
 		RepeatedKey* repeated_key = &repeated_keys_stack[i];
-		uint32_t current_time = timer_read();
+		uint32_t current_time = timer_read32();
 		bool press = false;
 		if (repeated_key->is_wait) {
 			if (current_time - repeated_key->start_time >= RP_TO_REPEAT_TIME) {
