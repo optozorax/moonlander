@@ -750,6 +750,8 @@ const uint8_t PROGMEM layermap[][3] = {
 const uint8_t layermap_size = sizeof(layermap)/(sizeof(uint8_t) * 3);
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  // Музыка обрабатывается первой: клавиши MU_* нужно перехватить до того, как
+  // их увидят combo/lang_shift, иначе те могут их проглотить/забуферизировать.
   if (!process_my_music_keys(keycode, record)) {
     return false;
   }

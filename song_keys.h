@@ -31,27 +31,31 @@ float my_song4[][2] = SONG(Q__NOTE(_G4), Q__NOTE(_D5), Q__NOTE(_A5), Q__NOTE(_E6
 float my_song5[][2] = SONG(Q__NOTE(_E4), Q__NOTE(_A4), Q__NOTE(_D5), Q__NOTE(_G5));
 float my_song6[][2] = SONG(Q__NOTE(_A4), Q__NOTE(_AS4), Q__NOTE(_B4), Q__NOTE(_C5), Q__NOTE(_CS5));
 
-// Эта функция должна находиться самой последней по приоритету
+// Эта функция должна обрабатываться первой в process_record_user: клавиши MU_*
+// нужно перехватить раньше combo/lang_shift, иначе те могут их проглотить.
 bool process_my_music_keys(uint16_t keycode, keyrecord_t *record) {
   // https://github.com/qmk/qmk_firmware/blob/master/quantum/audio/song_list.h
   // https://docs.qmk.fm/#/feature_audio
 
-  static bool disable_music = false;
+  // Счётчик, а не bool: press_arbitrary_keycode переоткрывает весь
+  // process_record, и цель (TO) сама может оказаться музыкальной клавишей,
+  // поэтому защита от повторного входа должна выдерживать вложенность.
+  static uint8_t music_depth = 0;
 
-  if (disable_music)
+  if (music_depth > 0)
     return true;
 
   #define MUSIC_KEYCODE(FROM, TO, SONG) \
     case FROM: \
       if (record->event.pressed) { \
         PLAY_SONG(SONG); \
-        disable_music = true; \
+        music_depth++; \
         press_arbitrary_keycode(TO, true); \
-        disable_music = false; \
+        music_depth--; \
       } else { \
-        disable_music = true; \
+        music_depth++; \
         press_arbitrary_keycode(TO, false); \
-        disable_music = false; \
+        music_depth--; \
       } \
       return false; \
       break;
