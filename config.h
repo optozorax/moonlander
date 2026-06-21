@@ -32,6 +32,11 @@
 #define LANG_CHANGE_DEFAULT LANG_CHANGE_WIN_SPACE
 #define SYSTEM_CURRENT_DEFAULT SYSTEM_WINDOWS
 
+// Wait this many ms after sending the OS language-switch shortcut, so the OS
+// finishes switching the layout before the next character is typed (otherwise
+// fast typing can produce e.g. "ё" instead of "`"). 0 disables it.
+#define LANG_SWITCH_DELAY_MS 30
+
 #define COMBO_KEYS_COUNT 50
 #define COMBO_MAX_SIZE 4
 #define COMBO_STACK_MAX_SIZE 5
