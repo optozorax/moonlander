@@ -32,9 +32,9 @@ enum System system_current =
 
 bool process_system_keys(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    case SYS_LIN: {system_current = SYSTEM_LINUX; return false; }
-    case SYS_WIN: {system_current = SYSTEM_WINDOWS; return false; }
-    case SYS_MAC: {system_current = SYSTEM_MACOS; return false; }
+    case SYS_LIN: { if (record->event.pressed) { system_current = SYSTEM_LINUX; } return false; }
+    case SYS_WIN: { if (record->event.pressed) { system_current = SYSTEM_WINDOWS; } return false; }
+    case SYS_MAC: { if (record->event.pressed) { system_current = SYSTEM_MACOS; } return false; }
     case SYS_PRT: {
       if (record->event.pressed) {
         #define PRESS(x) { register_code(KC_ ## x); unregister_code(KC_ ## x); }
